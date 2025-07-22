@@ -20,12 +20,12 @@ exports.Prisma = Prisma
 exports.$Enums = {}
 
 /**
- * Prisma Client JS version: 6.7.0
- * Query Engine version: 3cff47a7f5d65c3ea74883f1d736e41d68ce91ed
+ * Prisma Client JS version: 6.12.0
+ * Query Engine version: 8047c96bbd92db98a2abc7c9323ce77c02c89dbc
  */
 Prisma.prismaVersion = {
-  client: "6.7.0",
-  engine: "3cff47a7f5d65c3ea74883f1d736e41d68ce91ed"
+  client: "6.12.0",
+  engine: "8047c96bbd92db98a2abc7c9323ce77c02c89dbc"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -120,12 +120,100 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.SampleScalarFieldEnum = {
+exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
-  name: 'name',
-  code: 'code',
+  firstName: 'firstName',
+  lastName: 'lastName',
+  address: 'address',
+  phoneNumber: 'phoneNumber',
+  photoUrl: 'photoUrl',
+  role: 'role',
+  referralCode: 'referralCode',
+  username: 'username',
+  email: 'email',
+  password: 'password',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.EventScalarFieldEnum = {
+  id: 'id',
+  organizerId: 'organizerId',
+  title: 'title',
+  schedule: 'schedule',
+  category: 'category',
+  location: 'location',
+  description: 'description',
+  imageURL: 'imageURL',
+  price: 'price',
+  maxCapacity: 'maxCapacity',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.TicketScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  quantity: 'quantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt',
+  deletedAt: 'deletedAt'
+};
+
+exports.Prisma.TransactionScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  quantity: 'quantity',
+  totalPrice: 'totalPrice',
+  usedPoints: 'usedPoints',
+  finalPrice: 'finalPrice',
+  status: 'status',
+  paymentProofUrl: 'paymentProofUrl',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReviewScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  eventId: 'eventId',
+  rating: 'rating',
+  comment: 'comment',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.VoucherScalarFieldEnum = {
+  id: 'id',
+  organizerId: 'organizerId',
+  code: 'code',
+  discountAmount: 'discountAmount',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  eventId: 'eventId'
+};
+
+exports.Prisma.CouponScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  code: 'code',
+  discountAmount: 'discountAmount',
+  expiresAt: 'expiresAt',
+  used: 'used'
+};
+
+exports.Prisma.UserPointLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  amount: 'amount',
+  reason: 'reason',
+  expiresAt: 'expiresAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -133,14 +221,29 @@ exports.Prisma.SortOrder = {
   desc: 'desc'
 };
 
-exports.Prisma.SampleOrderByRelevanceFieldEnum = {
-  name: 'name',
-  code: 'code'
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
+exports.Prisma.NullsOrder = {
+  first: 'first',
+  last: 'last'
+};
+exports.Role = exports.$Enums.Role = {
+  USER: 'USER',
+  ORGANIZER: 'ORGANIZER'
+};
 
 exports.Prisma.ModelName = {
-  Sample: 'Sample'
+  User: 'User',
+  Event: 'Event',
+  Ticket: 'Ticket',
+  Transaction: 'Transaction',
+  Review: 'Review',
+  Voucher: 'Voucher',
+  Coupon: 'Coupon',
+  UserPointLog: 'UserPointLog'
 };
 
 /**
