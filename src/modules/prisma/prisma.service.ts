@@ -1,7 +1,5 @@
 import { PrismaClient } from "../../generated/prisma";
 
-export class PrismaService extends PrismaClient {
-  constructor() {
-    super();
-  }
-}
+const prisma = new PrismaClient();
+
+export default prisma;
