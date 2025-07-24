@@ -1,11 +1,4 @@
-// import { Router } from "express";
-// import { registerController } from "../modules/auth/auth.controller"
 
-// const authRouter = Router();
-
-// authRouter.post('/register', registerController);
-
-// export default authRouter;
 
 import { Router } from "express";
 import { AuthController } from "./auth.controller";
@@ -28,6 +21,11 @@ export class AuthRouter {
       "/register",
       validateBody(RegisterDTO),
       this.authController.userRegister
+    );
+    this.router.post(
+      "/register/organizer",
+      validateBody(RegisterDTO),
+      this.authController.organizerRegister
     );
   };
 
