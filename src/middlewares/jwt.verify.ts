@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { AppError } from '../utils/api.error';
+import { ApiError } from '../utils/api.error';
 
 export class JwtVerify {
   static verifyToken(req: Request, res: Response, next: NextFunction) {
@@ -8,7 +8,7 @@ export class JwtVerify {
       const token = req.headers.authorization?.split(' ')[1];
       console.log(req.headers.authorization);
       if (!token || token === 'null') {
-        throw new AppError('Bearer token is invalid or missing', 401);
+        throw new ApiError('Bearer token is invalid or missing', 401);
       }
 
       const payload = jwt.verify(token, `${process.env.JWT_SECRET_KEY!}`);

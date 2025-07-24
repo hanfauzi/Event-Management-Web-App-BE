@@ -1,11 +1,15 @@
-export function APIError(message: string, statusCode: number = 500) {
-  const error = new Error(message) as Error & {
-    statusCode: number;
-    isExpose: boolean;
-  };
+export class ApiError extends Error {
+  statusCode: number;
+  isExpose: boolean;
 
-  error.statusCode = statusCode;
-  error.isExpose = true;
+  constructor(message: string, statusCode: number = 500) {
+    super(message);
 
-  return error;
+   
+    Object.setPrototypeOf(this, ApiError.prototype);
+
+    this.name = this.constructor.name; 
+    this.statusCode = statusCode;
+    this.isExpose = true;
+  }
 }

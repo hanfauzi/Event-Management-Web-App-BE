@@ -8,12 +8,14 @@ import express, {
   Router,
 } from 'express';
 import cors from 'cors';
-import { PORT } from './config';
-import { SampleRouter } from './routers/sample.router';
-import { AppError } from './utils/api.error';
+import { PORT } from './config/env';
+import "reflect-metadata";
+import { SampleRouter } from './modules/sample/sample.router';
+import { ApiError } from './utils/api.error';
+import { AuthRouter } from './modules/auth/auth.router';
 
 export default class App {
-  private app: Express;
+   app: Express;
 
   constructor() {
     this.app = express();
@@ -22,13 +24,13 @@ export default class App {
     this.handleError();
   }
 
-  private configure(): void {
+  private configure() {
     this.app.use(cors());
     this.app.use(json());
     this.app.use(urlencoded({ extended: true }));
   }
 
-  private handleError(): void {
+  private handleError() {
     // Not Found Handler
     this.app.use((req: Request, res: Response, next: NextFunction) => {
       if (req.path.includes('/api/')) {
@@ -53,7 +55,7 @@ export default class App {
             ? 401
             : 500);
         const message =
-          error instanceof AppError || error.isOperational
+          error instanceof ApiError || error.isOperational
             ? error.message ||
               error.name === 'TokenExpiredError' ||
               error.name === 'JsonWebTokenError'
@@ -70,14 +72,20 @@ export default class App {
     );
   }
 
-  private routes(): void {
+  private routes() {
+   
+
     const sampleRouter = new SampleRouter();
+    const authRouter = new AuthRouter()
+
+    
 
     this.app.get('/api', (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
     });
 
     this.app.use('/api/samples', sampleRouter.getRouter());
+    this.app.use("/api/auth", authRouter.getRouter());
   }
 
   public start(): void {

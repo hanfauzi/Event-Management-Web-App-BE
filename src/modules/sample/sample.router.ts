@@ -1,6 +1,6 @@
-import { SampleController } from '../controllers/sample.controller';
+import { SampleController } from './sample.controller';
 import { Router } from 'express';
-import { JwtVerify } from '../middlewares/jwt.verify';
+import { JwtVerify } from '../../middlewares/jwt.verify';
 
 export class SampleRouter {
   private router: Router;
