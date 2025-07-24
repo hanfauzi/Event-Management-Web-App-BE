@@ -1,26 +1,26 @@
 
 import { ApiError } from "../../utils/api.error";
 import { PasswordService } from "../password/password.service";
-import { PrismaService } from "../prisma/prisma.service";
+import prisma from "../prisma/prisma.service";
 import { RegisterDTO } from "./dto/register.dto";
 
 export class AuthService {
-  private prisma: PrismaService;
+
   private passwordService: PasswordService;
 
   constructor() {
-    this.prisma = new PrismaService();
+  
     this.passwordService = new PasswordService();
   }
 
   userRegister = async ({ username, email, password }: RegisterDTO) => {
-    const userEmail = await this.prisma.user.findFirst({ where: { email } });
+    const userEmail = await prisma.user.findFirst({ where: { email } });
 
     if (userEmail) {
       throw new ApiError("Email already exist!", 400);
     }
 
-    const userUName = await this.prisma.user.findFirst({ where: { username } });
+    const userUName = await prisma.user.findFirst({ where: { username } });
 
     if (userUName) {
       throw new ApiError("Username already used!", 400);
@@ -29,7 +29,7 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(password);
     const referralCode = generateReferralCode(username);
 
-    return await this.prisma.user.create({
+    return await prisma.user.create({
       data: {
         username,
         email,
@@ -58,13 +58,13 @@ export class AuthService {
   };
 
   organizerRegister = async ({ username, email, password }: RegisterDTO) => {
-    const userEmail = await this.prisma.user.findFirst({ where: { email } });
+    const userEmail = await prisma.user.findFirst({ where: { email } });
 
     if (userEmail) {
       throw new ApiError("Email already exist!", 400);
     }
 
-    const userUName = await this.prisma.user.findFirst({ where: { username } });
+    const userUName = await prisma.user.findFirst({ where: { username } });
 
     if (userUName) {
       throw new ApiError("Username already used!", 400);
@@ -73,7 +73,7 @@ export class AuthService {
     const hashedPassword = await this.passwordService.hashPassword(password);
     
 
-    return await this.prisma.user.create({
+    return await prisma.user.create({
       data: {
         username,
         email,
