@@ -129,9 +129,12 @@ exports.Prisma.UserScalarFieldEnum = {
   photoUrl: 'photoUrl',
   role: 'role',
   referralCode: 'referralCode',
+  referredById: 'referredById',
   username: 'username',
   email: 'email',
   password: 'password',
+  resetToken: 'resetToken',
+  resetTokenExp: 'resetTokenExp',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -141,7 +144,8 @@ exports.Prisma.EventScalarFieldEnum = {
   id: 'id',
   organizerId: 'organizerId',
   title: 'title',
-  schedule: 'schedule',
+  startTime: 'startTime',
+  endTime: 'endTime',
   category: 'category',
   location: 'location',
   description: 'description',
@@ -158,7 +162,9 @@ exports.Prisma.TicketScalarFieldEnum = {
   id: 'id',
   eventId: 'eventId',
   userId: 'userId',
+  transactionId: 'transactionId',
   quantity: 'quantity',
+  isCheckedIn: 'isCheckedIn',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -175,6 +181,8 @@ exports.Prisma.TransactionScalarFieldEnum = {
   status: 'status',
   paymentProofUrl: 'paymentProofUrl',
   expiresAt: 'expiresAt',
+  couponId: 'couponId',
+  voucherId: 'voucherId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -195,7 +203,8 @@ exports.Prisma.VoucherScalarFieldEnum = {
   discountAmount: 'discountAmount',
   startDate: 'startDate',
   endDate: 'endDate',
-  eventId: 'eventId'
+  eventId: 'eventId',
+  isActive: 'isActive'
 };
 
 exports.Prisma.CouponScalarFieldEnum = {
@@ -212,6 +221,7 @@ exports.Prisma.UserPointLogScalarFieldEnum = {
   userId: 'userId',
   amount: 'amount',
   reason: 'reason',
+  type: 'type',
   expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 };
@@ -233,6 +243,44 @@ exports.Prisma.NullsOrder = {
 exports.Role = exports.$Enums.Role = {
   USER: 'USER',
   ORGANIZER: 'ORGANIZER'
+};
+
+exports.Category = exports.$Enums.Category = {
+  CULINARY: 'CULINARY',
+  MUSIC: 'MUSIC',
+  SPORT: 'SPORT',
+  COMEDY: 'COMEDY',
+  WORKSHOP: 'WORKSHOP',
+  ART: 'ART',
+  TRAVEL: 'TRAVEL',
+  EDUCATION: 'EDUCATION',
+  COMMUNITY: 'COMMUNITY',
+  FASHION: 'FASHION',
+  GAMING: 'GAMING',
+  HEALTH: 'HEALTH',
+  FAMILY: 'FAMILY',
+  RELIGION: 'RELIGION',
+  OTHER: 'OTHER'
+};
+
+exports.EventStatus = exports.$Enums.EventStatus = {
+  UPCOMING: 'UPCOMING',
+  ONGOING: 'ONGOING',
+  DONE: 'DONE'
+};
+
+exports.TransactionStatus = exports.$Enums.TransactionStatus = {
+  WAITING_PAYMENT: 'WAITING_PAYMENT',
+  WAITING_CONFIRMATION: 'WAITING_CONFIRMATION',
+  DONE: 'DONE',
+  REJECTED: 'REJECTED',
+  EXPIRED: 'EXPIRED',
+  CANCELED: 'CANCELED'
+};
+
+exports.PointLogType = exports.$Enums.PointLogType = {
+  EARN: 'EARN',
+  SPEND: 'SPEND'
 };
 
 exports.Prisma.ModelName = {
