@@ -15,18 +15,86 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum Role {
-  USER
-  ORGANIZER
+model User {
+  id          String  @id @default(uuid())
+  firstName   String? @map("first_name")
+  lastName    String? @map("last_name")
+  phoneNumber String? @map("phone_number")
+  imageUrl    String? @map("image_url")
+
+  referralCode String? @map("referral_code")
+  referredById String? @map("referred_by_id")
+  username     String  @unique
+  email        String  @unique
+  password     String
+
+  resetPasswordToken  String?
+  resetPasswordExpiry DateTime?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  transactions  Transaction[]
+  reviews       Review[]
+  userPointLogs UserPointLog[]
+
+  @@map("users")
 }
 
-enum TransactionStatus {
-  WAITING_PAYMENT
-  WAITING_CONFIRMATION
-  DONE
-  REJECTED
-  EXPIRED
-  CANCELED
+model Organizer {
+  id             String  @id @default(uuid())
+  orgName        String?
+  orgUsername    String  @unique
+  orgEmail       String  @unique
+  orgPassword    String
+  orgAddress     String?
+  orgPhoneNumber String?
+  logoUrl        String?
+  orgBio         String  @db.Text
+  verified       Boolean @default(false)
+
+  resetPasswordToken  String?
+  resetPasswordExpiry DateTime?
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  Event     Event[]
+  Voucher   Voucher[]
+
+  @@map("organizers")
+}
+
+model Event {
+  id          String @id @default(uuid())
+  organizerId String
+
+  title       String
+  startDay    DateTime    @map("start_day") @db.Date()
+  endDay      DateTime    @map("end_day") @db.Date()
+  startTime   DateTime    @map("start_time") @db.Time()
+  endTime     DateTime    @map("end_time") @db.Time()
+  category    Category
+  location    String
+  description String      @db.Text
+  imageURL    String      @map("image_url")
+  price       Int
+  maxCapacity Int         @map("max_capacity")
+  status      EventStatus @default(UPCOMING)
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  organizer      Organizer        @relation(fields: [organizerId], references: [id])
+  tickets        Ticket[]
+  transactions   Transaction[]
+  reviews        Review[]
+  vouchers       Voucher[]
+  TicketCategory TicketCategory[]
+
+  @@map("events")
 }
 
 enum EventStatus {
@@ -53,84 +121,39 @@ enum Category {
   OTHER
 }
 
-enum PointLogType {
-  EARN
-  SPEND
-}
+model TicketCategory {
+  id      String @id @default(uuid())
+  eventId String
+  name    String
+  price   Int
+  quota   Int
 
-model User {
-  id            String    @id @default(uuid())
-  firstName     String?   @map("first_name")
-  lastName      String?   @map("last_name")
-  address       String?
-  phoneNumber   String?   @map("phone_number")
-  photoUrl      String?   @map("photo_url")
-  role          Role
-  referralCode  String?   @map("referral_code")
-  referredById  String?   @map("referred_by_id")
-  username      String
-  email         String    @unique
-  password      String
-  resetToken    String?   @map("reset_token")
-  resetTokenExp DateTime? @map("reset_token_exp")
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @updatedAt @map("updated_at")
-  deletedAt     DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
-  // Relasi
-  events        Event[]        @relation("OrganizerEvents")
-  tickets       Ticket[]
-  transactions  Transaction[]
-  reviews       Review[]
-  coupons       Coupon[]
-  userPointLogs UserPointLog[]
-  vouchers      Voucher[]      @relation("OrganizerVouchers")
+  event  Event    @relation(fields: [eventId], references: [id])
+  Ticket Ticket[]
 
-  @@map("users")
-}
-
-model Event {
-  id          String      @id @default(uuid())
-  organizerId String      @map("organizer_id")
-  title       String
-  startTime   DateTime    @map("start_time") @db.Time()
-  endTime     DateTime    @map("end_time") @db.Time()
-  category    Category
-  location    String
-  description String      @db.Text
-  imageURL    String      @map("image_url")
-  price       Int
-  maxCapacity Int         @map("max_capacity")
-  status      EventStatus
-  createdAt   DateTime    @default(now()) @map("created_at")
-  updatedAt   DateTime    @updatedAt @map("updated_at")
-  deletedAt   DateTime?   @map("deleted_at")
-
-  // Relasi
-  organizer    User          @relation("OrganizerEvents", fields: [organizerId], references: [id])
-  tickets      Ticket[]
-  transactions Transaction[]
-  reviews      Review[]
-  vouchers     Voucher[]
-
-  @@map("events")
+  @@unique([eventId, name])
+  @@map("ticketCategory")
 }
 
 model Ticket {
-  id            String    @id @default(uuid())
-  eventId       String    @map("event_id")
-  userId        String    @map("user_id")
+  id               String @id @default(uuid())
+  eventId          String @map("event_id")
+  ticketCategoryId String
+
   transactionId String?   @map("transaction_id")
-  quantity      Int
   isCheckedIn   Boolean   @default(false)
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
   deletedAt     DateTime? @map("deleted_at")
 
   // Relasi
-  event       Event        @relation(fields: [eventId], references: [id])
-  user        User         @relation(fields: [userId], references: [id])
-  transaction Transaction? @relation(fields: [transactionId], references: [id])
+  event          Event          @relation(fields: [eventId], references: [id])
+  transaction    Transaction?   @relation(fields: [transactionId], references: [id])
+  ticketCategory TicketCategory @relation(fields: [ticketCategoryId], references: [id])
 
   @@map("tickets")
 }
@@ -152,13 +175,22 @@ model Transaction {
   updatedAt       DateTime          @updatedAt @map("updated_at")
 
   // Relasi
-  user    User     @relation(fields: [userId], references: [id])
-  event   Event    @relation(fields: [eventId], references: [id])
-  coupon  Coupon?  @relation(fields: [couponId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+  event Event @relation(fields: [eventId], references: [id])
+
   voucher Voucher? @relation(fields: [voucherId], references: [id])
   Ticket  Ticket[]
 
   @@map("transactions")
+}
+
+enum TransactionStatus {
+  WAITING_PAYMENT
+  WAITING_CONFIRMATION
+  DONE
+  REJECTED
+  EXPIRED
+  CANCELED
 }
 
 model Review {
@@ -180,46 +212,35 @@ model Voucher {
   id             String   @id @default(uuid())
   organizerId    String   @map("organizer_id")
   code           String
+  quota          Int
   discountAmount Int      @map("discount_amount")
   startDate      DateTime @map("start_date")
   endDate        DateTime @map("end_date")
   eventId        String   @map("event_id")
   isActive       Boolean  @default(true) @map("is_active")
 
-  // Relasi
-  organizer   User          @relation("OrganizerVouchers", fields: [organizerId], references: [id])
+  organizer   Organizer     @relation(fields: [organizerId], references: [id])
   event       Event         @relation(fields: [eventId], references: [id])
   Transaction Transaction[]
 
   @@map("vouchers")
 }
 
-model Coupon {
-  id             String   @id @default(uuid())
-  userId         String   @map("user_id")
-  code           String
-  discountAmount Int      @map("discount_amount")
-  expiresAt      DateTime @map("expires_at")
-  used           Boolean
-
-  // Relasi
-  user        User          @relation(fields: [userId], references: [id])
-  Transaction Transaction[]
-
-  @@map("coupons")
-}
-
 model UserPointLog {
-  id        String       @id @default(uuid())
-  userId    String       @map("user_id")
-  amount    Int
-  reason    String
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  amount Int
+
   type      PointLogType
   expiresAt DateTime?    @map("expires_at")
   createdAt DateTime     @default(now()) @map("created_at")
 
-  // Relasi
   user User @relation(fields: [userId], references: [id])
 
-  @@map("user_point_logs")
+  @@map("userPointLogs")
+}
+
+enum PointLogType {
+  EARN
+  SPEND
 }
