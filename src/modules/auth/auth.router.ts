@@ -1,5 +1,3 @@
-
-
 import { Router } from "express";
 import { AuthController } from "./auth.controller";
 import { validateBody } from "../../middlewares/validate.middleware";
@@ -16,7 +14,6 @@ export class AuthRouter {
   }
 
   private initializedRoutes = () => {
-   
     this.router.post(
       "/register",
       validateBody(RegisterDTO),
@@ -30,7 +27,6 @@ export class AuthRouter {
   };
 
   getRouter = () => {
-    
     return this.router;
   };
 }
