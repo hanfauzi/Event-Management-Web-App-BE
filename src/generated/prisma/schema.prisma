@@ -43,16 +43,16 @@ model User {
 }
 
 model Organizer {
-  id             String  @id @default(uuid())
-  orgName        String?
-  orgUsername    String  @unique
-  orgEmail       String  @unique
-  orgPassword    String
-  orgAddress     String?
-  orgPhoneNumber String?
-  logoUrl        String?
-  orgBio         String  @db.Text
-  verified       Boolean @default(false)
+  id          String  @id @default(uuid())
+  orgName     String?
+  username    String  @unique
+  email       String  @unique
+  password    String
+  address     String?
+  phoneNumber String?
+  logoUrl     String?
+  bio         String? @db.Text
+  verified    Boolean @default(false)
 
   resetPasswordToken  String?
   resetPasswordExpiry DateTime?

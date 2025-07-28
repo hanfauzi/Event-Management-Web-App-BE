@@ -3185,13 +3185,13 @@ export namespace Prisma {
   export type OrganizerMinAggregateOutputType = {
     id: string | null
     orgName: string | null
-    orgUsername: string | null
-    orgEmail: string | null
-    orgPassword: string | null
-    orgAddress: string | null
-    orgPhoneNumber: string | null
+    username: string | null
+    email: string | null
+    password: string | null
+    address: string | null
+    phoneNumber: string | null
     logoUrl: string | null
-    orgBio: string | null
+    bio: string | null
     verified: boolean | null
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
@@ -3203,13 +3203,13 @@ export namespace Prisma {
   export type OrganizerMaxAggregateOutputType = {
     id: string | null
     orgName: string | null
-    orgUsername: string | null
-    orgEmail: string | null
-    orgPassword: string | null
-    orgAddress: string | null
-    orgPhoneNumber: string | null
+    username: string | null
+    email: string | null
+    password: string | null
+    address: string | null
+    phoneNumber: string | null
     logoUrl: string | null
-    orgBio: string | null
+    bio: string | null
     verified: boolean | null
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
@@ -3221,13 +3221,13 @@ export namespace Prisma {
   export type OrganizerCountAggregateOutputType = {
     id: number
     orgName: number
-    orgUsername: number
-    orgEmail: number
-    orgPassword: number
-    orgAddress: number
-    orgPhoneNumber: number
+    username: number
+    email: number
+    password: number
+    address: number
+    phoneNumber: number
     logoUrl: number
-    orgBio: number
+    bio: number
     verified: number
     resetPasswordToken: number
     resetPasswordExpiry: number
@@ -3241,13 +3241,13 @@ export namespace Prisma {
   export type OrganizerMinAggregateInputType = {
     id?: true
     orgName?: true
-    orgUsername?: true
-    orgEmail?: true
-    orgPassword?: true
-    orgAddress?: true
-    orgPhoneNumber?: true
+    username?: true
+    email?: true
+    password?: true
+    address?: true
+    phoneNumber?: true
     logoUrl?: true
-    orgBio?: true
+    bio?: true
     verified?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
@@ -3259,13 +3259,13 @@ export namespace Prisma {
   export type OrganizerMaxAggregateInputType = {
     id?: true
     orgName?: true
-    orgUsername?: true
-    orgEmail?: true
-    orgPassword?: true
-    orgAddress?: true
-    orgPhoneNumber?: true
+    username?: true
+    email?: true
+    password?: true
+    address?: true
+    phoneNumber?: true
     logoUrl?: true
-    orgBio?: true
+    bio?: true
     verified?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
@@ -3277,13 +3277,13 @@ export namespace Prisma {
   export type OrganizerCountAggregateInputType = {
     id?: true
     orgName?: true
-    orgUsername?: true
-    orgEmail?: true
-    orgPassword?: true
-    orgAddress?: true
-    orgPhoneNumber?: true
+    username?: true
+    email?: true
+    password?: true
+    address?: true
+    phoneNumber?: true
     logoUrl?: true
-    orgBio?: true
+    bio?: true
     verified?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
@@ -3368,13 +3368,13 @@ export namespace Prisma {
   export type OrganizerGroupByOutputType = {
     id: string
     orgName: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress: string | null
-    orgPhoneNumber: string | null
+    username: string
+    email: string
+    password: string
+    address: string | null
+    phoneNumber: string | null
     logoUrl: string | null
-    orgBio: string
+    bio: string | null
     verified: boolean
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
@@ -3403,13 +3403,13 @@ export namespace Prisma {
   export type OrganizerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
@@ -3424,13 +3424,13 @@ export namespace Prisma {
   export type OrganizerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
@@ -3442,13 +3442,13 @@ export namespace Prisma {
   export type OrganizerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
@@ -3460,13 +3460,13 @@ export namespace Prisma {
   export type OrganizerSelectScalar = {
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
@@ -3475,7 +3475,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type OrganizerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgUsername" | "orgEmail" | "orgPassword" | "orgAddress" | "orgPhoneNumber" | "logoUrl" | "orgBio" | "verified" | "resetPasswordToken" | "resetPasswordExpiry" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["organizer"]>
+  export type OrganizerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "username" | "email" | "password" | "address" | "phoneNumber" | "logoUrl" | "bio" | "verified" | "resetPasswordToken" | "resetPasswordExpiry" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["organizer"]>
   export type OrganizerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Event?: boolean | Organizer$EventArgs<ExtArgs>
     Voucher?: boolean | Organizer$VoucherArgs<ExtArgs>
@@ -3493,13 +3493,13 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orgName: string | null
-      orgUsername: string
-      orgEmail: string
-      orgPassword: string
-      orgAddress: string | null
-      orgPhoneNumber: string | null
+      username: string
+      email: string
+      password: string
+      address: string | null
+      phoneNumber: string | null
       logoUrl: string | null
-      orgBio: string
+      bio: string | null
       verified: boolean
       resetPasswordToken: string | null
       resetPasswordExpiry: Date | null
@@ -3933,13 +3933,13 @@ export namespace Prisma {
   interface OrganizerFieldRefs {
     readonly id: FieldRef<"Organizer", 'String'>
     readonly orgName: FieldRef<"Organizer", 'String'>
-    readonly orgUsername: FieldRef<"Organizer", 'String'>
-    readonly orgEmail: FieldRef<"Organizer", 'String'>
-    readonly orgPassword: FieldRef<"Organizer", 'String'>
-    readonly orgAddress: FieldRef<"Organizer", 'String'>
-    readonly orgPhoneNumber: FieldRef<"Organizer", 'String'>
+    readonly username: FieldRef<"Organizer", 'String'>
+    readonly email: FieldRef<"Organizer", 'String'>
+    readonly password: FieldRef<"Organizer", 'String'>
+    readonly address: FieldRef<"Organizer", 'String'>
+    readonly phoneNumber: FieldRef<"Organizer", 'String'>
     readonly logoUrl: FieldRef<"Organizer", 'String'>
-    readonly orgBio: FieldRef<"Organizer", 'String'>
+    readonly bio: FieldRef<"Organizer", 'String'>
     readonly verified: FieldRef<"Organizer", 'Boolean'>
     readonly resetPasswordToken: FieldRef<"Organizer", 'String'>
     readonly resetPasswordExpiry: FieldRef<"Organizer", 'DateTime'>
@@ -12819,13 +12819,13 @@ export namespace Prisma {
   export const OrganizerScalarFieldEnum: {
     id: 'id',
     orgName: 'orgName',
-    orgUsername: 'orgUsername',
-    orgEmail: 'orgEmail',
-    orgPassword: 'orgPassword',
-    orgAddress: 'orgAddress',
-    orgPhoneNumber: 'orgPhoneNumber',
+    username: 'username',
+    email: 'email',
+    password: 'password',
+    address: 'address',
+    phoneNumber: 'phoneNumber',
     logoUrl: 'logoUrl',
-    orgBio: 'orgBio',
+    bio: 'bio',
     verified: 'verified',
     resetPasswordToken: 'resetPasswordToken',
     resetPasswordExpiry: 'resetPasswordExpiry',
@@ -13215,13 +13215,13 @@ export namespace Prisma {
     NOT?: OrganizerWhereInput | OrganizerWhereInput[]
     id?: StringFilter<"Organizer"> | string
     orgName?: StringNullableFilter<"Organizer"> | string | null
-    orgUsername?: StringFilter<"Organizer"> | string
-    orgEmail?: StringFilter<"Organizer"> | string
-    orgPassword?: StringFilter<"Organizer"> | string
-    orgAddress?: StringNullableFilter<"Organizer"> | string | null
-    orgPhoneNumber?: StringNullableFilter<"Organizer"> | string | null
+    username?: StringFilter<"Organizer"> | string
+    email?: StringFilter<"Organizer"> | string
+    password?: StringFilter<"Organizer"> | string
+    address?: StringNullableFilter<"Organizer"> | string | null
+    phoneNumber?: StringNullableFilter<"Organizer"> | string | null
     logoUrl?: StringNullableFilter<"Organizer"> | string | null
-    orgBio?: StringFilter<"Organizer"> | string
+    bio?: StringNullableFilter<"Organizer"> | string | null
     verified?: BoolFilter<"Organizer"> | boolean
     resetPasswordToken?: StringNullableFilter<"Organizer"> | string | null
     resetPasswordExpiry?: DateTimeNullableFilter<"Organizer"> | Date | string | null
@@ -13235,13 +13235,13 @@ export namespace Prisma {
   export type OrganizerOrderByWithRelationInput = {
     id?: SortOrder
     orgName?: SortOrderInput | SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrderInput | SortOrder
-    orgPhoneNumber?: SortOrderInput | SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrderInput | SortOrder
     verified?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpiry?: SortOrderInput | SortOrder
@@ -13254,17 +13254,17 @@ export namespace Prisma {
 
   export type OrganizerWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    orgUsername?: string
-    orgEmail?: string
+    username?: string
+    email?: string
     AND?: OrganizerWhereInput | OrganizerWhereInput[]
     OR?: OrganizerWhereInput[]
     NOT?: OrganizerWhereInput | OrganizerWhereInput[]
     orgName?: StringNullableFilter<"Organizer"> | string | null
-    orgPassword?: StringFilter<"Organizer"> | string
-    orgAddress?: StringNullableFilter<"Organizer"> | string | null
-    orgPhoneNumber?: StringNullableFilter<"Organizer"> | string | null
+    password?: StringFilter<"Organizer"> | string
+    address?: StringNullableFilter<"Organizer"> | string | null
+    phoneNumber?: StringNullableFilter<"Organizer"> | string | null
     logoUrl?: StringNullableFilter<"Organizer"> | string | null
-    orgBio?: StringFilter<"Organizer"> | string
+    bio?: StringNullableFilter<"Organizer"> | string | null
     verified?: BoolFilter<"Organizer"> | boolean
     resetPasswordToken?: StringNullableFilter<"Organizer"> | string | null
     resetPasswordExpiry?: DateTimeNullableFilter<"Organizer"> | Date | string | null
@@ -13273,18 +13273,18 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Organizer"> | Date | string | null
     Event?: EventListRelationFilter
     Voucher?: VoucherListRelationFilter
-  }, "id" | "orgUsername" | "orgEmail">
+  }, "id" | "username" | "email">
 
   export type OrganizerOrderByWithAggregationInput = {
     id?: SortOrder
     orgName?: SortOrderInput | SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrderInput | SortOrder
-    orgPhoneNumber?: SortOrderInput | SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrderInput | SortOrder
     verified?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpiry?: SortOrderInput | SortOrder
@@ -13302,13 +13302,13 @@ export namespace Prisma {
     NOT?: OrganizerScalarWhereWithAggregatesInput | OrganizerScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Organizer"> | string
     orgName?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
-    orgUsername?: StringWithAggregatesFilter<"Organizer"> | string
-    orgEmail?: StringWithAggregatesFilter<"Organizer"> | string
-    orgPassword?: StringWithAggregatesFilter<"Organizer"> | string
-    orgAddress?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
-    orgPhoneNumber?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
+    username?: StringWithAggregatesFilter<"Organizer"> | string
+    email?: StringWithAggregatesFilter<"Organizer"> | string
+    password?: StringWithAggregatesFilter<"Organizer"> | string
+    address?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
+    phoneNumber?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
     logoUrl?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
-    orgBio?: StringWithAggregatesFilter<"Organizer"> | string
+    bio?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
     verified?: BoolWithAggregatesFilter<"Organizer"> | boolean
     resetPasswordToken?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
     resetPasswordExpiry?: DateTimeNullableWithAggregatesFilter<"Organizer"> | Date | string | null
@@ -14063,13 +14063,13 @@ export namespace Prisma {
   export type OrganizerCreateInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -14083,13 +14083,13 @@ export namespace Prisma {
   export type OrganizerUncheckedCreateInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -14103,13 +14103,13 @@ export namespace Prisma {
   export type OrganizerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14123,13 +14123,13 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14143,13 +14143,13 @@ export namespace Prisma {
   export type OrganizerCreateManyInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -14161,13 +14161,13 @@ export namespace Prisma {
   export type OrganizerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -14179,13 +14179,13 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -15069,13 +15069,13 @@ export namespace Prisma {
   export type OrganizerCountOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrder
-    orgPhoneNumber?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrder
+    phoneNumber?: SortOrder
     logoUrl?: SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrder
     verified?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
@@ -15087,13 +15087,13 @@ export namespace Prisma {
   export type OrganizerMaxOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrder
-    orgPhoneNumber?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrder
+    phoneNumber?: SortOrder
     logoUrl?: SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrder
     verified?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
@@ -15105,13 +15105,13 @@ export namespace Prisma {
   export type OrganizerMinOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrder
-    orgPhoneNumber?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrder
+    phoneNumber?: SortOrder
     logoUrl?: SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrder
     verified?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
@@ -16976,13 +16976,13 @@ export namespace Prisma {
   export type OrganizerCreateWithoutEventInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -16995,13 +16995,13 @@ export namespace Prisma {
   export type OrganizerUncheckedCreateWithoutEventInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -17196,13 +17196,13 @@ export namespace Prisma {
   export type OrganizerUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -17215,13 +17215,13 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18282,13 +18282,13 @@ export namespace Prisma {
   export type OrganizerCreateWithoutVoucherInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -18301,13 +18301,13 @@ export namespace Prisma {
   export type OrganizerUncheckedCreateWithoutVoucherInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
@@ -18433,13 +18433,13 @@ export namespace Prisma {
   export type OrganizerUpdateWithoutVoucherInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -18452,13 +18452,13 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateWithoutVoucherInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
