@@ -28,7 +28,7 @@ model User {
   email        String  @unique
   password     String
 
-  resetPasswordToken       String?
+  resetPasswordToken  String?
   resetPasswordExpiry DateTime?
 
   createdAt DateTime  @default(now()) @map("created_at")
@@ -43,18 +43,18 @@ model User {
 }
 
 model Organizer {
-  id             String  @id @default(uuid())
-  orgName        String?
-  orgUsername    String  @unique
-  orgEmail       String  @unique
-  orgPassword    String
-  orgAddress     String?
-  orgPhoneNumber String?
-  logoUrl        String?
-  orgBio         String  @db.Text
-  verified       Boolean @default(false)
+  id          String  @id @default(uuid())
+  orgName     String?
+  username    String  @unique
+  email       String  @unique
+  password    String
+  address     String?
+  phoneNumber String?
+  logoUrl     String?
+  bio         String? @db.Text
+  verified    Boolean @default(false)
 
-  resetPasswordToken       String?
+  resetPasswordToken  String?
   resetPasswordExpiry DateTime?
 
   createdAt DateTime  @default(now()) @map("created_at")
@@ -122,17 +122,17 @@ enum Category {
 }
 
 model TicketCategory {
-  id       String @id @default(uuid())
-  eventId  String
-  name     String
-  price    Int
-  quota    Int
+  id      String @id @default(uuid())
+  eventId String
+  name    String
+  price   Int
+  quota   Int
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
   deletedAt DateTime? @map("deleted_at")
 
-  event Event    @relation(fields: [eventId], references: [id])
+  event  Event    @relation(fields: [eventId], references: [id])
   Ticket Ticket[]
 
   @@unique([eventId, name])
@@ -152,7 +152,7 @@ model Ticket {
 
   // Relasi
   event          Event          @relation(fields: [eventId], references: [id])
-  transaction   Transaction?   @relation(fields: [transactionId], references: [id])
+  transaction    Transaction?   @relation(fields: [transactionId], references: [id])
   ticketCategory TicketCategory @relation(fields: [ticketCategoryId], references: [id])
 
   @@map("tickets")
@@ -219,7 +219,7 @@ model Voucher {
   eventId        String   @map("event_id")
   isActive       Boolean  @default(true) @map("is_active")
 
-  organizer Organizer     @relation(fields: [organizerId], references: [id])
+  organizer   Organizer     @relation(fields: [organizerId], references: [id])
   event       Event         @relation(fields: [eventId], references: [id])
   Transaction Transaction[]
 

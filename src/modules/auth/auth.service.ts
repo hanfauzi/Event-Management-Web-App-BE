@@ -1,28 +1,27 @@
-
 import { ApiError } from "../../utils/api.error";
 import { PasswordService } from "../password/password.service";
 import prisma from "../prisma/prisma.service";
 import { RegisterDTO } from "./dto/register.dto";
 
 export class AuthService {
-
   private passwordService: PasswordService;
 
   constructor() {
-  
     this.passwordService = new PasswordService();
   }
 
   userRegister = async ({ username, email, password }: RegisterDTO) => {
-    const userEmail = await prisma.user.findFirst({ where: { email } });
+    const findUserByEmail = await prisma.user.findFirst({ where: { email } });
 
-    if (userEmail) {
+    if (findUserByEmail) {
       throw new ApiError("Email already exist!", 400);
     }
 
-    const userUName = await prisma.user.findFirst({ where: { username } });
+    const findUserByUsername = await prisma.user.findFirst({
+      where: { username },
+    });
 
-    if (userUName) {
+    if (findUserByUsername) {
       throw new ApiError("Username already used!", 400);
     }
 
@@ -34,14 +33,12 @@ export class AuthService {
         username,
         email,
         password: hashedPassword,
-        role: "USER",
         referralCode,
       },
       select: {
         id: true,
         username: true,
         email: true,
-        role: true,
         referralCode: true,
         createdAt: true,
       },
@@ -53,33 +50,34 @@ export class AuthService {
   };
 
   organizerRegister = async ({ username, email, password }: RegisterDTO) => {
-    const userEmail = await prisma.user.findFirst({ where: { email } });
+    const findOrganizerByEmail = await prisma.organizer.findFirst({
+      where: { email },
+    });
 
-    if (userEmail) {
+    if (findOrganizerByEmail) {
       throw new ApiError("Email already exist!", 400);
     }
 
-    const userUName = await prisma.user.findFirst({ where: { username } });
+    const findOrganizerByUsername = await prisma.organizer.findFirst({
+      where: { username },
+    });
 
-    if (userUName) {
+    if (findOrganizerByUsername) {
       throw new ApiError("Username already used!", 400);
     }
 
     const hashedPassword = await this.passwordService.hashPassword(password);
-    
 
-    return await prisma.user.create({
+    return await prisma.organizer.create({
       data: {
         username,
         email,
         password: hashedPassword,
-        role: "ORGANIZER",
       },
       select: {
         id: true,
         username: true,
         email: true,
-        role: true,
         createdAt: true,
       },
     });
