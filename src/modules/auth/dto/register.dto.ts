@@ -13,5 +13,3 @@ export class RegisterDTO {
   @IsString()
   password!: string;
 }
-
-

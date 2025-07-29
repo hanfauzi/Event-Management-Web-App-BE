@@ -1,7 +1,11 @@
+import { createToken } from "../../lib/jwt";
 import { ApiError } from "../../utils/api.error";
 import { PasswordService } from "../password/password.service";
+
 import prisma from "../prisma/prisma.service";
+import { LoginDTO } from "./dto/login.dto";
 import { RegisterDTO } from "./dto/register.dto";
+import bcrypt from "bcrypt";
 
 export class AuthService {
   private passwordService: PasswordService;
@@ -81,5 +85,67 @@ export class AuthService {
         createdAt: true,
       },
     });
+  };
+
+  userLogin = async ({ usernameOrEmail, password }: LoginDTO) => {
+    const isEmail = usernameOrEmail.includes("@");
+    const user = await prisma.user.findFirst({
+      where: isEmail
+        ? { email: usernameOrEmail }
+        : { username: usernameOrEmail },
+    });
+
+    if (!user) {
+      throw new ApiError("Account not registered!", 404);
+    }
+
+    const comparedPassword = await this.passwordService.comparePassword(
+      password,
+      user.password
+    );
+
+    if (!comparedPassword) {
+      throw new ApiError("Password Invalid!", 401);
+    }
+
+    const token = await createToken({
+      userId: user.id,
+      role: user.role,
+      secretKey: process.env.JWT_SECRET_KEY!,
+      options: { expiresIn: "1h" },
+    });
+
+    return { token, id: user.id, role: user.role };
+  };
+
+  organizerLogin = async ({ usernameOrEmail, password }: LoginDTO) => {
+    const isEmail = usernameOrEmail.includes("@");
+    const organizer = await prisma.organizer.findFirst({
+      where: isEmail
+        ? { email: usernameOrEmail }
+        : { username: usernameOrEmail },
+    });
+
+    if (!organizer) {
+      throw new ApiError("Account not registered!", 404);
+    }
+
+    const comparedPassword = await this.passwordService.comparePassword(
+      password,
+      organizer.password
+    );
+
+    if (!comparedPassword) {
+      throw new ApiError("Password Invalid!", 401);
+    }
+
+    const token = await createToken({
+      userId: organizer.id,
+      role: organizer.role,
+      secretKey: process.env.JWT_SECRET_KEY!,
+      options: { expiresIn: "1h" },
+    });
+
+    return { token, id: organizer.id, role: organizer.role };
   };
 }
