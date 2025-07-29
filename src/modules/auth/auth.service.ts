@@ -1,11 +1,14 @@
+import dayjs from "dayjs";
 import { createToken } from "../../lib/jwt";
+import { generateReferralCode } from "../../lib/referral.code";
+import { generateVoucherCode } from "../../lib/voucher.code";
+
 import { ApiError } from "../../utils/api.error";
 import { PasswordService } from "../password/password.service";
 
 import prisma from "../prisma/prisma.service";
 import { LoginDTO } from "./dto/login.dto";
 import { RegisterDTO } from "./dto/register.dto";
-import bcrypt from "bcrypt";
 
 export class AuthService {
   private passwordService: PasswordService;
@@ -14,7 +17,12 @@ export class AuthService {
     this.passwordService = new PasswordService();
   }
 
-  userRegister = async ({ username, email, password }: RegisterDTO) => {
+  userRegister = async ({
+    username,
+    email,
+    password,
+    referralCode,
+  }: RegisterDTO) => {
     const findUserByEmail = await prisma.user.findFirst({ where: { email } });
 
     if (findUserByEmail) {
@@ -29,28 +37,61 @@ export class AuthService {
       throw new ApiError("Username already used!", 400);
     }
 
-    const hashedPassword = await this.passwordService.hashPassword(password);
-    const referralCode = generateReferralCode(username);
+    let findReferredBy = null;
+    if (referralCode && referralCode.trim() !== "") {
+      findReferredBy = await prisma.user.findFirst({
+        where: { referralCode },
+      });
 
-    return await prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword,
-        referralCode,
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        referralCode: true,
-        createdAt: true,
-      },
-    });
-    function generateReferralCode(username: string) {
-      const suffix = Math.random().toString(36).substring(2, 6);
-      return `ref_${username}_${suffix}`;
+      if (!findReferredBy) {
+        throw new ApiError("Referral Code Invalid!", 400);
+      }
     }
+
+    const hashedPassword = await this.passwordService.hashPassword(password);
+    const referralCodeUser = generateReferralCode(username);
+
+    return await prisma.$transaction(async (tx) => {
+      // NEW USER
+      const newUser = await tx.user.create({
+        data: {
+          username,
+          email,
+          password: hashedPassword,
+          referralCode: referralCodeUser,
+          referredById: findReferredBy?.id,
+        },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          referralCode: true,
+          createdAt: true,
+          referredById: true,
+        },
+      });
+
+      // POINT USER YANG DIPAKE REFERRALNYA
+      if (findReferredBy) {
+        await tx.userPointLog.create({
+          data: { userId: findReferredBy.id, amount: 10000, type: "EARN" },
+        });
+      }
+
+      // VOUCHER UNTUK USER BARU
+      const voucher = await tx.voucher.create({
+        data: {
+          code: `${generateVoucherCode()}`,
+          quota: 1,
+          discountAmount: 10000,
+          startDate: new Date(),
+          endDate: dayjs().add(3, "month").toDate(),
+          isActive: true,
+        },
+      });
+
+      return { ...newUser, voucher: voucher.code };
+    });
   };
 
   organizerRegister = async ({ username, email, password }: RegisterDTO) => {
