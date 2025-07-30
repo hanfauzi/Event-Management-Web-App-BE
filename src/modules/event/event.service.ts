@@ -1,5 +1,4 @@
 import { ApiError } from "../../utils/api.error";
-import { getOrganizerByUserId } from "../../utils/get.organizerid";
 import { timeStringToDate } from "../../utils/time";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
@@ -21,11 +20,9 @@ export class EventService {
       maxCapacity,
     } = body;
 
-    const organizer = await getOrganizerByUserId(organizerId);
+  
 
-    if (!organizer || organizer.role !== "ORGANIZER") {
-      throw new ApiError("Unauthorized - Only ORGANIZER can create event", 401);
-    }
+   
     const startDate = new Date(startDay);
     const endDate = new Date(endDay);
     const startDateTime = timeStringToDate(startDay, startTime);
@@ -36,7 +33,7 @@ export class EventService {
     }
 
     if (endDateTime <= startDateTime) {
-      throw new Error("End time must be after start time");
+      throw new ApiError("End time must be after start time", 400);
     }
 
     return prisma.event.create({

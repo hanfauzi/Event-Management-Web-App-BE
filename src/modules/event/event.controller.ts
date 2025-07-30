@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { EventService } from "./event.service";
-import { getOrganizerByUserId } from "../../utils/get.organizerid";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { CreateEventDTO } from "./dto/create-event.dto";
