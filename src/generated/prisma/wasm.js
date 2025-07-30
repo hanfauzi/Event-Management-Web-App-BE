@@ -211,7 +211,6 @@ exports.Prisma.TransactionScalarFieldEnum = {
   status: 'status',
   paymentProofUrl: 'paymentProofUrl',
   expiresAt: 'expiresAt',
-  couponId: 'couponId',
   voucherId: 'voucherId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -228,14 +227,14 @@ exports.Prisma.ReviewScalarFieldEnum = {
 
 exports.Prisma.VoucherScalarFieldEnum = {
   id: 'id',
-  organizerId: 'organizerId',
   code: 'code',
   quota: 'quota',
   discountAmount: 'discountAmount',
   startDate: 'startDate',
   endDate: 'endDate',
-  eventId: 'eventId',
-  isActive: 'isActive'
+  isActive: 'isActive',
+  organizerId: 'organizerId',
+  eventId: 'eventId'
 };
 
 exports.Prisma.UserPointLogScalarFieldEnum = {
