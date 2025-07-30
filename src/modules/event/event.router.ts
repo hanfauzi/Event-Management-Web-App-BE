@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { EventController } from "./event.controller";
-import { isOrganizer } from "../../middlewares/organizer.middleware";
 
 export class EventRouter {
   private router: Router;
@@ -14,8 +13,7 @@ export class EventRouter {
   private initializedRoutes = () => {
     this.router.post(
       "/create-event",
-      isOrganizer,
-      this.eventController.createEvent
+      this.eventController.createEvent as any
     );
     this.router.get(
       "/upcoming-events",

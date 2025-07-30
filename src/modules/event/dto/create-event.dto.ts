@@ -1,13 +1,12 @@
 import {
+  IsDateString,
   IsEnum,
   IsInt,
   IsNotEmpty,
   IsString,
   IsUrl,
-  Max,
-  Min,
+  Min
 } from 'class-validator';
-import { Type } from 'class-transformer';
 
 export enum Category {
   CULINARY = 'CULINARY',
@@ -38,11 +37,18 @@ export class CreateEventDTO {
   @IsString()
   title!: string;
 
-  @Type(() => Date)
-  startTime!: Date;
+ @IsDateString()
+  startDay!: string; // Format: YYYY-MM-DD
 
-  @Type(() => Date)
-  endTime!: Date;
+  @IsDateString()
+  endDay!: string;
+
+  @IsString()
+  startTime!: string; // Format: HH:mm
+
+  @IsString()
+  endTime!: string;
+
 
   @IsEnum(Category)
   category!: Category;

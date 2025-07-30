@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import { EventService } from "./event.service";
+import { getOrganizerByUserId } from "../../utils/get.organizerid";
+import { plainToInstance } from "class-transformer";
+import { validate } from "class-validator";
+import { CreateEventDTO } from "./dto/create-event.dto";
 
 export class EventController {
   private eventService: EventService;
@@ -9,13 +13,20 @@ export class EventController {
   }
 
   createEvent = async (req: Request, res: Response) => {
-    const dto = req.body;
-    const user = (req as any).user;
-    const organizerId = user.id; // masih contoh, dan akan diperbaiki agar lebih dinamis
-  
+    const data = plainToInstance(CreateEventDTO, req.body);
+    const errors = await validate(data);
+    if (errors.length > 0) {
+      return res.status(400).json({ errors });
+    }
 
-    console.log(organizerId);
-    const result = await this.eventService.createEvent(dto, organizerId);
+    const user = (req as any).user;
+    if (user.role !== "ORGANIZER") {
+      return res
+        .status(403)
+        .json({ message: "Only organizers can create events" });
+    }
+    const organizerId = user.id;
+    const result = await this.eventService.createEvent(data, organizerId);
     res
       .status(201)
       .json({ message: "Event created successfully", data: result });
@@ -27,5 +38,5 @@ export class EventController {
     res.status(200).json({ data: result });
   };
 
-  // 
+  //
 }

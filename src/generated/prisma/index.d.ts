@@ -63,7 +63,15 @@ export type UserPointLog = $Result.DefaultSelection<Prisma.$UserPointLogPayload>
  * Enums
  */
 export namespace $Enums {
-  export const EventStatus: {
+  export const Role: {
+  USER: 'USER',
+  ORGANIZER: 'ORGANIZER'
+};
+
+export type Role = (typeof Role)[keyof typeof Role]
+
+
+export const EventStatus: {
   UPCOMING: 'UPCOMING',
   ONGOING: 'ONGOING',
   DONE: 'DONE'
@@ -113,6 +121,10 @@ export const PointLogType: {
 export type PointLogType = (typeof PointLogType)[keyof typeof PointLogType]
 
 }
+
+export type Role = $Enums.Role
+
+export const Role: typeof $Enums.Role
 
 export type EventStatus = $Enums.EventStatus
 
@@ -1937,6 +1949,7 @@ export namespace Prisma {
     username: string | null
     email: string | null
     password: string | null
+    role: $Enums.Role | null
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
     createdAt: Date | null
@@ -1955,6 +1968,7 @@ export namespace Prisma {
     username: string | null
     email: string | null
     password: string | null
+    role: $Enums.Role | null
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
     createdAt: Date | null
@@ -1973,6 +1987,7 @@ export namespace Prisma {
     username: number
     email: number
     password: number
+    role: number
     resetPasswordToken: number
     resetPasswordExpiry: number
     createdAt: number
@@ -1993,6 +2008,7 @@ export namespace Prisma {
     username?: true
     email?: true
     password?: true
+    role?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
     createdAt?: true
@@ -2011,6 +2027,7 @@ export namespace Prisma {
     username?: true
     email?: true
     password?: true
+    role?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
     createdAt?: true
@@ -2029,6 +2046,7 @@ export namespace Prisma {
     username?: true
     email?: true
     password?: true
+    role?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
     createdAt?: true
@@ -2120,6 +2138,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role: $Enums.Role
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
     createdAt: Date
@@ -2155,6 +2174,7 @@ export namespace Prisma {
     username?: boolean
     email?: boolean
     password?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -2177,6 +2197,7 @@ export namespace Prisma {
     username?: boolean
     email?: boolean
     password?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -2195,6 +2216,7 @@ export namespace Prisma {
     username?: boolean
     email?: boolean
     password?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -2213,6 +2235,7 @@ export namespace Prisma {
     username?: boolean
     email?: boolean
     password?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -2220,7 +2243,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "phoneNumber" | "imageUrl" | "referralCode" | "referredById" | "username" | "email" | "password" | "resetPasswordToken" | "resetPasswordExpiry" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstName" | "lastName" | "phoneNumber" | "imageUrl" | "referralCode" | "referredById" | "username" | "email" | "password" | "role" | "resetPasswordToken" | "resetPasswordExpiry" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     transactions?: boolean | User$transactionsArgs<ExtArgs>
     reviews?: boolean | User$reviewsArgs<ExtArgs>
@@ -2248,6 +2271,7 @@ export namespace Prisma {
       username: string
       email: string
       password: string
+      role: $Enums.Role
       resetPasswordToken: string | null
       resetPasswordExpiry: Date | null
       createdAt: Date
@@ -2689,6 +2713,7 @@ export namespace Prisma {
     readonly username: FieldRef<"User", 'String'>
     readonly email: FieldRef<"User", 'String'>
     readonly password: FieldRef<"User", 'String'>
+    readonly role: FieldRef<"User", 'Role'>
     readonly resetPasswordToken: FieldRef<"User", 'String'>
     readonly resetPasswordExpiry: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
@@ -3185,14 +3210,15 @@ export namespace Prisma {
   export type OrganizerMinAggregateOutputType = {
     id: string | null
     orgName: string | null
-    orgUsername: string | null
-    orgEmail: string | null
-    orgPassword: string | null
-    orgAddress: string | null
-    orgPhoneNumber: string | null
+    username: string | null
+    email: string | null
+    password: string | null
+    address: string | null
+    phoneNumber: string | null
     logoUrl: string | null
-    orgBio: string | null
+    bio: string | null
     verified: boolean | null
+    role: $Enums.Role | null
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
     createdAt: Date | null
@@ -3203,14 +3229,15 @@ export namespace Prisma {
   export type OrganizerMaxAggregateOutputType = {
     id: string | null
     orgName: string | null
-    orgUsername: string | null
-    orgEmail: string | null
-    orgPassword: string | null
-    orgAddress: string | null
-    orgPhoneNumber: string | null
+    username: string | null
+    email: string | null
+    password: string | null
+    address: string | null
+    phoneNumber: string | null
     logoUrl: string | null
-    orgBio: string | null
+    bio: string | null
     verified: boolean | null
+    role: $Enums.Role | null
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
     createdAt: Date | null
@@ -3221,14 +3248,15 @@ export namespace Prisma {
   export type OrganizerCountAggregateOutputType = {
     id: number
     orgName: number
-    orgUsername: number
-    orgEmail: number
-    orgPassword: number
-    orgAddress: number
-    orgPhoneNumber: number
+    username: number
+    email: number
+    password: number
+    address: number
+    phoneNumber: number
     logoUrl: number
-    orgBio: number
+    bio: number
     verified: number
+    role: number
     resetPasswordToken: number
     resetPasswordExpiry: number
     createdAt: number
@@ -3241,14 +3269,15 @@ export namespace Prisma {
   export type OrganizerMinAggregateInputType = {
     id?: true
     orgName?: true
-    orgUsername?: true
-    orgEmail?: true
-    orgPassword?: true
-    orgAddress?: true
-    orgPhoneNumber?: true
+    username?: true
+    email?: true
+    password?: true
+    address?: true
+    phoneNumber?: true
     logoUrl?: true
-    orgBio?: true
+    bio?: true
     verified?: true
+    role?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
     createdAt?: true
@@ -3259,14 +3288,15 @@ export namespace Prisma {
   export type OrganizerMaxAggregateInputType = {
     id?: true
     orgName?: true
-    orgUsername?: true
-    orgEmail?: true
-    orgPassword?: true
-    orgAddress?: true
-    orgPhoneNumber?: true
+    username?: true
+    email?: true
+    password?: true
+    address?: true
+    phoneNumber?: true
     logoUrl?: true
-    orgBio?: true
+    bio?: true
     verified?: true
+    role?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
     createdAt?: true
@@ -3277,14 +3307,15 @@ export namespace Prisma {
   export type OrganizerCountAggregateInputType = {
     id?: true
     orgName?: true
-    orgUsername?: true
-    orgEmail?: true
-    orgPassword?: true
-    orgAddress?: true
-    orgPhoneNumber?: true
+    username?: true
+    email?: true
+    password?: true
+    address?: true
+    phoneNumber?: true
     logoUrl?: true
-    orgBio?: true
+    bio?: true
     verified?: true
+    role?: true
     resetPasswordToken?: true
     resetPasswordExpiry?: true
     createdAt?: true
@@ -3368,14 +3399,15 @@ export namespace Prisma {
   export type OrganizerGroupByOutputType = {
     id: string
     orgName: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress: string | null
-    orgPhoneNumber: string | null
+    username: string
+    email: string
+    password: string
+    address: string | null
+    phoneNumber: string | null
     logoUrl: string | null
-    orgBio: string
+    bio: string | null
     verified: boolean
+    role: $Enums.Role
     resetPasswordToken: string | null
     resetPasswordExpiry: Date | null
     createdAt: Date
@@ -3403,14 +3435,15 @@ export namespace Prisma {
   export type OrganizerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -3424,14 +3457,15 @@ export namespace Prisma {
   export type OrganizerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -3442,14 +3476,15 @@ export namespace Prisma {
   export type OrganizerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -3460,14 +3495,15 @@ export namespace Prisma {
   export type OrganizerSelectScalar = {
     id?: boolean
     orgName?: boolean
-    orgUsername?: boolean
-    orgEmail?: boolean
-    orgPassword?: boolean
-    orgAddress?: boolean
-    orgPhoneNumber?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    address?: boolean
+    phoneNumber?: boolean
     logoUrl?: boolean
-    orgBio?: boolean
+    bio?: boolean
     verified?: boolean
+    role?: boolean
     resetPasswordToken?: boolean
     resetPasswordExpiry?: boolean
     createdAt?: boolean
@@ -3475,7 +3511,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type OrganizerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "orgUsername" | "orgEmail" | "orgPassword" | "orgAddress" | "orgPhoneNumber" | "logoUrl" | "orgBio" | "verified" | "resetPasswordToken" | "resetPasswordExpiry" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["organizer"]>
+  export type OrganizerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "orgName" | "username" | "email" | "password" | "address" | "phoneNumber" | "logoUrl" | "bio" | "verified" | "role" | "resetPasswordToken" | "resetPasswordExpiry" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["organizer"]>
   export type OrganizerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Event?: boolean | Organizer$EventArgs<ExtArgs>
     Voucher?: boolean | Organizer$VoucherArgs<ExtArgs>
@@ -3493,14 +3529,15 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       orgName: string | null
-      orgUsername: string
-      orgEmail: string
-      orgPassword: string
-      orgAddress: string | null
-      orgPhoneNumber: string | null
+      username: string
+      email: string
+      password: string
+      address: string | null
+      phoneNumber: string | null
       logoUrl: string | null
-      orgBio: string
+      bio: string | null
       verified: boolean
+      role: $Enums.Role
       resetPasswordToken: string | null
       resetPasswordExpiry: Date | null
       createdAt: Date
@@ -3933,14 +3970,15 @@ export namespace Prisma {
   interface OrganizerFieldRefs {
     readonly id: FieldRef<"Organizer", 'String'>
     readonly orgName: FieldRef<"Organizer", 'String'>
-    readonly orgUsername: FieldRef<"Organizer", 'String'>
-    readonly orgEmail: FieldRef<"Organizer", 'String'>
-    readonly orgPassword: FieldRef<"Organizer", 'String'>
-    readonly orgAddress: FieldRef<"Organizer", 'String'>
-    readonly orgPhoneNumber: FieldRef<"Organizer", 'String'>
+    readonly username: FieldRef<"Organizer", 'String'>
+    readonly email: FieldRef<"Organizer", 'String'>
+    readonly password: FieldRef<"Organizer", 'String'>
+    readonly address: FieldRef<"Organizer", 'String'>
+    readonly phoneNumber: FieldRef<"Organizer", 'String'>
     readonly logoUrl: FieldRef<"Organizer", 'String'>
-    readonly orgBio: FieldRef<"Organizer", 'String'>
+    readonly bio: FieldRef<"Organizer", 'String'>
     readonly verified: FieldRef<"Organizer", 'Boolean'>
+    readonly role: FieldRef<"Organizer", 'Role'>
     readonly resetPasswordToken: FieldRef<"Organizer", 'String'>
     readonly resetPasswordExpiry: FieldRef<"Organizer", 'DateTime'>
     readonly createdAt: FieldRef<"Organizer", 'DateTime'>
@@ -8128,7 +8166,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus | null
     paymentProofUrl: string | null
     expiresAt: Date | null
-    couponId: string | null
     voucherId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8145,7 +8182,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus | null
     paymentProofUrl: string | null
     expiresAt: Date | null
-    couponId: string | null
     voucherId: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -8162,7 +8198,6 @@ export namespace Prisma {
     status: number
     paymentProofUrl: number
     expiresAt: number
-    couponId: number
     voucherId: number
     createdAt: number
     updatedAt: number
@@ -8195,7 +8230,6 @@ export namespace Prisma {
     status?: true
     paymentProofUrl?: true
     expiresAt?: true
-    couponId?: true
     voucherId?: true
     createdAt?: true
     updatedAt?: true
@@ -8212,7 +8246,6 @@ export namespace Prisma {
     status?: true
     paymentProofUrl?: true
     expiresAt?: true
-    couponId?: true
     voucherId?: true
     createdAt?: true
     updatedAt?: true
@@ -8229,7 +8262,6 @@ export namespace Prisma {
     status?: true
     paymentProofUrl?: true
     expiresAt?: true
-    couponId?: true
     voucherId?: true
     createdAt?: true
     updatedAt?: true
@@ -8333,7 +8365,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl: string | null
     expiresAt: Date
-    couponId: string | null
     voucherId: string | null
     createdAt: Date
     updatedAt: Date
@@ -8369,7 +8400,6 @@ export namespace Prisma {
     status?: boolean
     paymentProofUrl?: boolean
     expiresAt?: boolean
-    couponId?: boolean
     voucherId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8391,7 +8421,6 @@ export namespace Prisma {
     status?: boolean
     paymentProofUrl?: boolean
     expiresAt?: boolean
-    couponId?: boolean
     voucherId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8411,7 +8440,6 @@ export namespace Prisma {
     status?: boolean
     paymentProofUrl?: boolean
     expiresAt?: boolean
-    couponId?: boolean
     voucherId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
@@ -8431,13 +8459,12 @@ export namespace Prisma {
     status?: boolean
     paymentProofUrl?: boolean
     expiresAt?: boolean
-    couponId?: boolean
     voucherId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "quantity" | "totalPrice" | "usedPoints" | "finalPrice" | "status" | "paymentProofUrl" | "expiresAt" | "couponId" | "voucherId" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
+  export type TransactionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "eventId" | "quantity" | "totalPrice" | "usedPoints" | "finalPrice" | "status" | "paymentProofUrl" | "expiresAt" | "voucherId" | "createdAt" | "updatedAt", ExtArgs["result"]["transaction"]>
   export type TransactionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     event?: boolean | EventDefaultArgs<ExtArgs>
@@ -8475,7 +8502,6 @@ export namespace Prisma {
       status: $Enums.TransactionStatus
       paymentProofUrl: string | null
       expiresAt: Date
-      couponId: string | null
       voucherId: string | null
       createdAt: Date
       updatedAt: Date
@@ -8916,7 +8942,6 @@ export namespace Prisma {
     readonly status: FieldRef<"Transaction", 'TransactionStatus'>
     readonly paymentProofUrl: FieldRef<"Transaction", 'String'>
     readonly expiresAt: FieldRef<"Transaction", 'DateTime'>
-    readonly couponId: FieldRef<"Transaction", 'String'>
     readonly voucherId: FieldRef<"Transaction", 'String'>
     readonly createdAt: FieldRef<"Transaction", 'DateTime'>
     readonly updatedAt: FieldRef<"Transaction", 'DateTime'>
@@ -10514,38 +10539,38 @@ export namespace Prisma {
 
   export type VoucherMinAggregateOutputType = {
     id: string | null
-    organizerId: string | null
     code: string | null
     quota: number | null
     discountAmount: number | null
     startDate: Date | null
     endDate: Date | null
-    eventId: string | null
     isActive: boolean | null
+    organizerId: string | null
+    eventId: string | null
   }
 
   export type VoucherMaxAggregateOutputType = {
     id: string | null
-    organizerId: string | null
     code: string | null
     quota: number | null
     discountAmount: number | null
     startDate: Date | null
     endDate: Date | null
-    eventId: string | null
     isActive: boolean | null
+    organizerId: string | null
+    eventId: string | null
   }
 
   export type VoucherCountAggregateOutputType = {
     id: number
-    organizerId: number
     code: number
     quota: number
     discountAmount: number
     startDate: number
     endDate: number
-    eventId: number
     isActive: number
+    organizerId: number
+    eventId: number
     _all: number
   }
 
@@ -10562,38 +10587,38 @@ export namespace Prisma {
 
   export type VoucherMinAggregateInputType = {
     id?: true
-    organizerId?: true
     code?: true
     quota?: true
     discountAmount?: true
     startDate?: true
     endDate?: true
-    eventId?: true
     isActive?: true
+    organizerId?: true
+    eventId?: true
   }
 
   export type VoucherMaxAggregateInputType = {
     id?: true
-    organizerId?: true
     code?: true
     quota?: true
     discountAmount?: true
     startDate?: true
     endDate?: true
-    eventId?: true
     isActive?: true
+    organizerId?: true
+    eventId?: true
   }
 
   export type VoucherCountAggregateInputType = {
     id?: true
-    organizerId?: true
     code?: true
     quota?: true
     discountAmount?: true
     startDate?: true
     endDate?: true
-    eventId?: true
     isActive?: true
+    organizerId?: true
+    eventId?: true
     _all?: true
   }
 
@@ -10685,14 +10710,14 @@ export namespace Prisma {
 
   export type VoucherGroupByOutputType = {
     id: string
-    organizerId: string
     code: string
     quota: number
     discountAmount: number
     startDate: Date
     endDate: Date
-    eventId: string
     isActive: boolean
+    organizerId: string | null
+    eventId: string | null
     _count: VoucherCountAggregateOutputType | null
     _avg: VoucherAvgAggregateOutputType | null
     _sum: VoucherSumAggregateOutputType | null
@@ -10716,93 +10741,93 @@ export namespace Prisma {
 
   export type VoucherSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    organizerId?: boolean
     code?: boolean
     quota?: boolean
     discountAmount?: boolean
     startDate?: boolean
     endDate?: boolean
-    eventId?: boolean
     isActive?: boolean
-    organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
+    organizerId?: boolean
+    eventId?: boolean
+    organizer?: boolean | Voucher$organizerArgs<ExtArgs>
+    event?: boolean | Voucher$eventArgs<ExtArgs>
     Transaction?: boolean | Voucher$TransactionArgs<ExtArgs>
     _count?: boolean | VoucherCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["voucher"]>
 
   export type VoucherSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    organizerId?: boolean
     code?: boolean
     quota?: boolean
     discountAmount?: boolean
     startDate?: boolean
     endDate?: boolean
-    eventId?: boolean
     isActive?: boolean
-    organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
+    organizerId?: boolean
+    eventId?: boolean
+    organizer?: boolean | Voucher$organizerArgs<ExtArgs>
+    event?: boolean | Voucher$eventArgs<ExtArgs>
   }, ExtArgs["result"]["voucher"]>
 
   export type VoucherSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    organizerId?: boolean
     code?: boolean
     quota?: boolean
     discountAmount?: boolean
     startDate?: boolean
     endDate?: boolean
-    eventId?: boolean
     isActive?: boolean
-    organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
+    organizerId?: boolean
+    eventId?: boolean
+    organizer?: boolean | Voucher$organizerArgs<ExtArgs>
+    event?: boolean | Voucher$eventArgs<ExtArgs>
   }, ExtArgs["result"]["voucher"]>
 
   export type VoucherSelectScalar = {
     id?: boolean
-    organizerId?: boolean
     code?: boolean
     quota?: boolean
     discountAmount?: boolean
     startDate?: boolean
     endDate?: boolean
-    eventId?: boolean
     isActive?: boolean
+    organizerId?: boolean
+    eventId?: boolean
   }
 
-  export type VoucherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizerId" | "code" | "quota" | "discountAmount" | "startDate" | "endDate" | "eventId" | "isActive", ExtArgs["result"]["voucher"]>
+  export type VoucherOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "code" | "quota" | "discountAmount" | "startDate" | "endDate" | "isActive" | "organizerId" | "eventId", ExtArgs["result"]["voucher"]>
   export type VoucherInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
+    organizer?: boolean | Voucher$organizerArgs<ExtArgs>
+    event?: boolean | Voucher$eventArgs<ExtArgs>
     Transaction?: boolean | Voucher$TransactionArgs<ExtArgs>
     _count?: boolean | VoucherCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type VoucherIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
+    organizer?: boolean | Voucher$organizerArgs<ExtArgs>
+    event?: boolean | Voucher$eventArgs<ExtArgs>
   }
   export type VoucherIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
-    event?: boolean | EventDefaultArgs<ExtArgs>
+    organizer?: boolean | Voucher$organizerArgs<ExtArgs>
+    event?: boolean | Voucher$eventArgs<ExtArgs>
   }
 
   export type $VoucherPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Voucher"
     objects: {
-      organizer: Prisma.$OrganizerPayload<ExtArgs>
-      event: Prisma.$EventPayload<ExtArgs>
+      organizer: Prisma.$OrganizerPayload<ExtArgs> | null
+      event: Prisma.$EventPayload<ExtArgs> | null
       Transaction: Prisma.$TransactionPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      organizerId: string
       code: string
       quota: number
       discountAmount: number
       startDate: Date
       endDate: Date
-      eventId: string
       isActive: boolean
+      organizerId: string | null
+      eventId: string | null
     }, ExtArgs["result"]["voucher"]>
     composites: {}
   }
@@ -11197,8 +11222,8 @@ export namespace Prisma {
    */
   export interface Prisma__VoucherClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    organizer<T extends OrganizerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, OrganizerDefaultArgs<ExtArgs>>): Prisma__OrganizerClient<$Result.GetResult<Prisma.$OrganizerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    event<T extends EventDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EventDefaultArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    organizer<T extends Voucher$organizerArgs<ExtArgs> = {}>(args?: Subset<T, Voucher$organizerArgs<ExtArgs>>): Prisma__OrganizerClient<$Result.GetResult<Prisma.$OrganizerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    event<T extends Voucher$eventArgs<ExtArgs> = {}>(args?: Subset<T, Voucher$eventArgs<ExtArgs>>): Prisma__EventClient<$Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     Transaction<T extends Voucher$TransactionArgs<ExtArgs> = {}>(args?: Subset<T, Voucher$TransactionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -11230,14 +11255,14 @@ export namespace Prisma {
    */
   interface VoucherFieldRefs {
     readonly id: FieldRef<"Voucher", 'String'>
-    readonly organizerId: FieldRef<"Voucher", 'String'>
     readonly code: FieldRef<"Voucher", 'String'>
     readonly quota: FieldRef<"Voucher", 'Int'>
     readonly discountAmount: FieldRef<"Voucher", 'Int'>
     readonly startDate: FieldRef<"Voucher", 'DateTime'>
     readonly endDate: FieldRef<"Voucher", 'DateTime'>
-    readonly eventId: FieldRef<"Voucher", 'String'>
     readonly isActive: FieldRef<"Voucher", 'Boolean'>
+    readonly organizerId: FieldRef<"Voucher", 'String'>
+    readonly eventId: FieldRef<"Voucher", 'String'>
   }
     
 
@@ -11631,6 +11656,44 @@ export namespace Prisma {
      * Limit how many Vouchers to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Voucher.organizer
+   */
+  export type Voucher$organizerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Organizer
+     */
+    select?: OrganizerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Organizer
+     */
+    omit?: OrganizerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OrganizerInclude<ExtArgs> | null
+    where?: OrganizerWhereInput
+  }
+
+  /**
+   * Voucher.event
+   */
+  export type Voucher$eventArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Event
+     */
+    select?: EventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Event
+     */
+    omit?: EventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EventInclude<ExtArgs> | null
+    where?: EventWhereInput
   }
 
   /**
@@ -12806,6 +12869,7 @@ export namespace Prisma {
     username: 'username',
     email: 'email',
     password: 'password',
+    role: 'role',
     resetPasswordToken: 'resetPasswordToken',
     resetPasswordExpiry: 'resetPasswordExpiry',
     createdAt: 'createdAt',
@@ -12819,14 +12883,15 @@ export namespace Prisma {
   export const OrganizerScalarFieldEnum: {
     id: 'id',
     orgName: 'orgName',
-    orgUsername: 'orgUsername',
-    orgEmail: 'orgEmail',
-    orgPassword: 'orgPassword',
-    orgAddress: 'orgAddress',
-    orgPhoneNumber: 'orgPhoneNumber',
+    username: 'username',
+    email: 'email',
+    password: 'password',
+    address: 'address',
+    phoneNumber: 'phoneNumber',
     logoUrl: 'logoUrl',
-    orgBio: 'orgBio',
+    bio: 'bio',
     verified: 'verified',
+    role: 'role',
     resetPasswordToken: 'resetPasswordToken',
     resetPasswordExpiry: 'resetPasswordExpiry',
     createdAt: 'createdAt',
@@ -12899,7 +12964,6 @@ export namespace Prisma {
     status: 'status',
     paymentProofUrl: 'paymentProofUrl',
     expiresAt: 'expiresAt',
-    couponId: 'couponId',
     voucherId: 'voucherId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -12922,14 +12986,14 @@ export namespace Prisma {
 
   export const VoucherScalarFieldEnum: {
     id: 'id',
-    organizerId: 'organizerId',
     code: 'code',
     quota: 'quota',
     discountAmount: 'discountAmount',
     startDate: 'startDate',
     endDate: 'endDate',
-    eventId: 'eventId',
-    isActive: 'isActive'
+    isActive: 'isActive',
+    organizerId: 'organizerId',
+    eventId: 'eventId'
   };
 
   export type VoucherScalarFieldEnum = (typeof VoucherScalarFieldEnum)[keyof typeof VoucherScalarFieldEnum]
@@ -12987,6 +13051,20 @@ export namespace Prisma {
    * Reference to a field of type 'String[]'
    */
   export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role'
+   */
+  export type EnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role'>
+    
+
+
+  /**
+   * Reference to a field of type 'Role[]'
+   */
+  export type ListEnumRoleFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Role[]'>
     
 
 
@@ -13112,6 +13190,7 @@ export namespace Prisma {
     username?: StringFilter<"User"> | string
     email?: StringFilter<"User"> | string
     password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     resetPasswordToken?: StringNullableFilter<"User"> | string | null
     resetPasswordExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -13133,6 +13212,7 @@ export namespace Prisma {
     username?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13157,6 +13237,7 @@ export namespace Prisma {
     referralCode?: StringNullableFilter<"User"> | string | null
     referredById?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
+    role?: EnumRoleFilter<"User"> | $Enums.Role
     resetPasswordToken?: StringNullableFilter<"User"> | string | null
     resetPasswordExpiry?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
@@ -13178,6 +13259,7 @@ export namespace Prisma {
     username?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13202,6 +13284,7 @@ export namespace Prisma {
     username?: StringWithAggregatesFilter<"User"> | string
     email?: StringWithAggregatesFilter<"User"> | string
     password?: StringWithAggregatesFilter<"User"> | string
+    role?: EnumRoleWithAggregatesFilter<"User"> | $Enums.Role
     resetPasswordToken?: StringNullableWithAggregatesFilter<"User"> | string | null
     resetPasswordExpiry?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
@@ -13215,14 +13298,15 @@ export namespace Prisma {
     NOT?: OrganizerWhereInput | OrganizerWhereInput[]
     id?: StringFilter<"Organizer"> | string
     orgName?: StringNullableFilter<"Organizer"> | string | null
-    orgUsername?: StringFilter<"Organizer"> | string
-    orgEmail?: StringFilter<"Organizer"> | string
-    orgPassword?: StringFilter<"Organizer"> | string
-    orgAddress?: StringNullableFilter<"Organizer"> | string | null
-    orgPhoneNumber?: StringNullableFilter<"Organizer"> | string | null
+    username?: StringFilter<"Organizer"> | string
+    email?: StringFilter<"Organizer"> | string
+    password?: StringFilter<"Organizer"> | string
+    address?: StringNullableFilter<"Organizer"> | string | null
+    phoneNumber?: StringNullableFilter<"Organizer"> | string | null
     logoUrl?: StringNullableFilter<"Organizer"> | string | null
-    orgBio?: StringFilter<"Organizer"> | string
+    bio?: StringNullableFilter<"Organizer"> | string | null
     verified?: BoolFilter<"Organizer"> | boolean
+    role?: EnumRoleFilter<"Organizer"> | $Enums.Role
     resetPasswordToken?: StringNullableFilter<"Organizer"> | string | null
     resetPasswordExpiry?: DateTimeNullableFilter<"Organizer"> | Date | string | null
     createdAt?: DateTimeFilter<"Organizer"> | Date | string
@@ -13235,14 +13319,15 @@ export namespace Prisma {
   export type OrganizerOrderByWithRelationInput = {
     id?: SortOrder
     orgName?: SortOrderInput | SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrderInput | SortOrder
-    orgPhoneNumber?: SortOrderInput | SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrderInput | SortOrder
     verified?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13254,18 +13339,19 @@ export namespace Prisma {
 
   export type OrganizerWhereUniqueInput = Prisma.AtLeast<{
     id?: string
-    orgUsername?: string
-    orgEmail?: string
+    username?: string
+    email?: string
     AND?: OrganizerWhereInput | OrganizerWhereInput[]
     OR?: OrganizerWhereInput[]
     NOT?: OrganizerWhereInput | OrganizerWhereInput[]
     orgName?: StringNullableFilter<"Organizer"> | string | null
-    orgPassword?: StringFilter<"Organizer"> | string
-    orgAddress?: StringNullableFilter<"Organizer"> | string | null
-    orgPhoneNumber?: StringNullableFilter<"Organizer"> | string | null
+    password?: StringFilter<"Organizer"> | string
+    address?: StringNullableFilter<"Organizer"> | string | null
+    phoneNumber?: StringNullableFilter<"Organizer"> | string | null
     logoUrl?: StringNullableFilter<"Organizer"> | string | null
-    orgBio?: StringFilter<"Organizer"> | string
+    bio?: StringNullableFilter<"Organizer"> | string | null
     verified?: BoolFilter<"Organizer"> | boolean
+    role?: EnumRoleFilter<"Organizer"> | $Enums.Role
     resetPasswordToken?: StringNullableFilter<"Organizer"> | string | null
     resetPasswordExpiry?: DateTimeNullableFilter<"Organizer"> | Date | string | null
     createdAt?: DateTimeFilter<"Organizer"> | Date | string
@@ -13273,19 +13359,20 @@ export namespace Prisma {
     deletedAt?: DateTimeNullableFilter<"Organizer"> | Date | string | null
     Event?: EventListRelationFilter
     Voucher?: VoucherListRelationFilter
-  }, "id" | "orgUsername" | "orgEmail">
+  }, "id" | "username" | "email">
 
   export type OrganizerOrderByWithAggregationInput = {
     id?: SortOrder
     orgName?: SortOrderInput | SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrderInput | SortOrder
-    orgPhoneNumber?: SortOrderInput | SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrderInput | SortOrder
+    phoneNumber?: SortOrderInput | SortOrder
     logoUrl?: SortOrderInput | SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrderInput | SortOrder
     verified?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrderInput | SortOrder
     resetPasswordExpiry?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -13302,14 +13389,15 @@ export namespace Prisma {
     NOT?: OrganizerScalarWhereWithAggregatesInput | OrganizerScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Organizer"> | string
     orgName?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
-    orgUsername?: StringWithAggregatesFilter<"Organizer"> | string
-    orgEmail?: StringWithAggregatesFilter<"Organizer"> | string
-    orgPassword?: StringWithAggregatesFilter<"Organizer"> | string
-    orgAddress?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
-    orgPhoneNumber?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
+    username?: StringWithAggregatesFilter<"Organizer"> | string
+    email?: StringWithAggregatesFilter<"Organizer"> | string
+    password?: StringWithAggregatesFilter<"Organizer"> | string
+    address?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
+    phoneNumber?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
     logoUrl?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
-    orgBio?: StringWithAggregatesFilter<"Organizer"> | string
+    bio?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
     verified?: BoolWithAggregatesFilter<"Organizer"> | boolean
+    role?: EnumRoleWithAggregatesFilter<"Organizer"> | $Enums.Role
     resetPasswordToken?: StringNullableWithAggregatesFilter<"Organizer"> | string | null
     resetPasswordExpiry?: DateTimeNullableWithAggregatesFilter<"Organizer"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Organizer"> | Date | string
@@ -13615,7 +13703,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     paymentProofUrl?: StringNullableFilter<"Transaction"> | string | null
     expiresAt?: DateTimeFilter<"Transaction"> | Date | string
-    couponId?: StringNullableFilter<"Transaction"> | string | null
     voucherId?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -13636,7 +13723,6 @@ export namespace Prisma {
     status?: SortOrder
     paymentProofUrl?: SortOrderInput | SortOrder
     expiresAt?: SortOrder
-    couponId?: SortOrderInput | SortOrder
     voucherId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13660,7 +13746,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     paymentProofUrl?: StringNullableFilter<"Transaction"> | string | null
     expiresAt?: DateTimeFilter<"Transaction"> | Date | string
-    couponId?: StringNullableFilter<"Transaction"> | string | null
     voucherId?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -13681,7 +13766,6 @@ export namespace Prisma {
     status?: SortOrder
     paymentProofUrl?: SortOrderInput | SortOrder
     expiresAt?: SortOrder
-    couponId?: SortOrderInput | SortOrder
     voucherId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -13706,7 +13790,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
     paymentProofUrl?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     expiresAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
-    couponId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     voucherId?: StringNullableWithAggregatesFilter<"Transaction"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Transaction"> | Date | string
@@ -13782,29 +13865,29 @@ export namespace Prisma {
     OR?: VoucherWhereInput[]
     NOT?: VoucherWhereInput | VoucherWhereInput[]
     id?: StringFilter<"Voucher"> | string
-    organizerId?: StringFilter<"Voucher"> | string
     code?: StringFilter<"Voucher"> | string
     quota?: IntFilter<"Voucher"> | number
     discountAmount?: IntFilter<"Voucher"> | number
     startDate?: DateTimeFilter<"Voucher"> | Date | string
     endDate?: DateTimeFilter<"Voucher"> | Date | string
-    eventId?: StringFilter<"Voucher"> | string
     isActive?: BoolFilter<"Voucher"> | boolean
-    organizer?: XOR<OrganizerScalarRelationFilter, OrganizerWhereInput>
-    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    organizerId?: StringNullableFilter<"Voucher"> | string | null
+    eventId?: StringNullableFilter<"Voucher"> | string | null
+    organizer?: XOR<OrganizerNullableScalarRelationFilter, OrganizerWhereInput> | null
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
     Transaction?: TransactionListRelationFilter
   }
 
   export type VoucherOrderByWithRelationInput = {
     id?: SortOrder
-    organizerId?: SortOrder
     code?: SortOrder
     quota?: SortOrder
     discountAmount?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    eventId?: SortOrder
     isActive?: SortOrder
+    organizerId?: SortOrderInput | SortOrder
+    eventId?: SortOrderInput | SortOrder
     organizer?: OrganizerOrderByWithRelationInput
     event?: EventOrderByWithRelationInput
     Transaction?: TransactionOrderByRelationAggregateInput
@@ -13815,29 +13898,29 @@ export namespace Prisma {
     AND?: VoucherWhereInput | VoucherWhereInput[]
     OR?: VoucherWhereInput[]
     NOT?: VoucherWhereInput | VoucherWhereInput[]
-    organizerId?: StringFilter<"Voucher"> | string
     code?: StringFilter<"Voucher"> | string
     quota?: IntFilter<"Voucher"> | number
     discountAmount?: IntFilter<"Voucher"> | number
     startDate?: DateTimeFilter<"Voucher"> | Date | string
     endDate?: DateTimeFilter<"Voucher"> | Date | string
-    eventId?: StringFilter<"Voucher"> | string
     isActive?: BoolFilter<"Voucher"> | boolean
-    organizer?: XOR<OrganizerScalarRelationFilter, OrganizerWhereInput>
-    event?: XOR<EventScalarRelationFilter, EventWhereInput>
+    organizerId?: StringNullableFilter<"Voucher"> | string | null
+    eventId?: StringNullableFilter<"Voucher"> | string | null
+    organizer?: XOR<OrganizerNullableScalarRelationFilter, OrganizerWhereInput> | null
+    event?: XOR<EventNullableScalarRelationFilter, EventWhereInput> | null
     Transaction?: TransactionListRelationFilter
   }, "id">
 
   export type VoucherOrderByWithAggregationInput = {
     id?: SortOrder
-    organizerId?: SortOrder
     code?: SortOrder
     quota?: SortOrder
     discountAmount?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    eventId?: SortOrder
     isActive?: SortOrder
+    organizerId?: SortOrderInput | SortOrder
+    eventId?: SortOrderInput | SortOrder
     _count?: VoucherCountOrderByAggregateInput
     _avg?: VoucherAvgOrderByAggregateInput
     _max?: VoucherMaxOrderByAggregateInput
@@ -13850,14 +13933,14 @@ export namespace Prisma {
     OR?: VoucherScalarWhereWithAggregatesInput[]
     NOT?: VoucherScalarWhereWithAggregatesInput | VoucherScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Voucher"> | string
-    organizerId?: StringWithAggregatesFilter<"Voucher"> | string
     code?: StringWithAggregatesFilter<"Voucher"> | string
     quota?: IntWithAggregatesFilter<"Voucher"> | number
     discountAmount?: IntWithAggregatesFilter<"Voucher"> | number
     startDate?: DateTimeWithAggregatesFilter<"Voucher"> | Date | string
     endDate?: DateTimeWithAggregatesFilter<"Voucher"> | Date | string
-    eventId?: StringWithAggregatesFilter<"Voucher"> | string
     isActive?: BoolWithAggregatesFilter<"Voucher"> | boolean
+    organizerId?: StringNullableWithAggregatesFilter<"Voucher"> | string | null
+    eventId?: StringNullableWithAggregatesFilter<"Voucher"> | string | null
   }
 
   export type UserPointLogWhereInput = {
@@ -13933,6 +14016,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -13954,6 +14038,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -13975,6 +14060,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -13996,6 +14082,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14017,6 +14104,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -14035,6 +14123,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14053,6 +14142,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14063,14 +14153,15 @@ export namespace Prisma {
   export type OrganizerCreateInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -14083,14 +14174,15 @@ export namespace Prisma {
   export type OrganizerUncheckedCreateInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -14103,14 +14195,15 @@ export namespace Prisma {
   export type OrganizerUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14123,14 +14216,15 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14143,14 +14237,15 @@ export namespace Prisma {
   export type OrganizerCreateManyInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -14161,14 +14256,15 @@ export namespace Prisma {
   export type OrganizerUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14179,14 +14275,15 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14516,7 +14613,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
@@ -14536,7 +14632,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14552,7 +14647,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
@@ -14572,7 +14666,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14590,7 +14683,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -14605,7 +14697,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14621,7 +14712,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14696,21 +14786,21 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     isActive?: boolean
-    organizer: OrganizerCreateNestedOneWithoutVoucherInput
-    event: EventCreateNestedOneWithoutVouchersInput
+    organizer?: OrganizerCreateNestedOneWithoutVoucherInput
+    event?: EventCreateNestedOneWithoutVouchersInput
     Transaction?: TransactionCreateNestedManyWithoutVoucherInput
   }
 
   export type VoucherUncheckedCreateInput = {
     id?: string
-    organizerId: string
     code: string
     quota: number
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
-    eventId: string
     isActive?: boolean
+    organizerId?: string | null
+    eventId?: string | null
     Transaction?: TransactionUncheckedCreateNestedManyWithoutVoucherInput
   }
 
@@ -14722,34 +14812,34 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    organizer?: OrganizerUpdateOneRequiredWithoutVoucherNestedInput
-    event?: EventUpdateOneRequiredWithoutVouchersNestedInput
+    organizer?: OrganizerUpdateOneWithoutVoucherNestedInput
+    event?: EventUpdateOneWithoutVouchersNestedInput
     Transaction?: TransactionUpdateManyWithoutVoucherNestedInput
   }
 
   export type VoucherUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizerId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     quota?: IntFieldUpdateOperationsInput | number
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
     Transaction?: TransactionUncheckedUpdateManyWithoutVoucherNestedInput
   }
 
   export type VoucherCreateManyInput = {
     id?: string
-    organizerId: string
     code: string
     quota: number
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
-    eventId: string
     isActive?: boolean
+    organizerId?: string | null
+    eventId?: string | null
   }
 
   export type VoucherUpdateManyMutationInput = {
@@ -14764,14 +14854,14 @@ export namespace Prisma {
 
   export type VoucherUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizerId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     quota?: IntFieldUpdateOperationsInput | number
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserPointLogCreateInput = {
@@ -14866,6 +14956,13 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type EnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -14934,6 +15031,7 @@ export namespace Prisma {
     username?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
     createdAt?: SortOrder
@@ -14952,6 +15050,7 @@ export namespace Prisma {
     username?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
     createdAt?: SortOrder
@@ -14970,6 +15069,7 @@ export namespace Prisma {
     username?: SortOrder
     email?: SortOrder
     password?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
     createdAt?: SortOrder
@@ -15011,6 +15111,16 @@ export namespace Prisma {
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
     _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type EnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -15069,14 +15179,15 @@ export namespace Prisma {
   export type OrganizerCountOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrder
-    orgPhoneNumber?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrder
+    phoneNumber?: SortOrder
     logoUrl?: SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrder
     verified?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
     createdAt?: SortOrder
@@ -15087,14 +15198,15 @@ export namespace Prisma {
   export type OrganizerMaxOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrder
-    orgPhoneNumber?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrder
+    phoneNumber?: SortOrder
     logoUrl?: SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrder
     verified?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
     createdAt?: SortOrder
@@ -15105,14 +15217,15 @@ export namespace Prisma {
   export type OrganizerMinOrderByAggregateInput = {
     id?: SortOrder
     orgName?: SortOrder
-    orgUsername?: SortOrder
-    orgEmail?: SortOrder
-    orgPassword?: SortOrder
-    orgAddress?: SortOrder
-    orgPhoneNumber?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    address?: SortOrder
+    phoneNumber?: SortOrder
     logoUrl?: SortOrder
-    orgBio?: SortOrder
+    bio?: SortOrder
     verified?: SortOrder
+    role?: SortOrder
     resetPasswordToken?: SortOrder
     resetPasswordExpiry?: SortOrder
     createdAt?: SortOrder
@@ -15408,7 +15521,6 @@ export namespace Prisma {
     status?: SortOrder
     paymentProofUrl?: SortOrder
     expiresAt?: SortOrder
-    couponId?: SortOrder
     voucherId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15432,7 +15544,6 @@ export namespace Prisma {
     status?: SortOrder
     paymentProofUrl?: SortOrder
     expiresAt?: SortOrder
-    couponId?: SortOrder
     voucherId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15449,7 +15560,6 @@ export namespace Prisma {
     status?: SortOrder
     paymentProofUrl?: SortOrder
     expiresAt?: SortOrder
-    couponId?: SortOrder
     voucherId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -15507,16 +15617,26 @@ export namespace Prisma {
     rating?: SortOrder
   }
 
+  export type OrganizerNullableScalarRelationFilter = {
+    is?: OrganizerWhereInput | null
+    isNot?: OrganizerWhereInput | null
+  }
+
+  export type EventNullableScalarRelationFilter = {
+    is?: EventWhereInput | null
+    isNot?: EventWhereInput | null
+  }
+
   export type VoucherCountOrderByAggregateInput = {
     id?: SortOrder
-    organizerId?: SortOrder
     code?: SortOrder
     quota?: SortOrder
     discountAmount?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    eventId?: SortOrder
     isActive?: SortOrder
+    organizerId?: SortOrder
+    eventId?: SortOrder
   }
 
   export type VoucherAvgOrderByAggregateInput = {
@@ -15526,26 +15646,26 @@ export namespace Prisma {
 
   export type VoucherMaxOrderByAggregateInput = {
     id?: SortOrder
-    organizerId?: SortOrder
     code?: SortOrder
     quota?: SortOrder
     discountAmount?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    eventId?: SortOrder
     isActive?: SortOrder
+    organizerId?: SortOrder
+    eventId?: SortOrder
   }
 
   export type VoucherMinOrderByAggregateInput = {
     id?: SortOrder
-    organizerId?: SortOrder
     code?: SortOrder
     quota?: SortOrder
     discountAmount?: SortOrder
     startDate?: SortOrder
     endDate?: SortOrder
-    eventId?: SortOrder
     isActive?: SortOrder
+    organizerId?: SortOrder
+    eventId?: SortOrder
   }
 
   export type VoucherSumOrderByAggregateInput = {
@@ -15653,6 +15773,10 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type EnumRoleFieldUpdateOperationsInput = {
+    set?: $Enums.Role
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -16319,18 +16443,22 @@ export namespace Prisma {
     connect?: TransactionWhereUniqueInput | TransactionWhereUniqueInput[]
   }
 
-  export type OrganizerUpdateOneRequiredWithoutVoucherNestedInput = {
+  export type OrganizerUpdateOneWithoutVoucherNestedInput = {
     create?: XOR<OrganizerCreateWithoutVoucherInput, OrganizerUncheckedCreateWithoutVoucherInput>
     connectOrCreate?: OrganizerCreateOrConnectWithoutVoucherInput
     upsert?: OrganizerUpsertWithoutVoucherInput
+    disconnect?: OrganizerWhereInput | boolean
+    delete?: OrganizerWhereInput | boolean
     connect?: OrganizerWhereUniqueInput
     update?: XOR<XOR<OrganizerUpdateToOneWithWhereWithoutVoucherInput, OrganizerUpdateWithoutVoucherInput>, OrganizerUncheckedUpdateWithoutVoucherInput>
   }
 
-  export type EventUpdateOneRequiredWithoutVouchersNestedInput = {
+  export type EventUpdateOneWithoutVouchersNestedInput = {
     create?: XOR<EventCreateWithoutVouchersInput, EventUncheckedCreateWithoutVouchersInput>
     connectOrCreate?: EventCreateOrConnectWithoutVouchersInput
     upsert?: EventUpsertWithoutVouchersInput
+    disconnect?: EventWhereInput | boolean
+    delete?: EventWhereInput | boolean
     connect?: EventWhereUniqueInput
     update?: XOR<XOR<EventUpdateToOneWithWhereWithoutVouchersInput, EventUpdateWithoutVouchersInput>, EventUncheckedUpdateWithoutVouchersInput>
   }
@@ -16409,6 +16537,13 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
+  export type NestedEnumRoleFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleFilter<$PrismaModel> | $Enums.Role
+  }
+
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
@@ -16485,6 +16620,16 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedEnumRoleWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Role | EnumRoleFieldRefInput<$PrismaModel>
+    in?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Role[] | ListEnumRoleFieldRefInput<$PrismaModel>
+    not?: NestedEnumRoleWithAggregatesFilter<$PrismaModel> | $Enums.Role
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumRoleFilter<$PrismaModel>
+    _max?: NestedEnumRoleFilter<$PrismaModel>
   }
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -16632,7 +16777,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     event: EventCreateNestedOneWithoutTransactionsInput
@@ -16650,7 +16794,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -16749,7 +16892,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
     paymentProofUrl?: StringNullableFilter<"Transaction"> | string | null
     expiresAt?: DateTimeFilter<"Transaction"> | Date | string
-    couponId?: StringNullableFilter<"Transaction"> | string | null
     voucherId?: StringNullableFilter<"Transaction"> | string | null
     createdAt?: DateTimeFilter<"Transaction"> | Date | string
     updatedAt?: DateTimeFilter<"Transaction"> | Date | string
@@ -16877,7 +17019,7 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     isActive?: boolean
-    event: EventCreateNestedOneWithoutVouchersInput
+    event?: EventCreateNestedOneWithoutVouchersInput
     Transaction?: TransactionCreateNestedManyWithoutVoucherInput
   }
 
@@ -16888,8 +17030,8 @@ export namespace Prisma {
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
-    eventId: string
     isActive?: boolean
+    eventId?: string | null
     Transaction?: TransactionUncheckedCreateNestedManyWithoutVoucherInput
   }
 
@@ -16963,27 +17105,28 @@ export namespace Prisma {
     OR?: VoucherScalarWhereInput[]
     NOT?: VoucherScalarWhereInput | VoucherScalarWhereInput[]
     id?: StringFilter<"Voucher"> | string
-    organizerId?: StringFilter<"Voucher"> | string
     code?: StringFilter<"Voucher"> | string
     quota?: IntFilter<"Voucher"> | number
     discountAmount?: IntFilter<"Voucher"> | number
     startDate?: DateTimeFilter<"Voucher"> | Date | string
     endDate?: DateTimeFilter<"Voucher"> | Date | string
-    eventId?: StringFilter<"Voucher"> | string
     isActive?: BoolFilter<"Voucher"> | boolean
+    organizerId?: StringNullableFilter<"Voucher"> | string | null
+    eventId?: StringNullableFilter<"Voucher"> | string | null
   }
 
   export type OrganizerCreateWithoutEventInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -16995,14 +17138,15 @@ export namespace Prisma {
   export type OrganizerUncheckedCreateWithoutEventInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -17055,7 +17199,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
@@ -17073,7 +17216,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17124,19 +17266,19 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     isActive?: boolean
-    organizer: OrganizerCreateNestedOneWithoutVoucherInput
+    organizer?: OrganizerCreateNestedOneWithoutVoucherInput
     Transaction?: TransactionCreateNestedManyWithoutVoucherInput
   }
 
   export type VoucherUncheckedCreateWithoutEventInput = {
     id?: string
-    organizerId: string
     code: string
     quota: number
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
     isActive?: boolean
+    organizerId?: string | null
     Transaction?: TransactionUncheckedCreateNestedManyWithoutVoucherInput
   }
 
@@ -17196,14 +17338,15 @@ export namespace Prisma {
   export type OrganizerUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17215,14 +17358,15 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17559,7 +17703,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
@@ -17578,7 +17721,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -17695,7 +17837,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
@@ -17714,7 +17855,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17764,6 +17904,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -17784,6 +17925,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -17859,20 +18001,20 @@ export namespace Prisma {
     startDate: Date | string
     endDate: Date | string
     isActive?: boolean
-    organizer: OrganizerCreateNestedOneWithoutVoucherInput
-    event: EventCreateNestedOneWithoutVouchersInput
+    organizer?: OrganizerCreateNestedOneWithoutVoucherInput
+    event?: EventCreateNestedOneWithoutVouchersInput
   }
 
   export type VoucherUncheckedCreateWithoutTransactionInput = {
     id?: string
-    organizerId: string
     code: string
     quota: number
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
-    eventId: string
     isActive?: boolean
+    organizerId?: string | null
+    eventId?: string | null
   }
 
   export type VoucherCreateOrConnectWithoutTransactionInput = {
@@ -17932,6 +18074,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17952,6 +18095,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18039,20 +18183,20 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    organizer?: OrganizerUpdateOneRequiredWithoutVoucherNestedInput
-    event?: EventUpdateOneRequiredWithoutVouchersNestedInput
+    organizer?: OrganizerUpdateOneWithoutVoucherNestedInput
+    event?: EventUpdateOneWithoutVouchersNestedInput
   }
 
   export type VoucherUncheckedUpdateWithoutTransactionInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizerId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     quota?: IntFieldUpdateOperationsInput | number
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TicketUpsertWithWhereUniqueWithoutTransactionInput = {
@@ -18082,6 +18226,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -18102,6 +18247,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -18191,6 +18337,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18211,6 +18358,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18282,14 +18430,15 @@ export namespace Prisma {
   export type OrganizerCreateWithoutVoucherInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -18301,14 +18450,15 @@ export namespace Prisma {
   export type OrganizerUncheckedCreateWithoutVoucherInput = {
     id?: string
     orgName?: string | null
-    orgUsername: string
-    orgEmail: string
-    orgPassword: string
-    orgAddress?: string | null
-    orgPhoneNumber?: string | null
+    username: string
+    email: string
+    password: string
+    address?: string | null
+    phoneNumber?: string | null
     logoUrl?: string | null
-    orgBio: string
+    bio?: string | null
     verified?: boolean
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -18384,7 +18534,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     user: UserCreateNestedOneWithoutTransactionsInput
@@ -18403,7 +18552,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     Ticket?: TicketUncheckedCreateNestedManyWithoutTransactionInput
@@ -18433,14 +18581,15 @@ export namespace Prisma {
   export type OrganizerUpdateWithoutVoucherInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18452,14 +18601,15 @@ export namespace Prisma {
   export type OrganizerUncheckedUpdateWithoutVoucherInput = {
     id?: StringFieldUpdateOperationsInput | string
     orgName?: NullableStringFieldUpdateOperationsInput | string | null
-    orgUsername?: StringFieldUpdateOperationsInput | string
-    orgEmail?: StringFieldUpdateOperationsInput | string
-    orgPassword?: StringFieldUpdateOperationsInput | string
-    orgAddress?: NullableStringFieldUpdateOperationsInput | string | null
-    orgPhoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
     logoUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    orgBio?: StringFieldUpdateOperationsInput | string
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
     verified?: BoolFieldUpdateOperationsInput | boolean
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18554,6 +18704,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -18574,6 +18725,7 @@ export namespace Prisma {
     username: string
     email: string
     password: string
+    role?: $Enums.Role
     resetPasswordToken?: string | null
     resetPasswordExpiry?: Date | string | null
     createdAt?: Date | string
@@ -18610,6 +18762,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18630,6 +18783,7 @@ export namespace Prisma {
     username?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     resetPasswordToken?: NullableStringFieldUpdateOperationsInput | string | null
     resetPasswordExpiry?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18649,7 +18803,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18680,7 +18833,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     event?: EventUpdateOneRequiredWithoutTransactionsNestedInput
@@ -18698,7 +18850,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18715,7 +18866,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18795,8 +18945,8 @@ export namespace Prisma {
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
-    eventId: string
     isActive?: boolean
+    eventId?: string | null
   }
 
   export type EventUpdateWithoutOrganizerInput = {
@@ -18874,7 +19024,7 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    event?: EventUpdateOneRequiredWithoutVouchersNestedInput
+    event?: EventUpdateOneWithoutVouchersNestedInput
     Transaction?: TransactionUpdateManyWithoutVoucherNestedInput
   }
 
@@ -18885,8 +19035,8 @@ export namespace Prisma {
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
     Transaction?: TransactionUncheckedUpdateManyWithoutVoucherNestedInput
   }
 
@@ -18897,8 +19047,8 @@ export namespace Prisma {
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
-    eventId?: StringFieldUpdateOperationsInput | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    eventId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TicketCreateManyEventInput = {
@@ -18921,7 +19071,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     voucherId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -18937,13 +19086,13 @@ export namespace Prisma {
 
   export type VoucherCreateManyEventInput = {
     id?: string
-    organizerId: string
     code: string
     quota: number
     discountAmount: number
     startDate: Date | string
     endDate: Date | string
     isActive?: boolean
+    organizerId?: string | null
   }
 
   export type TicketCategoryCreateManyEventInput = {
@@ -18995,7 +19144,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
@@ -19013,7 +19161,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19030,7 +19177,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     voucherId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19068,31 +19214,31 @@ export namespace Prisma {
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
-    organizer?: OrganizerUpdateOneRequiredWithoutVoucherNestedInput
+    organizer?: OrganizerUpdateOneWithoutVoucherNestedInput
     Transaction?: TransactionUpdateManyWithoutVoucherNestedInput
   }
 
   export type VoucherUncheckedUpdateWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizerId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     quota?: IntFieldUpdateOperationsInput | number
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
     Transaction?: TransactionUncheckedUpdateManyWithoutVoucherNestedInput
   }
 
   export type VoucherUncheckedUpdateManyWithoutEventInput = {
     id?: StringFieldUpdateOperationsInput | string
-    organizerId?: StringFieldUpdateOperationsInput | string
     code?: StringFieldUpdateOperationsInput | string
     quota?: IntFieldUpdateOperationsInput | number
     discountAmount?: IntFieldUpdateOperationsInput | number
     startDate?: DateTimeFieldUpdateOperationsInput | Date | string
     endDate?: DateTimeFieldUpdateOperationsInput | Date | string
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TicketCategoryUpdateWithoutEventInput = {
@@ -19218,7 +19364,6 @@ export namespace Prisma {
     status: $Enums.TransactionStatus
     paymentProofUrl?: string | null
     expiresAt: Date | string
-    couponId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19232,7 +19377,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTransactionsNestedInput
@@ -19251,7 +19395,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Ticket?: TicketUncheckedUpdateManyWithoutTransactionNestedInput
@@ -19268,7 +19411,6 @@ export namespace Prisma {
     status?: EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
     paymentProofUrl?: NullableStringFieldUpdateOperationsInput | string | null
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    couponId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

@@ -1,11 +1,15 @@
 import { ApiError } from "../../utils/api.error";
+import { getOrganizerByUserId } from "../../utils/get.organizerid";
+import { timeStringToDate } from "../../utils/time";
 import prisma from "../prisma/prisma.service";
-import { CreateEventDTO } from "./dto/create-event.dto";
+import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
 
 export class EventService {
-  createEvent = async (dto: CreateEventDTO, organizerId: string) => {
+  createEvent = async (body: CreateEventDTO, organizerId: string) => {
     const {
       title,
+      startDay,
+      endDay,
       startTime,
       endTime,
       category,
@@ -13,21 +17,33 @@ export class EventService {
       description,
       imageURL,
       price,
-      maxCapacity,
       status,
-    } = dto;
+      maxCapacity,
+    } = body;
 
-    const organizerRole = prisma.user.findFirst({where: {role: "ORGANIZER"}})
+    const organizer = await getOrganizerByUserId(organizerId);
 
-    const username = prisma.user.findFirst({where: {}})
+    if (!organizer || organizer.role !== "ORGANIZER") {
+      throw new ApiError("Unauthorized - Only ORGANIZER can create event", 401);
+    }
+    const startDate = new Date(startDay);
+    const endDate = new Date(endDay);
+    const startDateTime = timeStringToDate(startDay, startTime);
+    const endDateTime = timeStringToDate(endDay, endTime);
 
-    if(!organizerRole) {
-      throw new ApiError("Unathorized", 401)
+    if (endDate < startDate) {
+      throw new ApiError("End date must be after or equal to start date", 400);
+    }
+
+    if (endDateTime <= startDateTime) {
+      throw new Error("End time must be after start time");
     }
 
     return prisma.event.create({
       data: {
         title,
+        startDay,
+        endDay,
         startTime,
         endTime,
         category,
@@ -36,25 +52,22 @@ export class EventService {
         imageURL,
         price,
         maxCapacity,
-        status,
+        status: status ?? EventStatus.UPCOMING,
         organizerId,
       },
     });
   };
 
   // tampilan landing page untuk semua event tersedia
-  displayUpcomingEvents = async() => {
-    return prisma.event.findMany({where: {status: "UPCOMING"}})
-    
-  }
+  displayUpcomingEvents = async () => {
+    return prisma.event.findMany({ where: { status: "UPCOMING" } });
+  };
 
   // tampilan detail events yang dipilih
-  getEventById = () => {}
+  getEventById = () => {};
 
   // filter events by category atau location
-  filterEventsByCategoryOrLocation = () => []
-
-
+  filterEventsByCategoryOrLocation = () => [];
 }
 
 // user dan organizer di pisah

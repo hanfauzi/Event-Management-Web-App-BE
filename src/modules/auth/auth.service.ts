@@ -1,87 +1,192 @@
+import dayjs from "dayjs";
+import { createToken } from "../../lib/jwt";
+import { generateReferralCode } from "../../lib/referral.code";
+import { generateVoucherCode } from "../../lib/voucher.code";
 
 import { ApiError } from "../../utils/api.error";
 import { PasswordService } from "../password/password.service";
+
 import prisma from "../prisma/prisma.service";
+import { LoginDTO } from "./dto/login.dto";
 import { RegisterDTO } from "./dto/register.dto";
 
 export class AuthService {
-
   private passwordService: PasswordService;
 
   constructor() {
-  
     this.passwordService = new PasswordService();
   }
 
-  userRegister = async ({ username, email, password }: RegisterDTO) => {
-    const userEmail = await prisma.user.findFirst({ where: { email } });
+  userRegister = async ({
+    username,
+    email,
+    password,
+    referralCode,
+  }: RegisterDTO) => {
+    const findUserByEmail = await prisma.user.findFirst({ where: { email } });
 
-    if (userEmail) {
+    if (findUserByEmail) {
       throw new ApiError("Email already exist!", 400);
     }
 
-    const userUName = await prisma.user.findFirst({ where: { username } });
+    const findUserByUsername = await prisma.user.findFirst({
+      where: { username },
+    });
 
-    if (userUName) {
+    if (findUserByUsername) {
       throw new ApiError("Username already used!", 400);
     }
 
-    const hashedPassword = await this.passwordService.hashPassword(password);
-    const referralCode = generateReferralCode(username);
+    let findReferredBy = null;
+    if (referralCode && referralCode.trim() !== "") {
+      findReferredBy = await prisma.user.findFirst({
+        where: { referralCode },
+      });
 
-    return await prisma.user.create({
-      data: {
-        username,
-        email,
-        password: hashedPassword,
-        role: "USER",
-        referralCode,
-      },
-      select: {
-        id: true,
-        username: true,
-        email: true,
-        role: true,
-        referralCode: true,
-        createdAt: true,
-      },
-    });
-    function generateReferralCode(username: string) {
-      const suffix = Math.random().toString(36).substring(2, 6);
-      return `ref_${username}_${suffix}`;
+      if (!findReferredBy) {
+        throw new ApiError("Referral Code Invalid!", 400);
+      }
     }
+
+    const hashedPassword = await this.passwordService.hashPassword(password);
+    const referralCodeUser = generateReferralCode(username);
+
+    return await prisma.$transaction(async (tx) => {
+      // NEW USER
+      const newUser = await tx.user.create({
+        data: {
+          username,
+          email,
+          password: hashedPassword,
+          referralCode: referralCodeUser,
+          referredById: findReferredBy?.id,
+        },
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          referralCode: true,
+          createdAt: true,
+          referredById: true,
+        },
+      });
+
+      // POINT USER YANG DIPAKE REFERRALNYA
+      if (findReferredBy) {
+        await tx.userPointLog.create({
+          data: { userId: findReferredBy.id, amount: 10000, type: "EARN" },
+        });
+      }
+
+      // VOUCHER UNTUK USER BARU
+      const voucher = await tx.voucher.create({
+        data: {
+          code: `${generateVoucherCode()}`,
+          quota: 1,
+          discountAmount: 10000,
+          startDate: new Date(),
+          endDate: dayjs().add(3, "month").toDate(),
+          isActive: true,
+        },
+      });
+
+      return { ...newUser, voucher: voucher.code };
+    });
   };
 
   organizerRegister = async ({ username, email, password }: RegisterDTO) => {
-    const userEmail = await prisma.user.findFirst({ where: { email } });
+    const findOrganizerByEmail = await prisma.organizer.findFirst({
+      where: { email },
+    });
 
-    if (userEmail) {
+    if (findOrganizerByEmail) {
       throw new ApiError("Email already exist!", 400);
     }
 
-    const userUName = await prisma.user.findFirst({ where: { username } });
+    const findOrganizerByUsername = await prisma.organizer.findFirst({
+      where: { username },
+    });
 
-    if (userUName) {
+    if (findOrganizerByUsername) {
       throw new ApiError("Username already used!", 400);
     }
 
     const hashedPassword = await this.passwordService.hashPassword(password);
-    
 
-    return await prisma.user.create({
+    return await prisma.organizer.create({
       data: {
         username,
         email,
         password: hashedPassword,
-        role: "ORGANIZER",
       },
       select: {
         id: true,
         username: true,
         email: true,
-        role: true,
         createdAt: true,
       },
     });
+  };
+
+  userLogin = async ({ usernameOrEmail, password }: LoginDTO) => {
+    const isEmail = usernameOrEmail.includes("@");
+    const user = await prisma.user.findFirst({
+      where: isEmail
+        ? { email: usernameOrEmail }
+        : { username: usernameOrEmail },
+    });
+
+    if (!user) {
+      throw new ApiError("Account not registered!", 404);
+    }
+
+    const comparedPassword = await this.passwordService.comparePassword(
+      password,
+      user.password
+    );
+
+    if (!comparedPassword) {
+      throw new ApiError("Password Invalid!", 401);
+    }
+
+    const token = await createToken({
+      userId: user.id,
+      role: user.role,
+      secretKey: process.env.JWT_SECRET_KEY!,
+      options: { expiresIn: "1h" },
+    });
+
+    return { token, id: user.id, role: user.role };
+  };
+
+  organizerLogin = async ({ usernameOrEmail, password }: LoginDTO) => {
+    const isEmail = usernameOrEmail.includes("@");
+    const organizer = await prisma.organizer.findFirst({
+      where: isEmail
+        ? { email: usernameOrEmail }
+        : { username: usernameOrEmail },
+    });
+
+    if (!organizer) {
+      throw new ApiError("Account not registered!", 404);
+    }
+
+    const comparedPassword = await this.passwordService.comparePassword(
+      password,
+      organizer.password
+    );
+
+    if (!comparedPassword) {
+      throw new ApiError("Password Invalid!", 401);
+    }
+
+    const token = await createToken({
+      userId: organizer.id,
+      role: organizer.role,
+      secretKey: process.env.JWT_SECRET_KEY!,
+      options: { expiresIn: "1h" },
+    });
+
+    return { token, id: organizer.id, role: organizer.role };
   };
 }
