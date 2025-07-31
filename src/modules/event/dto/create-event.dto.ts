@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import {
   IsDateString,
   IsEnum,
@@ -64,10 +65,12 @@ export class CreateEventDTO {
    @IsUrl()
   imageURL!: string;
 
+  @Type(() => Number)
   @IsInt()
   @Min(0)
   price!: number;
 
+  @Type(()=> Number)
   @IsInt()
   @Min(1)
   maxCapacity!: number;

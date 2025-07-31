@@ -3,23 +3,36 @@ import { EventService } from "./event.service";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { CreateEventDTO } from "./dto/create-event.dto";
+import { CloudinaryService } from "../../cloudinary/cloudinary.service";
 
 export class EventController {
   private eventService: EventService;
+  private cloudinaryService: CloudinaryService;
 
   constructor() {
     this.eventService = new EventService();
+    this.cloudinaryService = new CloudinaryService();
   }
 
   createEvent = async (req: Request, res: Response) => {
-    const data = plainToInstance(CreateEventDTO, req.body);
+    const file = req.file;
+
+    if (!file) {
+      return res.status(400).json({ message: "Image file is required" });
+    }
+    const uploaded = await this.cloudinaryService.upload(file!, "event-images");
+
+    const data = plainToInstance(CreateEventDTO, {
+      ...req.body,
+      imageURL: uploaded.secure_url,
+    });
     const errors = await validate(data);
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
 
     const organizer = res.locals.payload;
-    console.log(organizer)
+    console.log(organizer);
 
     const organizerId = organizer.userId;
 
