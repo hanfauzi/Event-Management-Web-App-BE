@@ -13,6 +13,8 @@ import "reflect-metadata";
 import { SampleRouter } from './modules/sample/sample.router';
 import { ApiError } from './utils/api.error';
 import { AuthRouter } from './modules/auth/auth.router';
+import { EventRouter } from './modules/event/event.router';
+
 
 export default class App {
    app: Express;
@@ -77,6 +79,7 @@ export default class App {
 
     const sampleRouter = new SampleRouter();
     const authRouter = new AuthRouter()
+    const eventRouter = new EventRouter()
 
     
 
@@ -86,6 +89,7 @@ export default class App {
 
     this.app.use('/api/samples', sampleRouter.getRouter());
     this.app.use("/api/auth", authRouter.getRouter());
+    this.app.use("/api", eventRouter.getRouter())
   }
 
   public start(): void {

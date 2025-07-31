@@ -297,7 +297,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Hanif (Penting)\\PURWADHIKA\\Backend\\mini-project\\mini-project-api\\src\\generated\\prisma",
+      "value": "/Users/hafisyusril/Project/mini-project-api/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -306,17 +306,16 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Hanif (Penting)\\PURWADHIKA\\Backend\\mini-project\\mini-project-api\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/hafisyusril/Project/mini-project-api/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null,
-    "schemaEnvPath": "../../../.env"
+    "rootEnvPath": null
   },
   "relativePath": "../../../prisma",
   "clientVersion": "6.12.0",
@@ -325,6 +324,7 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {

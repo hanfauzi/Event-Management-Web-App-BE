@@ -2,7 +2,7 @@ import { sign, SignOptions } from "jsonwebtoken";
 
 interface CreateUserTokenProps {
   userId: string;
-  role?: string;
+  role?: "USER" | "ORGANIZER";
   secretKey: string;
   options?: SignOptions;
 }
@@ -16,3 +16,4 @@ export const createToken = ({
   const payload = { userId, role };
   return sign(payload, secretKey, options);
 };
+

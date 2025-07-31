@@ -1,22 +1,34 @@
-import { NextFunction, Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
-import { ApiError } from '../utils/api.error';
+import { NextFunction, Request, Response } from "express";
+import jwt from "jsonwebtoken";
+import { ApiError } from "../utils/api.error";
+import { Role } from "../generated/prisma";
 
 export class JwtVerify {
-  static verifyToken(req: Request, res: Response, next: NextFunction) {
+  static async verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.headers.authorization?.split(' ')[1];
-      console.log(req.headers.authorization);
-      if (!token || token === 'null') {
-        throw new ApiError('Bearer token is invalid or missing', 401);
-      }
-
-      const payload = jwt.verify(token, `${process.env.JWT_SECRET_KEY!}`);
-      req.body['payload'] = payload;
-
+      const token = req.headers.authorization?.split(" ")[1];
+      if (!token) throw new ApiError("token must be provided");
+      const payload = await jwt.verify(token, process.env.JWT_SECRET_KEY!);
+      res.locals.payload = payload;
       next();
     } catch (error) {
       next(error);
     }
+  }
+
+  static verifyRole(authorizeRole: Role[]) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const { role } = res.locals.payload;
+
+        if (!authorizeRole.includes(role)) {
+          throw new ApiError("User role unauthorized access", 401);
+        }
+
+        next();
+      } catch (error) {
+        next(error);
+      }
+    };
   }
 }
