@@ -13,7 +13,9 @@ export class EventRouter {
   }
   private initializedRoutes = () => {
     this.router.post(
-      "/create-event", JwtVerify.verifyToken,
+      "/create-event",
+      JwtVerify.verifyToken,
+      JwtVerify.verifyRole(["ORGANIZER"]),
       this.eventController.createEvent as any
     );
     this.router.get(

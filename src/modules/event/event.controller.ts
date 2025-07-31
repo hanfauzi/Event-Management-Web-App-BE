@@ -18,13 +18,12 @@ export class EventController {
       return res.status(400).json({ errors });
     }
 
-    const user = (req as any).user;
-    if (user.role !== "ORGANIZER") {
-      return res
-        .status(403)
-        .json({ message: "Only organizers can create events" });
-    }
-    const organizerId = user.id;
+    const organizer = res.locals.payload;
+    console.log(organizer)
+
+    const organizerId = organizer.userId;
+
+    console.log(organizerId);
     const result = await this.eventService.createEvent(data, organizerId);
     res
       .status(201)

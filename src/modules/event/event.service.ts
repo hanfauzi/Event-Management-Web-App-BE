@@ -20,9 +20,6 @@ export class EventService {
       maxCapacity,
     } = body;
 
-  
-
-   
     const startDate = new Date(startDay);
     const endDate = new Date(endDay);
     const startDateTime = timeStringToDate(startDay, startTime);
@@ -39,10 +36,10 @@ export class EventService {
     return prisma.event.create({
       data: {
         title,
-        startDay,
-        endDay,
-        startTime,
-        endTime,
+        startDay: startDate,
+        endDay: endDate,
+        startTime: startDateTime,
+        endTime: endDateTime,
         category,
         location,
         description,
@@ -66,13 +63,3 @@ export class EventService {
   // filter events by category atau location
   filterEventsByCategoryOrLocation = () => [];
 }
-
-// user dan organizer di pisah
-// start day dan end day ditambahkan
-// kelas category tiket dimasukkan juga
-// qty hapus
-// coupon dan voucher disatukan
-// userId tidak diperlukan di tiket
-// proteksi max pembelian tiket dalam 1 user
-// tambahkan kuota voucher
-// address penting untuk organizer , bukan untuk user
