@@ -46,4 +46,18 @@ export class ProfileController {
 
     res.status(200).send(result);
   };
+
+  userProfile = async (req: Request, res: Response) => {
+    const userId = res.locals.payload.userId;
+    const result = await this.profileService.getUserProfile(userId);
+
+    res.status(200).send(result);
+  };
+
+  organizerProfile = async (req: Request, res: Response) => {
+    const organizerId = res.locals.payload.userId;
+    const result = await this.profileService.getOrganizerProfile(organizerId);
+
+    res.status(200).send(result);
+  };
 }
