@@ -6,18 +6,18 @@ import express, {
   Response,
   NextFunction,
   Router,
-} from 'express';
-import cors from 'cors';
-import { PORT } from './config/env';
+} from "express";
+import cors from "cors";
+import { PORT } from "./config/env";
 import "reflect-metadata";
-import { SampleRouter } from './modules/sample/sample.router';
-import { ApiError } from './utils/api.error';
-import { AuthRouter } from './modules/auth/auth.router';
-import { EventRouter } from './modules/event/event.router';
-
+import { SampleRouter } from "./modules/sample/sample.router";
+import { ApiError } from "./utils/api.error";
+import { AuthRouter } from "./modules/auth/auth.router";
+import { EventRouter } from "./modules/event/event.router";
+import { ProfileRouter } from "./modules/profile/profile.router";
 
 export default class App {
-   app: Express;
+  app: Express;
 
   constructor() {
     this.app = express();
@@ -35,11 +35,11 @@ export default class App {
   private handleError() {
     // Not Found Handler
     this.app.use((req: Request, res: Response, next: NextFunction) => {
-      if (req.path.includes('/api/')) {
+      if (req.path.includes("/api/")) {
         res
           .status(404)
           .send(
-            'We are sorry, the endpoint you are trying to access could not be found on this server. Please ensure the URL is correct!'
+            "We are sorry, the endpoint you are trying to access could not be found on this server. Please ensure the URL is correct!"
           );
       } else {
         next();
@@ -52,17 +52,17 @@ export default class App {
         console.log(error);
         const statusCode =
           error.statusCode ||
-          (error.name === 'TokenExpiredError' ||
-          error.name === 'JsonWebTokenError'
+          (error.name === "TokenExpiredError" ||
+          error.name === "JsonWebTokenError"
             ? 401
             : 500);
         const message =
           error instanceof ApiError || error.isOperational
             ? error.message ||
-              error.name === 'TokenExpiredError' ||
-              error.name === 'JsonWebTokenError'
-            : 'Internal server error. Please try again later!';
-        if (req.path.includes('/api/')) {
+              error.name === "TokenExpiredError" ||
+              error.name === "JsonWebTokenError"
+            : "Internal server error. Please try again later!";
+        if (req.path.includes("/api/")) {
           res.status(statusCode).json({
             success: false,
             message: message,
@@ -75,21 +75,19 @@ export default class App {
   }
 
   private routes() {
-   
-
     const sampleRouter = new SampleRouter();
-    const authRouter = new AuthRouter()
-    const eventRouter = new EventRouter()
+    const authRouter = new AuthRouter();
+    const eventRouter = new EventRouter();
+    const profileRouter = new ProfileRouter();
 
-    
-
-    this.app.get('/api', (req: Request, res: Response) => {
+    this.app.get("/api", (req: Request, res: Response) => {
       res.send(`Hello, Purwadhika Student API!`);
     });
 
-    this.app.use('/api/samples', sampleRouter.getRouter());
+    this.app.use("/api/samples", sampleRouter.getRouter());
     this.app.use("/api/auth", authRouter.getRouter());
-    this.app.use("/api", eventRouter.getRouter())
+    this.app.use("/api", eventRouter.getRouter());
+    this.app.use("/api", profileRouter.getRouter());
   }
 
   public start(): void {
