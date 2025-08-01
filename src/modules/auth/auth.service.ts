@@ -165,7 +165,7 @@ export class AuthService {
       options: { expiresIn: "1h" },
     });
 
-    return { token, id: user.id, role: user.role };
+    return { token, payload};
   };
 
   organizerLogin = async ({ usernameOrEmail, password }: LoginDTO) => {
@@ -203,6 +203,6 @@ export class AuthService {
       options: { expiresIn: "1h" },
     });
 
-    return { token, id: organizer.id, role: organizer.role };
+    return { token, payload };
   };
 }
