@@ -4,6 +4,7 @@ import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
 import { CreateEventDTO } from "./dto/create-event.dto";
 import { CloudinaryService } from "../../cloudinary/cloudinary.service";
+import { PaginationQueryParams } from "../pagination/dto/pagination.dto";
 
 export class EventController {
   private eventService: EventService;
@@ -44,9 +45,12 @@ export class EventController {
   };
 
   // display upcoming events
-  displayUpcomingEvents = async (_: Request, res: Response) => {
-    const result = await this.eventService.displayUpcomingEvents();
-    res.status(200).json({ data: result });
+  getEvents = async (req: Request, res: Response) => {
+    const query = plainToInstance(PaginationQueryParams, req.query);
+    const result = await this.eventService.getEvents(query);
+    res
+      .status(200)
+      .json({ message: "Display all events successfully", data: result });
   };
 
   //
