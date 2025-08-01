@@ -22,10 +22,7 @@ export class EventRouter {
       this.uploaderMiddleware.upload().single("image"),
       this.eventController.createEvent as any
     );
-    this.router.get(
-      "/upcoming-events",
-      this.eventController.displayUpcomingEvents
-    );
+    this.router.get("/event-list", this.eventController.getEvents);
   };
 
   getRouter = () => {

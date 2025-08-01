@@ -1,9 +1,12 @@
+import { Prisma } from "../../generated/prisma";
 import { ApiError } from "../../utils/api.error";
 import { timeStringToDate } from "../../utils/time";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
+import { GetEventsDTO } from "./dto/get-events.dto";
 
 export class EventService {
+
   createEvent = async (body: CreateEventDTO, organizerId: string) => {
     const {
       title,
@@ -53,8 +56,30 @@ export class EventService {
   };
 
   // tampilan landing page untuk semua event tersedia
-  displayUpcomingEvents = async () => {
-    return prisma.event.findMany({ where: { status: "UPCOMING" } });
+
+  getEvents = async (query: GetEventsDTO) => {
+    const { take, page, sortBy, sortOrder, search } = query;
+
+    const whereClause: Prisma.EventWhereInput = {};
+
+    if (search) {
+      whereClause.title = { contains: search, mode: "insensitive" };
+    }
+
+    const events = await prisma.event.findMany({
+      where: whereClause,
+      orderBy: { [sortBy]: sortOrder },
+      skip: (page - 1) * take,
+      take: take,
+      include: { organizer: true },
+    });
+
+    const total = await prisma.event.count({ where: whereClause });
+
+    return {
+      data: events,
+      meta: { page, take, total },
+    };
   };
 
   // tampilan detail events yang dipilih
