@@ -108,4 +108,46 @@ export class ProfileService {
       },
     });
   };
+
+  getUserProfile = async (userId: string) => {
+    const user = await prisma.user.findFirst({
+      where: { id: userId },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        phoneNumber: true,
+        referralCode: true,
+        imageUrl: true,
+      },
+    });
+
+    if (!user) {
+      throw new ApiError("User not found!", 404);
+    }
+
+    return user;
+  };
+
+  getOrganizerProfile = async (organizerId: string) => {
+    const organizer = await prisma.organizer.findFirst({
+      where: { id: organizerId },
+      select: {
+        id: true,
+        username: true,
+        email: true,
+        orgName: true,
+        phoneNumber: true,
+        logoUrl: true,
+      },
+    });
+
+    if (!organizer) {
+      throw new ApiError("User not found!", 404);
+    }
+
+    return organizer;
+  };
 }

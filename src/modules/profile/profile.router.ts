@@ -31,6 +31,20 @@ export class ProfileRouter {
       this.uploaderMiddleware.upload().single("image"),
       this.profileController.organizerProfileUpdate
     );
+
+    this.router.get(
+      "/profile",
+      JwtVerify.verifyToken,
+      JwtVerify.verifyRole(["USER"]),
+      this.profileController.userProfile
+    );
+
+    this.router.get(
+      "/organizer/profile",
+      JwtVerify.verifyToken,
+      JwtVerify.verifyRole(["ORGANIZER"]),
+      this.profileController.organizerProfile
+    );
   };
 
   getRouter = () => {

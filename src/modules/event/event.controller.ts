@@ -33,11 +33,9 @@ export class EventController {
     }
 
     const organizer = res.locals.payload;
-    console.log(organizer);
 
     const organizerId = organizer.userId;
 
-    console.log(organizerId);
     const result = await this.eventService.createEvent(data, organizerId);
     res
       .status(201)
