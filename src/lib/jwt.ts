@@ -1,19 +1,12 @@
 import { sign, SignOptions } from "jsonwebtoken";
 
-interface CreateUserTokenProps {
-  userId: string;
-  role?: "USER" | "ORGANIZER";
+interface CreateTokenProps {
+  payload: Record<string, unknown>;
   secretKey: string;
   options?: SignOptions;
 }
 
-export const createToken = ({
-  userId,
-  role,
-  secretKey,
-  options,
-}: CreateUserTokenProps) => {
-  const payload = { userId, role };
+export const createToken = ({ payload, secretKey, options }: CreateTokenProps) => {
   return sign(payload, secretKey, options);
 };
 
