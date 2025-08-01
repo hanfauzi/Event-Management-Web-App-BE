@@ -149,9 +149,18 @@ export class AuthService {
       throw new ApiError("Password Invalid!", 401);
     }
 
-    const token = await createToken({
+    const payload = {
       userId: user.id,
+      username: user.username,
+      email: user.email,
       role: user.role,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      referralCode: user.referralCode,
+    };
+
+    const token = createToken({
+      payload,
       secretKey: process.env.JWT_SECRET_KEY!,
       options: { expiresIn: "1h" },
     });
@@ -180,9 +189,16 @@ export class AuthService {
       throw new ApiError("Password Invalid!", 401);
     }
 
-    const token = await createToken({
+    const payload = {
       userId: organizer.id,
+      username: organizer.username,
+      email: organizer.email,
       role: organizer.role,
+      orgName: organizer.orgName,
+    };
+
+    const token = createToken({
+      payload,
       secretKey: process.env.JWT_SECRET_KEY!,
       options: { expiresIn: "1h" },
     });
