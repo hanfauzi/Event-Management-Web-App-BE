@@ -5,6 +5,7 @@ import { validate } from "class-validator";
 import { CreateEventDTO } from "./dto/create-event.dto";
 import { CloudinaryService } from "../../cloudinary/cloudinary.service";
 import { PaginationQueryParams } from "../pagination/dto/pagination.dto";
+import { FilterEventsDTO } from "./dto/filter-events.dto";
 
 export class EventController {
   private eventService: EventService;
@@ -50,8 +51,18 @@ export class EventController {
     const result = await this.eventService.getEvents(query);
     res
       .status(200)
-      .json({ message: "Display all events successfully", data: result });
+      .json(result);
   };
 
-  //
+  getEventDetailById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await this.eventService.getEventDetailById(id);
+    res.status(200).send(result);
+  };
+
+  filterEventsByCategoryOrLocation = async (req: Request, res: Response) => {
+    const query = plainToInstance(FilterEventsDTO, req.query);
+  const result = await this.eventService.filterEventsByCategoryOrLocation(query);
+  res.status(200).send(result);
+  };
 }

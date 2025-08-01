@@ -3,10 +3,10 @@ import { ApiError } from "../../utils/api.error";
 import { timeStringToDate } from "../../utils/time";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
+import { FilterEventsDTO } from "./dto/filter-events.dto";
 import { GetEventsDTO } from "./dto/get-events.dto";
 
 export class EventService {
-
   createEvent = async (body: CreateEventDTO, organizerId: string) => {
     const {
       title,
@@ -71,7 +71,7 @@ export class EventService {
       orderBy: { [sortBy]: sortOrder },
       skip: (page - 1) * take,
       take: take,
-      include: { organizer: true },
+      include: { organizer: {omit: {password: true, id:true,}} },
     });
 
     const total = await prisma.event.count({ where: whereClause });
@@ -83,8 +83,45 @@ export class EventService {
   };
 
   // tampilan detail events yang dipilih
-  getEventById = () => {};
+  getEventDetailById = async (id: string) => {
+    const event = await prisma.event.findUnique({
+      where: { id },
+      include: {
+        organizer: {
+          select: { orgName: true },
+        },
+      },
+    });
+
+    if (!event) {
+      throw new ApiError("Event not found", 404);
+    }
+
+    return event;
+  };
 
   // filter events by category atau location
-  filterEventsByCategoryOrLocation = () => [];
+  filterEventsByCategoryOrLocation = async (query: FilterEventsDTO) => {
+    const { category, location, search, page = 1, take = 8 } = query;
+
+    const whereClause: Prisma.EventWhereInput = {};
+
+    if (category) whereClause.category = category;
+    if (location) whereClause.location = {contains: location, mode: 'insensitive'};
+    if (search) whereClause.title = { contains: search, mode: "insensitive" };
+
+    const events = await prisma.event.findMany({
+      where: whereClause,
+      skip: (page - 1) * take,
+      take: take,
+      orderBy: { startDay: "asc" },
+    });
+
+    const total = await prisma.event.count({ where: whereClause });
+
+    return {
+      data: events,
+      meta: { page, take, total },
+    };
+  };
 }
