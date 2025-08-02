@@ -79,8 +79,8 @@ model Event {
   slug        String      @unique
   startDay    DateTime    @map("start_day") @db.Date()
   endDay      DateTime    @map("end_day") @db.Date()
-  startTime   DateTime    @map("start_time") @db.Time()
-  endTime     DateTime    @map("end_time") @db.Time()
+  startTime   String    @map("start_time") 
+  endTime     String    @map("end_time") 
   category    Category
   location    String
   description String      @db.Text

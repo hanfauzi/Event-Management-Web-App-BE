@@ -4467,8 +4467,8 @@ export namespace Prisma {
     slug: string | null
     startDay: Date | null
     endDay: Date | null
-    startTime: Date | null
-    endTime: Date | null
+    startTime: string | null
+    endTime: string | null
     category: $Enums.Category | null
     location: string | null
     description: string | null
@@ -4488,8 +4488,8 @@ export namespace Prisma {
     slug: string | null
     startDay: Date | null
     endDay: Date | null
-    startTime: Date | null
-    endTime: Date | null
+    startTime: string | null
+    endTime: string | null
     category: $Enums.Category | null
     location: string | null
     description: string | null
@@ -4692,8 +4692,8 @@ export namespace Prisma {
     slug: string
     startDay: Date
     endDay: Date
-    startTime: Date
-    endTime: Date
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -4852,8 +4852,8 @@ export namespace Prisma {
       slug: string
       startDay: Date
       endDay: Date
-      startTime: Date
-      endTime: Date
+      startTime: string
+      endTime: string
       category: $Enums.Category
       location: string
       description: string
@@ -5299,8 +5299,8 @@ export namespace Prisma {
     readonly slug: FieldRef<"Event", 'String'>
     readonly startDay: FieldRef<"Event", 'DateTime'>
     readonly endDay: FieldRef<"Event", 'DateTime'>
-    readonly startTime: FieldRef<"Event", 'DateTime'>
-    readonly endTime: FieldRef<"Event", 'DateTime'>
+    readonly startTime: FieldRef<"Event", 'String'>
+    readonly endTime: FieldRef<"Event", 'String'>
     readonly category: FieldRef<"Event", 'Category'>
     readonly location: FieldRef<"Event", 'String'>
     readonly description: FieldRef<"Event", 'String'>
@@ -13429,8 +13429,8 @@ export namespace Prisma {
     slug?: StringFilter<"Event"> | string
     startDay?: DateTimeFilter<"Event"> | Date | string
     endDay?: DateTimeFilter<"Event"> | Date | string
-    startTime?: DateTimeFilter<"Event"> | Date | string
-    endTime?: DateTimeFilter<"Event"> | Date | string
+    startTime?: StringFilter<"Event"> | string
+    endTime?: StringFilter<"Event"> | string
     category?: EnumCategoryFilter<"Event"> | $Enums.Category
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
@@ -13486,8 +13486,8 @@ export namespace Prisma {
     title?: StringFilter<"Event"> | string
     startDay?: DateTimeFilter<"Event"> | Date | string
     endDay?: DateTimeFilter<"Event"> | Date | string
-    startTime?: DateTimeFilter<"Event"> | Date | string
-    endTime?: DateTimeFilter<"Event"> | Date | string
+    startTime?: StringFilter<"Event"> | string
+    endTime?: StringFilter<"Event"> | string
     category?: EnumCategoryFilter<"Event"> | $Enums.Category
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
@@ -13542,8 +13542,8 @@ export namespace Prisma {
     slug?: StringWithAggregatesFilter<"Event"> | string
     startDay?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     endDay?: DateTimeWithAggregatesFilter<"Event"> | Date | string
-    startTime?: DateTimeWithAggregatesFilter<"Event"> | Date | string
-    endTime?: DateTimeWithAggregatesFilter<"Event"> | Date | string
+    startTime?: StringWithAggregatesFilter<"Event"> | string
+    endTime?: StringWithAggregatesFilter<"Event"> | string
     category?: EnumCategoryWithAggregatesFilter<"Event"> | $Enums.Category
     location?: StringWithAggregatesFilter<"Event"> | string
     description?: StringWithAggregatesFilter<"Event"> | string
@@ -14316,8 +14316,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -14343,8 +14343,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -14368,8 +14368,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -14395,8 +14395,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -14421,8 +14421,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -14441,8 +14441,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -14462,8 +14462,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -16988,8 +16988,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -17013,8 +17013,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -17102,8 +17102,8 @@ export namespace Prisma {
     slug?: StringFilter<"Event"> | string
     startDay?: DateTimeFilter<"Event"> | Date | string
     endDay?: DateTimeFilter<"Event"> | Date | string
-    startTime?: DateTimeFilter<"Event"> | Date | string
-    endTime?: DateTimeFilter<"Event"> | Date | string
+    startTime?: StringFilter<"Event"> | string
+    endTime?: StringFilter<"Event"> | string
     category?: EnumCategoryFilter<"Event"> | $Enums.Category
     location?: StringFilter<"Event"> | string
     description?: StringFilter<"Event"> | string
@@ -17521,8 +17521,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -17547,8 +17547,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -17617,8 +17617,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -17643,8 +17643,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -17683,8 +17683,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -17709,8 +17709,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -17813,8 +17813,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -17839,8 +17839,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -17986,8 +17986,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -18012,8 +18012,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -18164,8 +18164,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -18190,8 +18190,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -18312,8 +18312,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -18338,8 +18338,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -18431,8 +18431,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -18457,8 +18457,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -18526,8 +18526,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -18552,8 +18552,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -18685,8 +18685,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -18711,8 +18711,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -18977,8 +18977,8 @@ export namespace Prisma {
     slug: string
     startDay: Date | string
     endDay: Date | string
-    startTime: Date | string
-    endTime: Date | string
+    startTime: string
+    endTime: string
     category: $Enums.Category
     location: string
     description: string
@@ -19008,8 +19008,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -19033,8 +19033,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string
@@ -19058,8 +19058,8 @@ export namespace Prisma {
     slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    startTime?: StringFieldUpdateOperationsInput | string
+    endTime?: StringFieldUpdateOperationsInput | string
     category?: EnumCategoryFieldUpdateOperationsInput | $Enums.Category
     location?: StringFieldUpdateOperationsInput | string
     description?: StringFieldUpdateOperationsInput | string

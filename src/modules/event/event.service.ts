@@ -45,19 +45,6 @@ export class EventService {
     // 3. Validasi tanggal
     const startDate = new Date(startDay);
     const endDate = new Date(endDay);
-    const startDateTime = timeStringToDate(startDay, startTime);
-    const endDateTime = timeStringToDate(endDay, endTime);
-
-    if (endDate < startDate) {
-      throw new ApiError("End date must be after or equal to start date", 400);
-    }
-
-    if (endDateTime <= startDateTime) {
-      throw new ApiError("End time must be after start time", 400);
-    }
-
-
-   
 
     const generateUniqueSlug = async (title: string): Promise<string> => {
       const baseSlug = generateSlug(title);
@@ -73,7 +60,6 @@ export class EventService {
 
     const slug = await generateUniqueSlug(title);
 
-
     // 4. Create event
     return prisma.event.create({
       data: {
@@ -81,8 +67,8 @@ export class EventService {
         slug,
         startDay: startDate,
         endDay: endDate,
-        startTime: startDateTime,
-        endTime: endDateTime,
+        startTime,
+        endTime,
         category,
         location,
         description,
