@@ -47,20 +47,22 @@ export class EventController {
   getEvents = async (req: Request, res: Response) => {
     const query = plainToInstance(PaginationQueryParams, req.query);
     const result = await this.eventService.getEvents(query);
-    res
-      .status(200)
-      .json(result);
+    res.status(200).json(result);
   };
 
-  getEventDetailById = async (req: Request, res: Response) => {
-    const { id } = req.params;
-    const result = await this.eventService.getEventDetailById(id);
-    res.status(200).send(result);
-  };
+  
 
   filterEventsByCategoryOrLocation = async (req: Request, res: Response) => {
     const query = plainToInstance(FilterEventsDTO, req.query);
-  const result = await this.eventService.filterEventsByCategoryOrLocation(query);
-  res.status(200).send(result);
+    const result =
+      await this.eventService.filterEventsByCategoryOrLocation(query);
+    res.status(200).send(result);
+  };
+
+  getEventDetailBySlug = async (req: Request, res: Response) => {
+    const { slug } = req.params;
+    console.log(slug)
+    const event = await this.eventService.getEventDetailBySlug(slug);
+    res.status(200).json(event);
   };
 }
