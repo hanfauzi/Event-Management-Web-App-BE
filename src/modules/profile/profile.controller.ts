@@ -15,15 +15,20 @@ export class ProfileController {
     const file = req.file;
     const userId = res.locals.payload.userId;
 
-    const uploaded = await this.cloudinaryService.upload(
-      file!,
-      "photo-profile"
-    );
+    let imageUrl;
+
+    if (file) {
+      const uploaded = await this.cloudinaryService.upload(
+        file,
+        "photo-profile"
+      );
+      imageUrl = uploaded.secure_url;
+    }
 
     const result = await this.profileService.userProfileUpdate({
       userId,
       ...req.body,
-      imageUrl: uploaded.secure_url,
+      ...(imageUrl && { imageUrl }), // hanya dikirim kalau ada
     });
 
     res.status(200).send(result);
@@ -33,15 +38,20 @@ export class ProfileController {
     const file = req.file;
     const organizerId = res.locals.payload.userId;
 
-    const uploaded = await this.cloudinaryService.upload(
-      file!,
-      "logo-organizer"
-    );
+    let logoUrl;
+
+    if (file) {
+      const uploaded = await this.cloudinaryService.upload(
+        file,
+        "logo-organizer"
+      );
+      logoUrl = uploaded.secure_url;
+    }
 
     const result = await this.profileService.organizerProfileUpdate({
       organizerId,
       ...req.body,
-      logoUrl: uploaded.secure_url,
+      ...(logoUrl && { logoUrl }),
     });
 
     res.status(200).send(result);
