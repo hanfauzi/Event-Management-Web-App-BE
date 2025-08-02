@@ -9,6 +9,24 @@ import { GetEventsDTO } from "./dto/get-events.dto";
 
 export class EventService {
   createEvent = async (body: CreateEventDTO, organizerId: string) => {
+    // 1. Cek apakah organizer verified
+    const organizer = await prisma.organizer.findFirst({
+      where: { id: organizerId },
+      select: { verified: true },
+    });
+
+    if (!organizer) {
+      throw new ApiError("Organizer not found", 404);
+    }
+
+    if (!organizer.verified) {
+      throw new ApiError(
+        "Your profile is not verified. Complete your profile first.",
+        403
+      );
+    }
+
+    // 2. Ambil field dari body
     const {
       title,
       startDay,
@@ -24,6 +42,7 @@ export class EventService {
       maxCapacity,
     } = body;
 
+    // 3. Validasi tanggal
     const startDate = new Date(startDay);
     const endDate = new Date(endDay);
     const startDateTime = timeStringToDate(startDay, startTime);
@@ -36,12 +55,14 @@ export class EventService {
     if (endDateTime <= startDateTime) {
       throw new ApiError("End time must be after start time", 400);
     }
+
     const slug = generateSlug(body.title);
 
+    // 4. Create event
     return prisma.event.create({
       data: {
         title,
-        slug: slug,
+        slug,
         startDay: startDate,
         endDay: endDate,
         startTime: startDateTime,
@@ -74,7 +95,7 @@ export class EventService {
       orderBy: { [sortBy]: sortOrder },
       skip: (page - 1) * take,
       take: take,
-      include: { organizer: {select: {orgName: true}} },
+      include: { organizer: { select: { orgName: true } } },
     });
 
     const total = await prisma.event.count({ where: whereClause });
@@ -110,7 +131,8 @@ export class EventService {
     const whereClause: Prisma.EventWhereInput = {};
 
     if (category) whereClause.category = category;
-    if (location) whereClause.location = {contains: location, mode: 'insensitive'};
+    if (location)
+      whereClause.location = { contains: location, mode: "insensitive" };
     if (search) whereClause.title = { contains: search, mode: "insensitive" };
 
     const events = await prisma.event.findMany({

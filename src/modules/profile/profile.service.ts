@@ -99,19 +99,38 @@ export class ProfileService {
       ...(logoUrl && { logoUrl }),
     };
 
-    return await prisma.organizer.update({
+    const updatedOrganizer = await prisma.organizer.update({
       where: { id: organizerId },
       data: dataToUpdate,
-      select: {
-        orgName: true,
-        address: true,
-        bio: true,
-        phoneNumber: true,
-        username: true,
-        email: true,
-        logoUrl: true,
-      },
     });
+
+    // ✅ Cek apakah sudah lengkap & belum verified
+    const isProfileComplete =
+      updatedOrganizer.orgName &&
+      updatedOrganizer.address &&
+      updatedOrganizer.phoneNumber &&
+      updatedOrganizer.email &&
+      updatedOrganizer.bio &&
+      updatedOrganizer.username &&
+      updatedOrganizer.logoUrl;
+
+    if (isProfileComplete && !updatedOrganizer.verified) {
+      await prisma.organizer.update({
+        where: { id: organizerId },
+        data: { verified: true },
+      });
+    }
+
+    return {
+      orgName: updatedOrganizer.orgName,
+      address: updatedOrganizer.address,
+      bio: updatedOrganizer.bio,
+      phoneNumber: updatedOrganizer.phoneNumber,
+      username: updatedOrganizer.username,
+      email: updatedOrganizer.email,
+      logoUrl: updatedOrganizer.logoUrl,
+      verified: updatedOrganizer.verified, // kalau kamu mau return juga
+    };
   };
 
   getUserProfile = async (userId: string) => {
@@ -195,7 +214,7 @@ export class ProfileService {
     return { message: "Change password successfull!" };
   };
 
-    organizerResetPassword = async ({
+  organizerResetPassword = async ({
     organizerId,
     oldPassword,
     newPassword,
