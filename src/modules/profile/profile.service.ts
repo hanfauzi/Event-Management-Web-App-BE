@@ -140,6 +140,8 @@ export class ProfileService {
         email: true,
         orgName: true,
         phoneNumber: true,
+        address: true,
+        bio: true,
         logoUrl: true,
       },
     });
