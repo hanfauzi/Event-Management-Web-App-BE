@@ -3,6 +3,8 @@ import { AuthController } from "./auth.controller";
 import { validateBody } from "../../middlewares/validate.middleware";
 import { RegisterDTO } from "./dto/register.dto";
 import { LoginDTO } from "./dto/login.dto";
+import { EmailDTO } from "./dto/email.forgot.password.dto";
+import { ForgotPasswordDTO } from "./dto/forgot.password.dto";
 
 export class AuthRouter {
   private router: Router;
@@ -35,6 +37,30 @@ export class AuthRouter {
       "/login/organizer",
       validateBody(LoginDTO),
       this.authController.organizerLogin
+    );
+
+    this.router.patch(
+      "/forgot-password",
+      validateBody(EmailDTO),
+      this.authController.userEmailForgotPassword
+    );
+
+    this.router.patch(
+      "/organizer/forgot-password",
+      validateBody(EmailDTO),
+      this.authController.organizerEmailForgotPassword
+    );
+
+    this.router.patch(
+      "/forgot-password/:token",
+      validateBody(ForgotPasswordDTO),
+      this.authController.forgotUserPassword
+    );
+
+     this.router.patch(
+    "/organizer/forgot-password/:token",
+    validateBody(ForgotPasswordDTO),
+    this.authController.forgotOrganizerPassword
     );
   };
 

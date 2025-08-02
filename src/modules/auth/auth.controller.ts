@@ -27,4 +27,30 @@ export class AuthController {
     const result = await this.authService.organizerLogin(req.body);
     res.status(200).send(result);
   };
+
+  userEmailForgotPassword = async (req:Request, res: Response) => {
+    const result = await this.authService.sendUserForgotPasswordEmail(req.body)
+    res.status(200).send(result)
+  }
+
+  organizerEmailForgotPassword = async (req:Request, res: Response) => {
+    const result = await this.authService.sendOrganizerForgotPasswordEmail(req.body)
+    res.status(200).send(result)
+  }
+
+  forgotUserPassword = async (req:Request, res: Response) => {
+    const {token} = req.params
+    const {newPassword} = req.body
+
+    const result = await this.authService.forgotUserPasswordByToken({token, newPassword})
+    res.status(200).send(result);
+  }
+
+  forgotOrganizerPassword = async (req:Request, res: Response) => {
+    const {token} = req.params
+    const {newPassword} = req.body
+
+    const result = await this.authService.forgotOrganizerPasswordByToken({token, newPassword})
+    res.status(200).send(result);
+  }
 }
