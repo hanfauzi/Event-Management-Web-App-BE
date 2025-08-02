@@ -71,7 +71,7 @@ export class EventService {
       orderBy: { [sortBy]: sortOrder },
       skip: (page - 1) * take,
       take: take,
-      include: { organizer: {omit: {password: true, id:true,}} },
+      include: { organizer: {select: {orgName: true}} },
     });
 
     const total = await prisma.event.count({ where: whereClause });
