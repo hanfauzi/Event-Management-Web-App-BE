@@ -76,6 +76,7 @@ model Event {
   organizerId String
 
   title       String
+  slug        String      @unique
   startDay    DateTime    @map("start_day") @db.Date()
   endDay      DateTime    @map("end_day") @db.Date()
   startTime   DateTime    @map("start_time") @db.Time()

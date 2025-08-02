@@ -76,6 +76,7 @@ model Event {
   organizerId String
 
   title       String
+  slug        String      @unique
   startDay    DateTime    @map("start_day") @db.Date()
   endDay      DateTime    @map("end_day") @db.Date()
   startTime   DateTime    @map("start_time") @db.Time()
@@ -221,16 +222,15 @@ model Voucher {
   endDate        DateTime @map("end_date")
   isActive       Boolean  @default(true) @map("is_active")
 
-  organizerId String? @map("organizer_id")  // jadikan optional
-  eventId     String? @map("event_id")      // jadikan optional
+  organizerId String? @map("organizer_id") // jadikan optional
+  eventId     String? @map("event_id") // jadikan optional
 
-  organizer   Organizer? @relation(fields: [organizerId], references: [id])
-  event       Event?     @relation(fields: [eventId], references: [id])
+  organizer   Organizer?    @relation(fields: [organizerId], references: [id])
+  event       Event?        @relation(fields: [eventId], references: [id])
   Transaction Transaction[]
 
   @@map("vouchers")
 }
-
 
 model UserPointLog {
   id     String @id @default(uuid())

@@ -4464,6 +4464,7 @@ export namespace Prisma {
     id: string | null
     organizerId: string | null
     title: string | null
+    slug: string | null
     startDay: Date | null
     endDay: Date | null
     startTime: Date | null
@@ -4484,6 +4485,7 @@ export namespace Prisma {
     id: string | null
     organizerId: string | null
     title: string | null
+    slug: string | null
     startDay: Date | null
     endDay: Date | null
     startTime: Date | null
@@ -4504,6 +4506,7 @@ export namespace Prisma {
     id: number
     organizerId: number
     title: number
+    slug: number
     startDay: number
     endDay: number
     startTime: number
@@ -4536,6 +4539,7 @@ export namespace Prisma {
     id?: true
     organizerId?: true
     title?: true
+    slug?: true
     startDay?: true
     endDay?: true
     startTime?: true
@@ -4556,6 +4560,7 @@ export namespace Prisma {
     id?: true
     organizerId?: true
     title?: true
+    slug?: true
     startDay?: true
     endDay?: true
     startTime?: true
@@ -4576,6 +4581,7 @@ export namespace Prisma {
     id?: true
     organizerId?: true
     title?: true
+    slug?: true
     startDay?: true
     endDay?: true
     startTime?: true
@@ -4683,6 +4689,7 @@ export namespace Prisma {
     id: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date
     endDay: Date
     startTime: Date
@@ -4722,6 +4729,7 @@ export namespace Prisma {
     id?: boolean
     organizerId?: boolean
     title?: boolean
+    slug?: boolean
     startDay?: boolean
     endDay?: boolean
     startTime?: boolean
@@ -4749,6 +4757,7 @@ export namespace Prisma {
     id?: boolean
     organizerId?: boolean
     title?: boolean
+    slug?: boolean
     startDay?: boolean
     endDay?: boolean
     startTime?: boolean
@@ -4770,6 +4779,7 @@ export namespace Prisma {
     id?: boolean
     organizerId?: boolean
     title?: boolean
+    slug?: boolean
     startDay?: boolean
     endDay?: boolean
     startTime?: boolean
@@ -4791,6 +4801,7 @@ export namespace Prisma {
     id?: boolean
     organizerId?: boolean
     title?: boolean
+    slug?: boolean
     startDay?: boolean
     endDay?: boolean
     startTime?: boolean
@@ -4807,7 +4818,7 @@ export namespace Prisma {
     deletedAt?: boolean
   }
 
-  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizerId" | "title" | "startDay" | "endDay" | "startTime" | "endTime" | "category" | "location" | "description" | "imageURL" | "price" | "maxCapacity" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["event"]>
+  export type EventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "organizerId" | "title" | "slug" | "startDay" | "endDay" | "startTime" | "endTime" | "category" | "location" | "description" | "imageURL" | "price" | "maxCapacity" | "status" | "createdAt" | "updatedAt" | "deletedAt", ExtArgs["result"]["event"]>
   export type EventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     organizer?: boolean | OrganizerDefaultArgs<ExtArgs>
     tickets?: boolean | Event$ticketsArgs<ExtArgs>
@@ -4838,6 +4849,7 @@ export namespace Prisma {
       id: string
       organizerId: string
       title: string
+      slug: string
       startDay: Date
       endDay: Date
       startTime: Date
@@ -5284,6 +5296,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Event", 'String'>
     readonly organizerId: FieldRef<"Event", 'String'>
     readonly title: FieldRef<"Event", 'String'>
+    readonly slug: FieldRef<"Event", 'String'>
     readonly startDay: FieldRef<"Event", 'DateTime'>
     readonly endDay: FieldRef<"Event", 'DateTime'>
     readonly startTime: FieldRef<"Event", 'DateTime'>
@@ -12906,6 +12919,7 @@ export namespace Prisma {
     id: 'id',
     organizerId: 'organizerId',
     title: 'title',
+    slug: 'slug',
     startDay: 'startDay',
     endDay: 'endDay',
     startTime: 'startTime',
@@ -13412,6 +13426,7 @@ export namespace Prisma {
     id?: StringFilter<"Event"> | string
     organizerId?: StringFilter<"Event"> | string
     title?: StringFilter<"Event"> | string
+    slug?: StringFilter<"Event"> | string
     startDay?: DateTimeFilter<"Event"> | Date | string
     endDay?: DateTimeFilter<"Event"> | Date | string
     startTime?: DateTimeFilter<"Event"> | Date | string
@@ -13438,6 +13453,7 @@ export namespace Prisma {
     id?: SortOrder
     organizerId?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     startDay?: SortOrder
     endDay?: SortOrder
     startTime?: SortOrder
@@ -13462,6 +13478,7 @@ export namespace Prisma {
 
   export type EventWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    slug?: string
     AND?: EventWhereInput | EventWhereInput[]
     OR?: EventWhereInput[]
     NOT?: EventWhereInput | EventWhereInput[]
@@ -13487,12 +13504,13 @@ export namespace Prisma {
     reviews?: ReviewListRelationFilter
     vouchers?: VoucherListRelationFilter
     TicketCategory?: TicketCategoryListRelationFilter
-  }, "id">
+  }, "id" | "slug">
 
   export type EventOrderByWithAggregationInput = {
     id?: SortOrder
     organizerId?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     startDay?: SortOrder
     endDay?: SortOrder
     startTime?: SortOrder
@@ -13521,6 +13539,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Event"> | string
     organizerId?: StringWithAggregatesFilter<"Event"> | string
     title?: StringWithAggregatesFilter<"Event"> | string
+    slug?: StringWithAggregatesFilter<"Event"> | string
     startDay?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     endDay?: DateTimeWithAggregatesFilter<"Event"> | Date | string
     startTime?: DateTimeWithAggregatesFilter<"Event"> | Date | string
@@ -14294,6 +14313,7 @@ export namespace Prisma {
   export type EventCreateInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -14320,6 +14340,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -14344,6 +14365,7 @@ export namespace Prisma {
   export type EventUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14370,6 +14392,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14395,6 +14418,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -14414,6 +14438,7 @@ export namespace Prisma {
   export type EventUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -14434,6 +14459,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15295,6 +15321,7 @@ export namespace Prisma {
     id?: SortOrder
     organizerId?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     startDay?: SortOrder
     endDay?: SortOrder
     startTime?: SortOrder
@@ -15320,6 +15347,7 @@ export namespace Prisma {
     id?: SortOrder
     organizerId?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     startDay?: SortOrder
     endDay?: SortOrder
     startTime?: SortOrder
@@ -15340,6 +15368,7 @@ export namespace Prisma {
     id?: SortOrder
     organizerId?: SortOrder
     title?: SortOrder
+    slug?: SortOrder
     startDay?: SortOrder
     endDay?: SortOrder
     startTime?: SortOrder
@@ -16956,6 +16985,7 @@ export namespace Prisma {
   export type EventCreateWithoutOrganizerInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -16980,6 +17010,7 @@ export namespace Prisma {
   export type EventUncheckedCreateWithoutOrganizerInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -17068,6 +17099,7 @@ export namespace Prisma {
     id?: StringFilter<"Event"> | string
     organizerId?: StringFilter<"Event"> | string
     title?: StringFilter<"Event"> | string
+    slug?: StringFilter<"Event"> | string
     startDay?: DateTimeFilter<"Event"> | Date | string
     endDay?: DateTimeFilter<"Event"> | Date | string
     startTime?: DateTimeFilter<"Event"> | Date | string
@@ -17486,6 +17518,7 @@ export namespace Prisma {
   export type EventCreateWithoutTicketCategoryInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -17511,6 +17544,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -17580,6 +17614,7 @@ export namespace Prisma {
   export type EventUpdateWithoutTicketCategoryInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17605,6 +17640,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17644,6 +17680,7 @@ export namespace Prisma {
   export type EventCreateWithoutTicketsInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -17669,6 +17706,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -17772,6 +17810,7 @@ export namespace Prisma {
   export type EventUpdateWithoutTicketsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17797,6 +17836,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -17943,6 +17983,7 @@ export namespace Prisma {
   export type EventCreateWithoutTransactionsInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -17968,6 +18009,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -18119,6 +18161,7 @@ export namespace Prisma {
   export type EventUpdateWithoutTransactionsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18144,6 +18187,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18265,6 +18309,7 @@ export namespace Prisma {
   export type EventCreateWithoutReviewsInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -18290,6 +18335,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -18382,6 +18428,7 @@ export namespace Prisma {
   export type EventUpdateWithoutReviewsInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18407,6 +18454,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18475,6 +18523,7 @@ export namespace Prisma {
   export type EventCreateWithoutVouchersInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -18500,6 +18549,7 @@ export namespace Prisma {
     id?: string
     organizerId: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -18632,6 +18682,7 @@ export namespace Prisma {
   export type EventUpdateWithoutVouchersInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18657,6 +18708,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     organizerId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18922,6 +18974,7 @@ export namespace Prisma {
   export type EventCreateManyOrganizerInput = {
     id?: string
     title: string
+    slug: string
     startDay: Date | string
     endDay: Date | string
     startTime: Date | string
@@ -18952,6 +19005,7 @@ export namespace Prisma {
   export type EventUpdateWithoutOrganizerInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -18976,6 +19030,7 @@ export namespace Prisma {
   export type EventUncheckedUpdateWithoutOrganizerInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19000,6 +19055,7 @@ export namespace Prisma {
   export type EventUncheckedUpdateManyWithoutOrganizerInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
     startDay?: DateTimeFieldUpdateOperationsInput | Date | string
     endDay?: DateTimeFieldUpdateOperationsInput | Date | string
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
