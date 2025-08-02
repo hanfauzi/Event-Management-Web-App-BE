@@ -23,8 +23,8 @@ export class EventRouter {
       this.eventController.createEvent as any
     );
     this.router.get("/events", this.eventController.getEvents);
-    this.router.get("/event/:id", this.eventController.getEventDetailById);
     this.router.get("/filtered-events", this.eventController.filterEventsByCategoryOrLocation)
+    this.router.get("/event/:slug", this.eventController.getEventDetailBySlug)
   };
 
   getRouter = () => {

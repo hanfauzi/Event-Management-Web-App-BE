@@ -56,7 +56,23 @@ export class EventService {
       throw new ApiError("End time must be after start time", 400);
     }
 
-    const slug = generateSlug(body.title);
+
+   
+
+    const generateUniqueSlug = async (title: string): Promise<string> => {
+      const baseSlug = generateSlug(title);
+      let slug = baseSlug;
+      let count = 1;
+
+      while (await prisma.event.findUnique({ where: { slug } })) {
+        slug = `${baseSlug}-${count}`;
+        count++;
+      }
+      return slug;
+    };
+
+    const slug = await generateUniqueSlug(title);
+
 
     // 4. Create event
     return prisma.event.create({
@@ -106,24 +122,6 @@ export class EventService {
     };
   };
 
-  // tampilan detail events yang dipilih
-  getEventDetailById = async (id: string) => {
-    const event = await prisma.event.findUnique({
-      where: { id },
-      include: {
-        organizer: {
-          select: { orgName: true },
-        },
-      },
-    });
-
-    if (!event) {
-      throw new ApiError("Event not found", 404);
-    }
-
-    return event;
-  };
-
   // filter events by category atau location
   filterEventsByCategoryOrLocation = async (query: FilterEventsDTO) => {
     const { category, location, search, page = 1, take = 8 } = query;
@@ -148,5 +146,23 @@ export class EventService {
       data: events,
       meta: { page, take, total },
     };
+  };
+
+  // get detail event berdasarkan slug
+  getEventDetailBySlug = async (slug: string) => {
+    const event = await prisma.event.findUnique({
+      where: { slug },
+      include: {
+        organizer: {
+          select: { orgName: true },
+        },
+      },
+    });
+
+    if (!event) {
+      throw new ApiError("Event not found", 404);
+    }
+
+    return event;
   };
 }
