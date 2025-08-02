@@ -45,6 +45,20 @@ export class ProfileRouter {
       JwtVerify.verifyRole(["ORGANIZER"]),
       this.profileController.organizerProfile
     );
+
+    this.router.patch(
+      "/reset-password",
+      JwtVerify.verifyToken,
+      JwtVerify.verifyRole(["USER"]),
+      this.profileController.userResetPassword
+    );
+
+      this.router.patch(
+      "/organizer/reset-password",
+      JwtVerify.verifyToken,
+      JwtVerify.verifyRole(["ORGANIZER"]),
+      this.profileController.organizerResetPassword
+    );
   };
 
   getRouter = () => {

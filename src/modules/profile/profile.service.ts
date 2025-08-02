@@ -1,10 +1,15 @@
 import { ApiError } from "../../utils/api.error";
+import { PasswordService } from "../password/password.service";
 import prisma from "../prisma/prisma.service";
 import { OrganizerProfileUpdateDTO } from "./dto/org.profile.dto";
+import { PasswordDTO } from "./dto/password.dto";
 import { UserProfileUpdateDTO } from "./dto/profile.dto";
 
 export class ProfileService {
-  constructor() {}
+  private passwordService: PasswordService;
+  constructor() {
+    this.passwordService = new PasswordService();
+  }
 
   userProfileUpdate = async ({
     userId,
@@ -151,5 +156,79 @@ export class ProfileService {
     }
 
     return organizer;
+  };
+
+  userResetPassword = async ({
+    userId,
+    oldPassword,
+    newPassword,
+  }: PasswordDTO & { userId: string }) => {
+    // 1. Ambil user dari DB
+    const user = await prisma.user.findFirst({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      throw new ApiError("User not Found!", 404);
+    }
+
+    // 2. Cek apakah oldPassword cocok
+    const isMatch = await this.passwordService.comparePassword(
+      oldPassword,
+      user.password
+    );
+
+    if (!isMatch) {
+      throw new ApiError("Old password incorrect!", 400);
+    }
+
+    // 3. Hash newPassword
+    const hashedNewPassword =
+      await this.passwordService.hashPassword(newPassword);
+
+    // 4. Update password di DB
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { password: hashedNewPassword },
+    });
+
+    return { message: "Change password successfull!" };
+  };
+
+    organizerResetPassword = async ({
+    organizerId,
+    oldPassword,
+    newPassword,
+  }: PasswordDTO & { organizerId: string }) => {
+    // 1. Ambil user dari DB
+    const organizer = await prisma.organizer.findFirst({
+      where: { id: organizerId },
+    });
+
+    if (!organizer) {
+      throw new ApiError("Organizer not Found!", 404);
+    }
+
+    // 2. Cek apakah oldPassword cocok
+    const isMatch = await this.passwordService.comparePassword(
+      oldPassword,
+      organizer.password
+    );
+
+    if (!isMatch) {
+      throw new ApiError("Old password incorrect!", 400);
+    }
+
+    // 3. Hash newPassword
+    const hashedNewPassword =
+      await this.passwordService.hashPassword(newPassword);
+
+    // 4. Update password di DB
+    await prisma.organizer.update({
+      where: { id: organizer.id },
+      data: { password: hashedNewPassword },
+    });
+
+    return { message: "Change password successfull!" };
   };
 }
