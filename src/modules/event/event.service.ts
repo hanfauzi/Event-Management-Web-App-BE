@@ -1,5 +1,6 @@
 import { Prisma } from "../../generated/prisma";
 import { ApiError } from "../../utils/api.error";
+import { generateSlug } from "../../utils/generate-slug";
 import { timeStringToDate } from "../../utils/time";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
@@ -35,10 +36,12 @@ export class EventService {
     if (endDateTime <= startDateTime) {
       throw new ApiError("End time must be after start time", 400);
     }
+    const slug = generateSlug(body.title);
 
     return prisma.event.create({
       data: {
         title,
+        slug: slug,
         startDay: startDate,
         endDay: endDate,
         startTime: startDateTime,
