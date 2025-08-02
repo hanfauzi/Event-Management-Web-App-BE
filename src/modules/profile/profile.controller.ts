@@ -70,4 +70,24 @@ export class ProfileController {
 
     res.status(200).send(result);
   };
+
+  userResetPassword = async (req: Request, res: Response) => {
+    const userId = res.locals.payload.userId;
+    const result = await this.profileService.userResetPassword({
+      userId,
+      ...req.body,
+    });
+
+    res.status(200).send(result);
+  };
+
+  organizerResetPassword = async (req: Request, res: Response) => {
+    const organizerId = res.locals.payload.userId;
+    const result = await this.profileService.organizerResetPassword({
+      organizerId,
+      ...req.body,
+    });
+
+    res.status(200).send(result);
+  };
 }
