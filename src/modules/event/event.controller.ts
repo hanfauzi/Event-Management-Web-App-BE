@@ -24,14 +24,17 @@ export class EventController {
     }
     const uploaded = await this.cloudinaryService.upload(file!, "event-images");
 
-    const data = plainToInstance(CreateEventDTO, {
+    const parsedBody = {
       ...req.body,
+      ticketCategories: JSON.parse(req.body.ticketCategories),
       imageURL: uploaded.secure_url,
-    });
+    };
+    const data = plainToInstance(CreateEventDTO, parsedBody);
     const errors = await validate(data);
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
+
 
     const organizer = res.locals.payload;
 
@@ -50,8 +53,6 @@ export class EventController {
     res.status(200).json(result);
   };
 
-  
-
   filterEventsByCategoryOrLocation = async (req: Request, res: Response) => {
     const query = plainToInstance(FilterEventsDTO, req.query);
     const result =
@@ -61,7 +62,7 @@ export class EventController {
 
   getEventDetailBySlug = async (req: Request, res: Response) => {
     const { slug } = req.params;
-    console.log(slug)
+    console.log(slug);
     const event = await this.eventService.getEventDetailBySlug(slug);
     res.status(200).json(event);
   };
