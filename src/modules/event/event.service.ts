@@ -2,6 +2,7 @@ import { Prisma } from "../../generated/prisma";
 import { ApiError } from "../../utils/api.error";
 import { generateSlug } from "../../utils/generate-slug";
 import { timeStringToDate } from "../../utils/time";
+import { generateUniqueSlug } from "../../utils/unique-slug";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
 import { EditEventDTO } from "./dto/edit-event.dot";
@@ -9,7 +10,7 @@ import { FilterEventsDTO } from "./dto/filter-events.dto";
 import { GetEventsDTO } from "./dto/get-events.dto";
 
 export class EventService {
-  createEvent = async (body: CreateEventDTO, organizerId: string) => {
+   createEvent = async (body: CreateEventDTO, organizerId: string) => {
     // 1. Cek apakah organizer verified
     const organizer = await prisma.organizer.findFirst({
       where: { id: organizerId },
@@ -38,31 +39,22 @@ export class EventService {
       location,
       description,
       imageURL,
-      price,
       status,
       maxCapacity,
+      ticketCategories, 
     } = body;
 
     // 3. Validasi tanggal
     const startDate = new Date(startDay);
     const endDate = new Date(endDay);
 
-    const generateUniqueSlug = async (title: string): Promise<string> => {
-      const baseSlug = generateSlug(title);
-      let slug = baseSlug;
-      let count = 1;
-
-      while (await prisma.event.findUnique({ where: { slug } })) {
-        slug = `${baseSlug}-${count}`;
-        count++;
-      }
-      return slug;
-    };
+    // 4. Generate unique slug
+    
 
     const slug = await generateUniqueSlug(title);
 
-    // 4. Create event
-    return prisma.event.create({
+    // 5. Buat event utama terlebih dahulu
+    const createdEvent = await prisma.event.create({
       data: {
         title,
         slug,
@@ -74,12 +66,33 @@ export class EventService {
         location,
         description,
         imageURL,
-        price,
         maxCapacity,
         status: status ?? EventStatus.UPCOMING,
         organizerId,
       },
     });
+
+    // 6. Buat ticket categories (pakai createMany)
+    await prisma.ticketCategory.createMany({
+      data: ticketCategories.map((tc) => ({
+        name: tc.name,
+        price: tc.price,
+        quota: tc.quota,
+        eventId: createdEvent.id,
+      })),
+    });
+
+    const completeEventInfo = await prisma.event.findUnique({
+      where: {id: createdEvent.id},
+      include: {
+        ticketCategories: true,
+        organizer: {
+          select: {orgName: true}
+        }
+      }
+    })
+
+    return completeEventInfo;
   };
 
   // tampilan landing page untuk semua event tersedia
@@ -98,7 +111,7 @@ export class EventService {
       orderBy: { [sortBy]: sortOrder },
       skip: (page - 1) * take,
       take: take,
-      include: { organizer: { select: { orgName: true } } },
+      include: { organizer: { select: { orgName: true } }, ticketCategories: true },
     });
 
     const total = await prisma.event.count({ where: whereClause });
@@ -111,7 +124,9 @@ export class EventService {
 
   // filter events by category atau location
   filterEventsByCategoryOrLocation = async (query: FilterEventsDTO) => {
-    const { category, location, search, page = 1, take = 8 } = query;
+    const { category, location, search } = query;
+    const page = parseInt(query.page as any) || 1;
+    const take = parseInt(query.take as any) || 8;
 
     const whereClause: Prisma.EventWhereInput = {};
 
@@ -140,6 +155,7 @@ export class EventService {
     const event = await prisma.event.findUnique({
       where: { slug },
       include: {
+        ticketCategories: true,
         organizer: {
           select: { orgName: true },
         },

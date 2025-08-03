@@ -25,14 +25,17 @@ export class EventController {
     }
     const uploaded = await this.cloudinaryService.upload(file!, "event-images");
 
-    const data = plainToInstance(CreateEventDTO, {
+    const parsedBody = {
       ...req.body,
+      ticketCategories: JSON.parse(req.body.ticketCategories),
       imageURL: uploaded.secure_url,
-    });
+    };
+    const data = plainToInstance(CreateEventDTO, parsedBody);
     const errors = await validate(data);
     if (errors.length > 0) {
       return res.status(400).json({ errors });
     }
+
 
     const organizer = res.locals.payload;
 
