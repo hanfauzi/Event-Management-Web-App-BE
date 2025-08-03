@@ -25,6 +25,7 @@ export class EventRouter {
     this.router.get("/events", this.eventController.getEvents);
     this.router.get("/filtered-events", this.eventController.filterEventsByCategoryOrLocation)
     this.router.get("/event/:slug", this.eventController.getEventDetailBySlug)
+    this.router.patch("/edit-event/:id", JwtVerify.verifyToken, this.eventController.eventUpdate)
   };
 
   getRouter = () => {

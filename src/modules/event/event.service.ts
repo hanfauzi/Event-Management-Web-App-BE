@@ -4,6 +4,7 @@ import { generateSlug } from "../../utils/generate-slug";
 import { timeStringToDate } from "../../utils/time";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
+import { EditEventDTO } from "./dto/edit-event.dot";
 import { FilterEventsDTO } from "./dto/filter-events.dto";
 import { GetEventsDTO } from "./dto/get-events.dto";
 
@@ -150,5 +151,50 @@ export class EventService {
     }
 
     return event;
+  };
+
+  eventUpdate = async ({
+    id,
+    organizerId,
+    title,
+    startDay,
+    endDay,
+    startTime,
+    endTime,
+    category,
+    location,
+    description,
+    imageURL,
+    price,
+    status,
+    maxCapacity,
+  }: EditEventDTO & { id: string; organizerId: string }) => {
+    const organizer = await prisma.organizer.findFirst({
+      where: { id: organizerId },
+    });
+
+    if (!organizer) {
+      throw new ApiError("Organizer not found!", 404);
+    }
+    const updated = await prisma.event.update({
+      where: { id },
+      data: {
+        organizerId,
+        title,
+        startDay,
+        endDay,
+        startTime,
+        endTime,
+        category,
+        location,
+        description,
+        imageURL,
+        price,
+        status,
+        maxCapacity,
+      },
+    });
+
+    return updated;
   };
 }
