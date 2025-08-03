@@ -1,80 +1,92 @@
-import { Type } from 'class-transformer';
+import { Type } from "class-transformer";
 import {
+  IsArray,
   IsDateString,
   IsEnum,
   IsInt,
   IsNotEmpty,
+  IsOptional,
   IsString,
   IsUrl,
-  Min
-} from 'class-validator';
+  Min,
+  ValidateNested,
+} from "class-validator";
+import { CreateTicketCategoryDTO } from "./create-ticket-category.dto";
 
 export enum Category {
-  CULINARY = 'CULINARY',
-  MUSIC = 'MUSIC',
-  SPORT = 'SPORT',
-  COMEDY = 'COMEDY',
-  WORKSHOP = 'WORKSHOP',
-  ART = 'ART',
-  TRAVEL = 'TRAVEL',
-  EDUCATION = 'EDUCATION',
-  COMMUNITY = 'COMMUNITY',
-  FASHION = 'FASHION',
-  GAMING = 'GAMING',
-  HEALTH = 'HEALTH',
-  FAMILY = 'FAMILY',
-  RELIGION = 'RELIGION',
-  OTHER = 'OTHER',
+  CULINARY = "CULINARY",
+  MUSIC = "MUSIC",
+  SPORT = "SPORT",
+  COMEDY = "COMEDY",
+  WORKSHOP = "WORKSHOP",
+  ART = "ART",
+  TRAVEL = "TRAVEL",
+  EDUCATION = "EDUCATION",
+  COMMUNITY = "COMMUNITY",
+  FASHION = "FASHION",
+  GAMING = "GAMING",
+  HEALTH = "HEALTH",
+  FAMILY = "FAMILY",
+  RELIGION = "RELIGION",
+  OTHER = "OTHER",
 }
 
 export enum EventStatus {
-  UPCOMING = 'UPCOMING',
-  ONGOING = 'ONGOING',
-  DONE = 'DONE',
+  UPCOMING = "UPCOMING",
+  ONGOING = "ONGOING",
+  DONE = "DONE",
 }
 
 export class EditEventDTO {
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  title!: string;
+  title?: string;
 
- @IsDateString()
-  startDay!: string; // Format: YYYY-MM-DD
-
+  @IsOptional()
   @IsDateString()
-  endDay!: string;
+  startDay?: string; // Format: YYYY-MM-DD
 
+  @IsOptional()
+  @IsDateString()
+  endDay?: string;
+
+  @IsOptional()
   @IsString()
-  startTime!: string; // Format: HH:mm
+  startTime?: string; // Format: HH:mm
 
+  @IsOptional()
   @IsString()
-  endTime!: string;
+  endTime?: string;
 
-
+  @IsOptional()
   @IsEnum(Category)
-  category!: Category;
+  category?: Category;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  location!: string;
+  location?: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  description!: string;
+  description?: string;
 
-   @IsUrl()
-  imageURL!: string;
+  @IsOptional()
+  @IsUrl()
+  imageURL?: string;
 
+  @IsOptional()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CreateTicketCategoryDTO)
+  ticketCategories?: CreateTicketCategoryDTO[];
+
+  @IsOptional()
   @Type(() => Number)
   @IsInt()
-  @Min(0)
-  price!: number;
-
-  @Type(()=> Number)
-  @IsInt()
   @Min(1)
-  maxCapacity!: number;
+  maxCapacity?: number;
 
+  @IsOptional()
   @IsEnum(EventStatus)
-  status!: EventStatus;
+  status?: EventStatus;
 }
