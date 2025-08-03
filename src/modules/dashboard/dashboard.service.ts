@@ -34,30 +34,31 @@ export class DashboardService {
     };
   };
 
-  getMonthlySales = async (organizerId: string, year: number) => {
-    const result = await prisma.transaction.groupBy({
-      by: ["createdAt"],
-      where: {
-        event: { organizerId },
-        status: "DONE",
-        createdAt: {
-          gte: new Date(`${year}-01-01`),
-          lt: new Date(`${year + 1}-01-01`),
-        },
+getMonthlySales = async (organizerId: string, year: number) => {
+  const result = await prisma.transaction.findMany({
+    where: {
+      event: { organizerId },
+      status: "DONE",
+      createdAt: {
+        gte: new Date(`${year}-01-01`),
+        lt: new Date(`${year + 1}-01-01`),
       },
-      _sum: {
-        totalPrice: true,
-      },
-    });
+    },
+    select: {
+      createdAt: true,
+      totalPrice: true,
+    },
+  });
 
-    const monthly = Array(12).fill(0);
-    result.forEach((item) => {
-      const month = new Date(item.createdAt).getMonth(); // 0-11
-      monthly[month] += Number(item._sum.totalPrice ?? 0);
-    });
+  const monthly = Array(12).fill(0);
+  result.forEach((item) => {
+    const month = new Date(item.createdAt).getMonth(); // 0 = Jan, 11 = Dec
+    monthly[month] += Number(item.totalPrice ?? 0);
+  });
 
-    return monthly;
-  };
+  return monthly;
+};
+
 
   getRecentSales = async (organizerId: string, limit: number) => {
     const result = await prisma.transaction.findMany({
