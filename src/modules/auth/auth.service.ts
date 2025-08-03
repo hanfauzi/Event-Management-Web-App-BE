@@ -237,7 +237,7 @@ export class AuthService {
     const compiledHtml = Handlebars.compile(templateHtml);
     const resultHtml = compiledHtml({
       name: user.firstName ?? user.username ?? "there",
-      linkUrl: `${process.env.RESET_PASSWORD_URL!}/${token}`,
+      linkUrl: `${process.env.RESET_PASSWORD_URL_USER!}/${token}`,
     });
 
     await transporter.sendMail({
@@ -276,7 +276,7 @@ export class AuthService {
     const compiledHtml = Handlebars.compile(templateHtml);
     const resultHtml = compiledHtml({
       name: organizer.orgName ?? organizer.username ?? "there",
-      linkUrl: `${process.env.RESET_PASSWORD_URL!}/${token}`,
+      linkUrl: `${process.env.RESET_PASSWORD_URL_ORGANIZER!}/${token}`,
     });
 
     await transporter.sendMail({
@@ -293,7 +293,7 @@ export class AuthService {
     where: {
       resetPasswordToken: token,
       resetPasswordExpiry: {
-        gte: new Date(), // token belum expired
+        gte: new Date(), 
       },
     },
   });
