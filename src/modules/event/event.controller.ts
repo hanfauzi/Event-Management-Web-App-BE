@@ -6,6 +6,7 @@ import { CreateEventDTO } from "./dto/create-event.dto";
 import { CloudinaryService } from "../../cloudinary/cloudinary.service";
 import { PaginationQueryParams } from "../pagination/dto/pagination.dto";
 import { FilterEventsDTO } from "./dto/filter-events.dto";
+import { EditEventDTO } from "./dto/edit-event.dot";
 
 export class EventController {
   private eventService: EventService;
@@ -65,5 +66,36 @@ export class EventController {
     console.log(slug);
     const event = await this.eventService.getEventDetailBySlug(slug);
     res.status(200).json(event);
+  };
+
+  eventUpdate = async (req: Request, res: Response) => {
+    const file = req.file;
+    const eventId = req.params.id; // ✅ Ambil ID dari route param
+
+    if (!file) {
+       res.status(400).json({ message: "Image file is required" });
+    }
+
+    const uploaded = await this.cloudinaryService.upload(file!, "event-images");
+
+    const data = plainToInstance(EditEventDTO, {
+      ...req.body,
+      imageURL: uploaded.secure_url,
+    });
+
+    const errors = await validate(data);
+    if (errors.length > 0) {
+       res.status(400).json({ errors });
+    }
+
+    const organizerId = res.locals.payload.id;
+
+    const result = await this.eventService.eventUpdate({
+      ...data,
+      id: eventId, // ✅ Inject id event-nya ke data
+      organizerId, // ✅ Inject organizer ID dari payload
+    });
+
+    res.status(200).send(result);
   };
 }

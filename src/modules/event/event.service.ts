@@ -1,15 +1,14 @@
 import { Prisma } from "../../generated/prisma";
 import { ApiError } from "../../utils/api.error";
-import { generateSlug } from "../../utils/generate-slug";
-import { timeStringToDate } from "../../utils/time";
 import { generateUniqueSlug } from "../../utils/unique-slug";
 import prisma from "../prisma/prisma.service";
 import { CreateEventDTO, EventStatus } from "./dto/create-event.dto";
+import { EditEventDTO } from "./dto/edit-event.dot";
 import { FilterEventsDTO } from "./dto/filter-events.dto";
 import { GetEventsDTO } from "./dto/get-events.dto";
 
 export class EventService {
-   createEvent = async (body: CreateEventDTO, organizerId: string) => {
+  createEvent = async (body: CreateEventDTO, organizerId: string) => {
     // 1. Cek apakah organizer verified
     const organizer = await prisma.organizer.findFirst({
       where: { id: organizerId },
@@ -40,7 +39,7 @@ export class EventService {
       imageURL,
       status,
       maxCapacity,
-      ticketCategories, 
+      ticketCategories,
     } = body;
 
     // 3. Validasi tanggal
@@ -48,7 +47,6 @@ export class EventService {
     const endDate = new Date(endDay);
 
     // 4. Generate unique slug
-    
 
     const slug = await generateUniqueSlug(title);
 
@@ -82,14 +80,14 @@ export class EventService {
     });
 
     const completeEventInfo = await prisma.event.findUnique({
-      where: {id: createdEvent.id},
+      where: { id: createdEvent.id },
       include: {
         ticketCategories: true,
         organizer: {
-          select: {orgName: true}
-        }
-      }
-    })
+          select: { orgName: true },
+        },
+      },
+    });
 
     return completeEventInfo;
   };
@@ -110,7 +108,10 @@ export class EventService {
       orderBy: { [sortBy]: sortOrder },
       skip: (page - 1) * take,
       take: take,
-      include: { organizer: { select: { orgName: true } }, ticketCategories: true },
+      include: {
+        organizer: { select: { orgName: true } },
+        ticketCategories: true,
+      },
     });
 
     const total = await prisma.event.count({ where: whereClause });
@@ -166,5 +167,53 @@ export class EventService {
     }
 
     return event;
+  };
+
+  eventUpdate = async ({
+    id,
+    organizerId,
+    title,
+    startDay,
+    endDay,
+    startTime,
+    endTime,
+    category,
+    location,
+    description,
+    imageURL,
+    status,
+    maxCapacity,
+  }: EditEventDTO & { id: string; organizerId: string }) => {
+    const organizer = await prisma.organizer.findFirst({
+      where: { id: organizerId },
+    });
+
+    if (!organizer) {
+      throw new ApiError("Organizer not found!", 404);
+    }
+
+    const startDate = new Date(`${startDay}T00:00:00Z`);
+    const endDate = new Date(`${endDay}T00:00:00Z`);
+    const slug = await generateUniqueSlug(title!);
+    const updated = await prisma.event.update({
+      where: { id },
+      data: {
+        organizerId,
+        title,
+        slug,
+        startDay: startDate,
+        endDay: endDate,
+        startTime,
+        endTime,
+        category,
+        location,
+        description,
+        imageURL,
+        status,
+        maxCapacity,
+      },
+    });
+
+    return updated;
   };
 }
