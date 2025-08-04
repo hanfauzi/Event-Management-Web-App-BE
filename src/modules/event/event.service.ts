@@ -169,6 +169,37 @@ export class EventService {
     return event;
   };
 
+ getEventById = async (eventId: string, organizerId: string) => {
+  const event = await prisma.event.findFirst({
+    where: {
+      id: eventId,
+      organizerId, // <-- validasi bahwa ini memang event-nya
+    },
+    include: {
+      ticketCategories: true,
+    },
+  });
+
+  if (!event) {
+    throw new ApiError("Event not found or not yours!", 404);
+  }
+
+  return event;
+};
+
+getEventsByOrganizerId = async (organizerId: string) => {
+  const events = await prisma.event.findMany({
+    where: {
+      organizerId,
+    },
+    orderBy: {
+      createdAt: "desc", // optional: urut dari yang terbaru
+    },
+  });
+
+  return events;
+};
+
   eventUpdate = async ({
     id,
     organizerId,
