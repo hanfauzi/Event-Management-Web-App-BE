@@ -14,7 +14,8 @@ export class TransactionController {
     next: NextFunction
   ) => {
     try {
-      const body = req.body; 
+        const {userId} = res.locals.payload
+      const body = {...req.body, userId }; 
       const transaction = await this.transactionService.createTransaction(body);
       res.status(201).json({
         message: "Transaction created successfully",
