@@ -36,7 +36,6 @@ export class EventController {
       return res.status(400).json({ errors });
     }
 
-
     const organizer = res.locals.payload;
 
     const organizerId = organizer.userId;
@@ -68,12 +67,28 @@ export class EventController {
     res.status(200).json(event);
   };
 
+  eventById = async (req: Request, res: Response) => {
+    const organizerId = res.locals.payload.userId
+     const eventId = req.params.id;
+
+    const result = await this.eventService.getEventById(eventId, organizerId);
+
+    res.status(200).send(result)
+  };
+
+  eventsByOraganizerId = async (req:Request, res: Response) => {
+    const organizerId = res.locals.payload.userId
+    const result = await this.eventService.getEventsByOrganizerId(organizerId)
+
+    res.status(200).send(result)
+  }
+
   eventUpdate = async (req: Request, res: Response) => {
     const file = req.file;
     const eventId = req.params.id; // ✅ Ambil ID dari route param
 
     if (!file) {
-       res.status(400).json({ message: "Image file is required" });
+      res.status(400).json({ message: "Image file is required" });
     }
 
     const uploaded = await this.cloudinaryService.upload(file!, "event-images");
@@ -85,7 +100,7 @@ export class EventController {
 
     const errors = await validate(data);
     if (errors.length > 0) {
-       res.status(400).json({ errors });
+      res.status(400).json({ errors });
     }
 
     const organizerId = res.locals.payload.id;

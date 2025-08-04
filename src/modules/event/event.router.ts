@@ -28,6 +28,8 @@ export class EventRouter {
       this.eventController.filterEventsByCategoryOrLocation
     );
     this.router.get("/event/:slug", this.eventController.getEventDetailBySlug);
+    this.router.get("/events/:id",JwtVerify.verifyToken, this.eventController.eventById);
+    this.router.get("/organizer/events", JwtVerify.verifyToken, this.eventController.eventsByOraganizerId)
     this.router.patch(
       "/edit-event/:id",
       JwtVerify.verifyToken,
