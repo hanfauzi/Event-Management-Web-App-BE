@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transaksi Diterima</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f6;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    @media only screen and (max-width: 600px) {
+      .email-container {
+        width: 100% !important;
+        margin: 0 !important;
+        border-radius: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100">
+  <div class="email-container">
+    <!-- Header -->
+    <div class="bg-green-600 text-white p-8 text-center rounded-t-xl">
+      <img src="https://placehold.co/150x50/15803d/ffffff?text=LOGO" alt="Logo Perusahaan" class="mx-auto block mb-5 rounded-lg shadow-md" />
+      <h1 class="text-3xl font-extrabold mb-2 leading-tight">Transaksi Anda Diterima</h1>
+      <p class="text-xl opacity-90">Terima kasih atas kepercayaan Anda.</p>
+    </div>
+
+    <!-- Content -->
+    <div class="p-8 text-gray-800 leading-relaxed">
+      <p class="mb-6 text-lg">Halo {{name}},</p>
+      <p class="mb-6 text-base">
+        Kami dengan senang hati menginformasikan bahwa transaksi Anda dengan nomor referensi <strong>{{transactionId}}</strong> telah berhasil diterima.
+      </p>
+      <p class="mb-6 text-base">
+        Anda dapat segera menikmati layanan atau produk yang telah Anda beli. Jika Anda memiliki pertanyaan lebih lanjut, jangan ragu untuk menghubungi kami.
+      </p>
+      <p class="text-lg font-semibold mt-4">Tim [Nama Perusahaan Anda]</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-gray-200 text-gray-600 p-6 text-center text-sm rounded-b-xl">
+      <p class="mb-3">&copy; 2025 [Nama Perusahaan Anda]. Semua Hak Dilindungi Undang-Undang.</p>
+      <p>
+        <a href="https://contoh.com/kebijakan-privasi" target="_blank" class="text-gray-600 hover:text-gray-800 underline">Kebijakan Privasi</a> &bull;
+        <a href="https://contoh.com/berhenti-berlangganan" target="_blank" class="text-gray-600 hover:text-gray-800 underline">Berhenti Berlangganan</a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
