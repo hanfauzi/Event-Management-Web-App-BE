@@ -46,10 +46,10 @@ export class TransactionController {
         throw new ApiError("Payment proof is required", 400);
       }
 
-       const uploaded = await this.cloudinaryService.upload(
-      file,
-      "payment-proofs"
-    );
+      const uploaded = await this.cloudinaryService.upload(
+        file,
+        "payment-proofs"
+      );
 
       const updated = await this.transactionService.uploadPaymentProof(
         transactionId,
@@ -80,6 +80,58 @@ export class TransactionController {
       });
     } catch (err) {
       next(err);
+    }
+  };
+
+  getPaymentProof = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const proof =
+        await this.transactionService.getPaymentProof(id);
+
+      res.status(200).json({
+        message: "Payment proof fetched successfully",
+        data: proof,
+      });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  acceptTransaction = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { id } = req.params;
+      const updatedTransaction =
+        await this.transactionService.acceptTransaction(id);
+
+      res.status(200).json({
+        message: "Transaction accepted successfully",
+        data: updatedTransaction,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  rejectTransaction = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const { id } = req.params;
+      const updatedTransaction =
+        await this.transactionService.rejectTransaction(id);
+      res.status(200).json({
+        message: "Transaction rejected successfully",
+        data: updatedTransaction,
+      });
+    } catch (error) {
+      next(error);
     }
   };
 }
