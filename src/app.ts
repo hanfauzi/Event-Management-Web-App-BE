@@ -17,6 +17,7 @@ import { EventRouter } from "./modules/event/event.router";
 import { ProfileRouter } from "./modules/profile/profile.router";
 import { TransactionRouter } from "./modules/transaction/transaction.router";
 import { DashboardRouter } from "./modules/dashboard/dashboard.router";
+import startExpireTransactionJob from "./jobs/cron/expiry.transaction.schedule";
 
 
 export default class App {
@@ -27,6 +28,7 @@ export default class App {
     this.configure();
     this.routes();
     this.handleError();
+    this.jobs()
   }
 
   private configure() {
@@ -96,6 +98,10 @@ export default class App {
     this.app.use("/api", profileRouter.getRouter());
     this.app.use("/api", transactionRouter.getRouter())
     this.app.use("/api", dashboardRouter.getRouter());
+  }
+
+   private jobs(): void {
+    startExpireTransactionJob();
   }
 
   public start(): void {
