@@ -329,5 +329,26 @@ export class TransactionService {
 
     return updatedTransaction;
   }
+  getPendingTransactionsByOrganizer = async (organizerId: string) => {
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      status: TransactionStatus.WAITING_CONFIRMATION,
+      event: {
+        organizerId: organizerId,
+      },
+    },
+    include: {
+      user: true,
+      event: true,
+      ticketCategory: true,
+      voucher: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+
+  return transactions;
+}
 }
 
