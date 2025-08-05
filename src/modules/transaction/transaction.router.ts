@@ -34,6 +34,24 @@ export class TransactionRouter {
       JwtVerify.verifyToken,
       this.transactionController.getTransactionById
     );
+
+    this.router.get(
+      "/transactions/:id/payment-proof",
+      JwtVerify.verifyToken,
+      this.transactionController.getPaymentProof
+    );
+
+    this.router.patch(
+      "/transactions/:id/accept",
+      JwtVerify.verifyToken,
+      this.transactionController.acceptTransaction
+    );
+
+    this.router.patch(
+      "/transactions/:id/reject",
+      JwtVerify.verifyToken,
+      this.transactionController.rejectTransaction
+    );
   };
 
   getRouter = () => {
