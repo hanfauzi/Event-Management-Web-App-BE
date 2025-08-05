@@ -22,6 +22,5 @@ export class CreateTransactionDTO {
   usedPoints?: number;
 
   @IsOptional()
-  @IsUUID()
-  voucherId?: string;
+  voucherCode?: string;
 }
