@@ -99,25 +99,17 @@ export class AuthService {
   };
 
   organizerRegister = async ({ username, email, password }: RegisterDTO) => {
-    const findOrganizerByEmail = await prisma.organizer.findFirst({
-      where: { email },
-    });
+    const findByEmail = await prisma.organizer.findFirst({ where: { email } });
+    if (findByEmail) throw new ApiError("Email already exist!", 400);
 
-    if (findOrganizerByEmail) {
-      throw new ApiError("Email already exist!", 400);
-    }
-
-    const findOrganizerByUsername = await prisma.organizer.findFirst({
+    const findByUsername = await prisma.organizer.findFirst({
       where: { username },
     });
-
-    if (findOrganizerByUsername) {
-      throw new ApiError("Username already used!", 400);
-    }
+    if (findByUsername) throw new ApiError("Username already used!", 400);
 
     const hashedPassword = await this.passwordService.hashPassword(password);
 
-    return await prisma.organizer.create({
+    const newOrganizer = await prisma.organizer.create({
       data: {
         username,
         email,
@@ -130,6 +122,37 @@ export class AuthService {
         createdAt: true,
       },
     });
+
+    try {
+      const templateHtml = fs.readFileSync(
+        "src/assets/organizerLogin.html",
+        "utf-8"
+      );
+      const compiledHtml = Handlebars.compile(templateHtml);
+      const resultHtml = compiledHtml({
+        name: newOrganizer.username ?? "there",
+        linkUrl: `${process.env.LOGIN_URL_ORGANIZER!}`,
+      });
+
+      await transporter.sendMail({
+        subject: "Login Organizer",
+        to: newOrganizer.email,
+        html: resultHtml,
+      });
+
+      return {
+        message:
+          "Create account successfully and login link has been sent to your email!",
+      };
+    } catch (error) {
+      // ROLLBACK akun kalau email gagal dikirim
+      await prisma.organizer.delete({ where: { id: newOrganizer.id } });
+
+      throw new ApiError(
+        "Failed to send email. Account creation aborted.",
+        500
+      );
+    }
   };
 
   userLogin = async ({ usernameOrEmail, password }: LoginDTO) => {
@@ -212,7 +235,7 @@ export class AuthService {
 
   sendUserForgotPasswordEmail = async ({ email }: EmailDTO) => {
     const user = await prisma.user.findUnique({
-      where: { email }, // 👈 ini yang benar
+      where: { email },
     });
 
     if (!user) {
@@ -230,28 +253,41 @@ export class AuthService {
       },
     });
 
-    const templateHtml = await fs.readFileSync(
-      "src/assets/forgotPassword.html",
-      "utf-8"
-    );
-    const compiledHtml = Handlebars.compile(templateHtml);
-    const resultHtml = compiledHtml({
-      name: user.firstName ?? user.username ?? "there",
-      linkUrl: `${process.env.RESET_PASSWORD_URL_USER!}/${token}`,
-    });
+    try {
+      const templateHtml = await fs.readFileSync(
+        "src/assets/forgotPassword.html",
+        "utf-8"
+      );
+      const compiledHtml = Handlebars.compile(templateHtml);
+      const resultHtml = compiledHtml({
+        name: user.firstName ?? user.username ?? "there",
+        linkUrl: `${process.env.RESET_PASSWORD_URL_USER!}/${token}`,
+      });
 
-    await transporter.sendMail({
-      subject: "Reset Your Password",
-      to: email,
-      html: resultHtml,
-    });
+      await transporter.sendMail({
+        subject: "Reset Your Password",
+        to: email,
+        html: resultHtml,
+      });
 
-    return {token, message: "Reset link sent to email" };
+      return { token, message: "Reset link sent to email" };
+    } catch (error) {
+      // rollback token kalau email gagal
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          resetPasswordToken: null,
+          resetPasswordExpiry: null,
+        },
+      });
+
+      throw new ApiError("Failed to send reset email. Please try again.", 500);
+    }
   };
 
   sendOrganizerForgotPasswordEmail = async ({ email }: EmailDTO) => {
     const organizer = await prisma.organizer.findUnique({
-      where: { email }, // 👈 ini yang benar
+      where: { email },
     });
 
     if (!organizer) {
@@ -269,80 +305,97 @@ export class AuthService {
       },
     });
 
-    const templateHtml = await fs.readFileSync(
-      "src/assets/forgotPassword.html",
-      "utf-8"
-    );
-    const compiledHtml = Handlebars.compile(templateHtml);
-    const resultHtml = compiledHtml({
-      name: organizer.orgName ?? organizer.username ?? "there",
-      linkUrl: `${process.env.RESET_PASSWORD_URL_ORGANIZER!}/${token}`,
-    });
+    try {
+      const templateHtml = await fs.readFileSync(
+        "src/assets/forgotPassword.html",
+        "utf-8"
+      );
+      const compiledHtml = Handlebars.compile(templateHtml);
+      const resultHtml = compiledHtml({
+        name: organizer.orgName ?? organizer.username ?? "there",
+        linkUrl: `${process.env.RESET_PASSWORD_URL_ORGANIZER!}/${token}`,
+      });
 
-    await transporter.sendMail({
-      subject: "Reset Your Password",
-      to: email,
-      html: resultHtml,
-    });
+      await transporter.sendMail({
+        subject: "Reset Your Password",
+        to: email,
+        html: resultHtml,
+      });
 
-    return { token, message: "Reset link sent to email" };
+      return { token, message: "Reset link sent to email" };
+    } catch (error) {
+      // rollback token kalau email gagal
+      await prisma.organizer.update({
+        where: { id: organizer.id },
+        data: {
+          resetPasswordToken: null,
+          resetPasswordExpiry: null,
+        },
+      });
+
+      throw new ApiError("Failed to send reset email. Please try again.", 500);
+    }
   };
 
-  forgotUserPasswordByToken = async ({ token, newPassword }: ForgotPasswordDTO & {token: string}) => {
-  const user = await prisma.user.findFirst({
-    where: {
-      resetPasswordToken: token,
-      resetPasswordExpiry: {
-        gte: new Date(), 
+  forgotUserPasswordByToken = async ({
+    token,
+    newPassword,
+  }: ForgotPasswordDTO & { token: string }) => {
+    const user = await prisma.user.findFirst({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpiry: {
+          gte: new Date(),
+        },
       },
-    },
-  });
+    });
 
-  if (!user) {
-    throw new ApiError("Invalid or expired reset token", 400);
-  }
+    if (!user) {
+      throw new ApiError("Invalid or expired reset token", 400);
+    }
 
-  const hashedPassword = await this.passwordService.hashPassword(newPassword);
+    const hashedPassword = await this.passwordService.hashPassword(newPassword);
 
-  await prisma.user.update({
-    where: { id: user.id },
-    data: {
-      password: hashedPassword,
-      resetPasswordToken: null,
-      resetPasswordExpiry: null,
-    },
-  });
-
-  return { message: "Password has been reset successfully" };
-
-  
-};
-
- forgotOrganizerPasswordByToken = async ({ token, newPassword }: ForgotPasswordDTO & {token: string}) => {
-  const organizer = await prisma.organizer.findFirst({
-    where: {
-      resetPasswordToken: token,
-      resetPasswordExpiry: {
-        gte: new Date(), // token belum expired
+    await prisma.user.update({
+      where: { id: user.id },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpiry: null,
       },
-    },
-  });
+    });
 
-  if (!organizer) {
-    throw new ApiError("Invalid or expired reset token", 400);
-  }
+    return { message: "Password has been reset successfully" };
+  };
 
-  const hashedPassword = await this.passwordService.hashPassword(newPassword);
+  forgotOrganizerPasswordByToken = async ({
+    token,
+    newPassword,
+  }: ForgotPasswordDTO & { token: string }) => {
+    const organizer = await prisma.organizer.findFirst({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpiry: {
+          gte: new Date(), // token belum expired
+        },
+      },
+    });
 
-  await prisma.organizer.update({
-    where: { id: organizer.id },
-    data: {
-      password: hashedPassword,
-      resetPasswordToken: null,
-      resetPasswordExpiry: null,
-    },
-  });
+    if (!organizer) {
+      throw new ApiError("Invalid or expired reset token", 400);
+    }
 
-  return { message: "Password has been reset successfully" };
-}
+    const hashedPassword = await this.passwordService.hashPassword(newPassword);
+
+    await prisma.organizer.update({
+      where: { id: organizer.id },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpiry: null,
+      },
+    });
+
+    return { message: "Password has been reset successfully" };
+  };
 }
