@@ -36,6 +36,11 @@ export class EventRouter {
       this.uploaderMiddleware.upload().single("image"),
       this.eventController.eventUpdate
     );
+    this.router.get(
+      "/:eventId/attendees",
+      JwtVerify.verifyToken,JwtVerify.verifyRole(["ORGANIZER"]),
+      this.eventController.getAttendees
+    );
   };
 
   getRouter = () => {
