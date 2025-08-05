@@ -52,6 +52,12 @@ export class TransactionRouter {
       JwtVerify.verifyToken,
       this.transactionController.rejectTransaction
     );
+
+    this.router.get(
+      "/transactions/pending",
+      JwtVerify.verifyToken,
+      this.transactionController.getPendingTransactionsByOrganizer
+    );
   };
 
   getRouter = () => {

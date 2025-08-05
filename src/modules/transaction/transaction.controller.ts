@@ -134,4 +134,25 @@ export class TransactionController {
       next(error);
     }
   };
+
+  getPendingTransactionsByOrganizer = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      // Assuming organizerId is stored in JWT and set to res.locals.payload.organizerId
+      const organizerId  = res.locals.payload.userId;
+      if (!organizerId) {
+       res.status(403).json({ message: "Forbidden: Not an organizer" });
+      }
+      const transactions = await this.transactionService.getPendingTransactionsByOrganizer(organizerId);
+      res.status(200).json({
+        message: "Pending transactions fetched successfully",
+        data: transactions,
+      });
+    } catch (error) {
+      next(error);
+    }
+  };
 }
