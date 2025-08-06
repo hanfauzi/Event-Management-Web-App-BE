@@ -29,6 +29,13 @@ export class TransactionRouter {
       this.transactionController.uploadPaymentProof
     );
 
+      this.router.get(
+      "/transaction/:id",
+      JwtVerify.verifyToken,
+      this.transactionController.getTransactionById
+    );
+  
+
     this.router.get(
       "/user/transaction",
       JwtVerify.verifyToken,
