@@ -3,7 +3,7 @@
     "target": "ES6",
     "module": "commonjs",
     "outDir": "./dist",
-    "rootDir": ".", // ⬅️ mencakup `src` dan `api`
+    "rootDir": "./src", // ⬅️ mencakup `src` dan `api`
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -11,5 +11,6 @@
     "emitDecoratorMetadata": true,
     "typeRoots": ["./node_modules/@types", "./src/types"]
   },
-  "include": ["src", "api"] // ⬅️ pastikan ini juga ada
+  "include": ["src/**/*"], // ⬅️ mencakup `src` dan `api`
+  "exclude": ["node_modules", "dist"]
 }
