@@ -19,6 +19,7 @@ import { TransactionRouter } from "./modules/transaction/transaction.router";
 import { DashboardRouter } from "./modules/dashboard/dashboard.router";
 import startExpireTransactionJob from "./jobs/cron/expiry.transaction.schedule";
 import { ReviewRouter } from "./modules/review/review.router";
+import { VoucherRouter } from "./modules/voucher/voucher.router";
 
 
 export default class App {
@@ -88,6 +89,7 @@ export default class App {
     const transactionRouter = new TransactionRouter();
     const dashboardRouter = new DashboardRouter();
     const reviewRouter = new ReviewRouter();
+    const voucherRouter = new VoucherRouter();
 
 
     this.app.get("/api", (req: Request, res: Response) => {
@@ -101,6 +103,7 @@ export default class App {
     this.app.use("/api", transactionRouter.getRouter())
     this.app.use("/api", dashboardRouter.getRouter());
     this.app.use("/api", reviewRouter.getRouter());
+    this.app.use("/api", voucherRouter.getRouter());
   }
 
    private jobs(): void {

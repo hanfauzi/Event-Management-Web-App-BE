@@ -41,6 +41,11 @@ export class TransactionService {
           throw new ApiError("Invalid voucher", 400);
         }
 
+        const now = new Date();
+        if (now < voucher.startDate || now > voucher.endDate) {
+          throw new ApiError("Voucher tidak dalam masa berlaku", 400);
+        }
+
         discount = voucher.discountAmount;
       }
 
@@ -120,6 +125,7 @@ export class TransactionService {
           },
         },
       });
+      console.log("userId yang dikirim ke transaksi:", body.userId);
 
       return transaction;
     });
