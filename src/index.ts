@@ -1,10 +1,7 @@
 import 'dotenv/config';
-
 import App from './app';
 
-const main = () => {
-  const app = new App();
-  app.start();
-};
+const app = new App();
 
-main();
+// ✅ Export handler supaya Vercel bisa handle request
+export default app.app;
