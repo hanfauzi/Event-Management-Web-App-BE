@@ -44,4 +44,31 @@ export class ReviewService {
       data: newReview,
     };
   };
+
+  getOrganizerReviewsService = async (organizerId: string) => {
+    const reviews = await prisma.review.findMany({
+      where: { event: { organizerId: organizerId } },
+      include: {
+        user: true,
+        event: { select: { title: true } },
+      },
+    });
+
+    const averageRating = await prisma.review.aggregate({
+      _avg: { rating: true },
+      where: {
+        event: {
+          organizerId: organizerId,
+        },
+      },
+    });
+
+    return {
+      averageRating: averageRating._avg.rating ?? 0,
+      totalReviews: reviews.length,
+      reviews,
+    };
+  };
+
+
 }

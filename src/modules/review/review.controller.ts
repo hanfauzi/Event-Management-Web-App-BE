@@ -1,4 +1,4 @@
-import { NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import { ReviewService } from "./review.service";
 
 export class ReviewController {
@@ -8,13 +8,15 @@ export class ReviewController {
     this.reviewService = new ReviewService();
   }
 
-  createReviewByUser = async (req: any, res: any, next: NextFunction) => {
+  createReviewByUser = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-      const userId  = res.locals.payload.userId;
-      console.log("User ID:===>>>", userId); // Debugging line to check userId
+      const userId = res.locals.payload.userId;
 
-      const {eventId}  = req.params;
-      console.log("Event ID:===>>>", eventId); // Debugging line to check eventId
+      const { eventId } = req.params;
 
       const { rating, comment } = req.body;
 
@@ -27,6 +29,19 @@ export class ReviewController {
       res.status(200).send(result);
     } catch (error) {
       next(error);
+    }
+  };
+
+  getOrganizerReviews = async (req: Request, res: Response) => {
+    const { organizerId } = req.params;
+
+    try {
+      const data =
+        await this.reviewService.getOrganizerReviewsService(organizerId);
+
+       res.status(200).json({data});
+    } catch (error) {
+       res.status(500).json(error);
     }
   };
 }
