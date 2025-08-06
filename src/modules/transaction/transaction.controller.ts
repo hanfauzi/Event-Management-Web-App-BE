@@ -19,7 +19,11 @@ export class TransactionController {
   ) => {
     try {
       const { userId } = res.locals.payload;
+
+      
       const body = { ...req.body, userId };
+      console.log("DEBUG - res.locals.payload:", res.locals.payload);
+    console.log("DEBUG - Payload yang dikirim ke service:", body);
       const transaction = await this.transactionService.createTransaction(body);
       res.status(201).json({
         message: "Transaction created successfully",
