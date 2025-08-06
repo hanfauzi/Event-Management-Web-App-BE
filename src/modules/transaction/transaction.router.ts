@@ -30,9 +30,9 @@ export class TransactionRouter {
     );
 
     this.router.get(
-      "/transaction/:id",
+      "/user/transaction",
       JwtVerify.verifyToken,
-      this.transactionController.getTransactionById
+      this.transactionController.getTransactionsUserById
     );
 
     this.router.get(
