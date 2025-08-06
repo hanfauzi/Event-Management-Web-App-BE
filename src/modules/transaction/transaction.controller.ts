@@ -65,14 +65,14 @@ export class TransactionController {
     }
   };
 
-  getTransactionById = async (
+  getTransactionsUserById = async (
     req: Request,
     res: Response,
     next: NextFunction
   ) => {
     try {
-      const { id } = req.params;
-      const transaction = await this.transactionService.getTransactionById(id);
+      const userId = res.locals.payload.userId;
+      const transaction = await this.transactionService.getTransactionsUserById( userId);
 
       res.status(200).json({
         message: "Transaction fetched successfully",

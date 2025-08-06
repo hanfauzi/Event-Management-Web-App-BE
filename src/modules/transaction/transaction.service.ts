@@ -209,24 +209,24 @@ export class TransactionService {
     return updated;
   };
 
-  getTransactionById = async (id: string) => {
-    const transaction = await prisma.transaction.findUnique({
-      where: { id },
-      include: {
-        user: true,
-        event: true,
-        ticketCategory: true,
-        voucher: true,
-        Ticket: true,
-      },
-    });
+getTransactionsUserById = async ( userId: string) => {
+ const transaction = await prisma.transaction.findMany({
+  where: { userId },
+  include: {
+    user: true,
+    event: true,
+    ticketCategory: true,
+    voucher: true,
+    Ticket: true,
+  },
+});
 
-    if (!transaction) {
-      throw new ApiError("Transaction not found", 404);
-    }
+  if (!transaction) {
+    throw new ApiError("Transaction not found or not authorized", 404);
+  }
 
-    return transaction;
-  };
+  return transaction;
+};
 
   getPaymentProof = async (transactionId: string) => {
     const transaction = await prisma.transaction.findUnique({
