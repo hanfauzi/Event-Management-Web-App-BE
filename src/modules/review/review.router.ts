@@ -18,6 +18,11 @@ export class ReviewRouter {
       JwtVerify.verifyToken,
       this.reviewController.createReviewByUser
     );
+    this.router.get(
+      "/organizer/:organizerId/reviews",
+      JwtVerify.verifyToken,
+      this.reviewController.getOrganizerReviews
+    );
   };
 
   getRouter = () => {
