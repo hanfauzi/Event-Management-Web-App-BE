@@ -215,25 +215,44 @@ export class TransactionService {
     return updated;
   };
 
-getTransactionsUserById = async ( userId: string) => {
- const transaction = await prisma.transaction.findMany({
-  where: { userId },
-  include: {
-    user: true,
-    event: true,
-    ticketCategory: true,
-    voucher: true,
-    Ticket: true,
-  },
-});
+   getTransactionById = async (id: string) => {
+    const transaction = await prisma.transaction.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        event: true,
+        ticketCategory: true,
+        voucher: true,
+        Ticket: true,
+      },
+    });
 
-  if (!transaction) {
-    throw new ApiError("Transaction not found or not authorized", 404);
-  }
+    if (!transaction) {
+      throw new ApiError("Transaction not found", 404);
+    }
 
-  return transaction;
-};
-
+    return transaction;
+  };
+  
+  getTransactionsUserById = async ( userId: string) => {
+    const transaction = await prisma.transaction.findMany({
+      where: { userId },
+      include: {
+        user: true,
+        event: true,
+        ticketCategory: true,
+        voucher: true,
+        Ticket: true,
+      },
+    });
+    
+    if (!transaction) {
+      throw new ApiError("Transaction not found or not authorized", 404);
+    }
+    
+    return transaction;
+  };
+  
   getPaymentProof = async (transactionId: string) => {
     const transaction = await prisma.transaction.findUnique({
       where: { id: transactionId },
@@ -241,118 +260,119 @@ getTransactionsUserById = async ( userId: string) => {
         paymentProofUrl: true,
       },
     });
-
+    
     if (!transaction) {
       throw new ApiError("Transaction not found", 404);
     }
-
+    
     return transaction.paymentProofUrl;
   };
-
+  
   acceptTransaction = async (transactionId: string) => {
     const transaction = await prisma.transaction.findUnique({
       where: { id: transactionId },
       include: { user: true, event: true, ticketCategory: true },
     });
-
+    
     if (!transaction) throw new ApiError("Transaction not found", 404);
     if (transaction.status !== "WAITING_CONFIRMATION")
       throw new ApiError(
-        "Transaction is not in 'WAITING_CONFIRMATION' state.",
-        400
-      );
+    "Transaction is not in 'WAITING_CONFIRMATION' state.",
+    400
+  );
+  
+  const updatedTransaction = await prisma.transaction.update({
+    where: { id: transactionId },
+    data: { status: TransactionStatus.DONE, updatedAt: new Date() },
+  });
+  
+  // Send email
+  await TransactionMailer.sendAcceptedMail({
+    to: transaction.user.email,
+    name: transaction.user.firstName || transaction.user.username,
+    transactionId: transaction.id,
+  });
+  
+  return updatedTransaction;
+};
 
-    const updatedTransaction = await prisma.transaction.update({
-      where: { id: transactionId },
-      data: { status: TransactionStatus.DONE, updatedAt: new Date() },
-    });
-
-    // Send email
-    await TransactionMailer.sendAcceptedMail({
-      to: transaction.user.email,
-      name: transaction.user.firstName || transaction.user.username,
-      transactionId: transaction.id,
-    });
-
-    return updatedTransaction;
-  };
-
-  rejectTransaction = async (transactionId: string) => {
-    const transaction = await prisma.transaction.findUnique({
-      where: { id: transactionId },
-      include: {
-        user: true,
-        event: true,
-        ticketCategory: true,
-        voucher: true,
-      },
-    });
-
-    if (!transaction) {
-      throw new ApiError("Transaction not found", 404);
-    }
-
-    if (transaction.status !== "WAITING_CONFIRMATION") {
-      throw new ApiError(
-        "Transaction is not in 'WAITING_CONFIRMATION' state.",
-        400
-      );
-    }
-
-    // Restore ticket quota
-    await prisma.ticketCategory.update({
-      where: { id: transaction.ticketCategoryId },
+rejectTransaction = async (transactionId: string) => {
+  const transaction = await prisma.transaction.findUnique({
+    where: { id: transactionId },
+    include: {
+      user: true,
+      event: true,
+      ticketCategory: true,
+      voucher: true,
+    },
+  });
+  
+  if (!transaction) {
+    throw new ApiError("Transaction not found", 404);
+  }
+  
+  if (transaction.status !== "WAITING_CONFIRMATION") {
+    throw new ApiError(
+      "Transaction is not in 'WAITING_CONFIRMATION' state.",
+      400
+    );
+  }
+  
+  // Restore ticket quota
+  await prisma.ticketCategory.update({
+    where: { id: transaction.ticketCategoryId },
+    data: {
+      quota: { increment: transaction.quantity },
+    },
+  });
+  
+  // Restore voucher quota if used
+  if (transaction.voucherId) {
+    await prisma.voucher.update({
+      where: { id: transaction.voucherId },
       data: {
-        quota: { increment: transaction.quantity },
+        quota: { increment: 1 },
       },
     });
-
-    // Restore voucher quota if used
-    if (transaction.voucherId) {
-      await prisma.voucher.update({
-        where: { id: transaction.voucherId },
-        data: {
-          quota: { increment: 1 },
-        },
-      });
-    }
-
-    // Update status to REJECTED
-    const updatedTransaction = await prisma.transaction.update({
-      where: { id: transactionId },
-      data: {
-        status: TransactionStatus.REJECTED,
-        updatedAt: new Date(),
+  }
+  
+  // Update status to REJECTED
+  const updatedTransaction = await prisma.transaction.update({
+    where: { id: transactionId },
+    data: {
+      status: TransactionStatus.REJECTED,
+      updatedAt: new Date(),
+    },
+  });
+  
+  await TransactionMailer.sendRejectedMail({
+    to: transaction.user.email,
+    name: transaction.user.firstName || transaction.user.username,
+    transactionId: transaction.id,
+  });
+  
+  return updatedTransaction;
+};
+getPendingTransactionsByOrganizer = async (organizerId: string) => {
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      status: TransactionStatus.WAITING_CONFIRMATION,
+      event: {
+        organizerId: organizerId,
       },
-    });
-
-    await TransactionMailer.sendRejectedMail({
-      to: transaction.user.email,
-      name: transaction.user.firstName || transaction.user.username,
-      transactionId: transaction.id,
-    });
-
-    return updatedTransaction;
-  };
-  getPendingTransactionsByOrganizer = async (organizerId: string) => {
-    const transactions = await prisma.transaction.findMany({
-      where: {
-        status: TransactionStatus.WAITING_CONFIRMATION,
-        event: {
-          organizerId: organizerId,
-        },
-      },
-      include: {
-        user: true,
-        event: true,
-        ticketCategory: true,
-        voucher: true,
-      },
-      orderBy: {
-        updatedAt: "desc",
-      },
-    });
-
-    return transactions;
-  };
+    },
+    include: {
+      user: true,
+      event: true,
+      ticketCategory: true,
+      voucher: true,
+    },
+    orderBy: {
+      updatedAt: "desc",
+    },
+  });
+  
+  return transactions;
+};
 }
+
