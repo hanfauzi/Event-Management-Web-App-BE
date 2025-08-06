@@ -247,4 +247,32 @@ getEventsByOrganizerId = async (organizerId: string) => {
 
     return updated;
   };
+
+   getAttendees = async (eventId: string) => {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        eventId,
+        status: "DONE",
+      },
+      include: {
+        user: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            username: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return transactions.map(tx => ({
+      userId: tx.user.id,
+      name: `${tx.user.firstName ?? ""} ${tx.user.lastName ?? ""}`.trim() || tx.user.username,
+      email: tx.user.email,
+      ticketQuantity: tx.quantity,
+      totalPaid: tx.finalPrice,
+    }));
+  };
 }

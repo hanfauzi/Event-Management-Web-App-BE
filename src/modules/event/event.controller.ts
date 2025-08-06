@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { EventService } from "./event.service";
 import { plainToInstance } from "class-transformer";
 import { validate } from "class-validator";
@@ -112,5 +112,18 @@ export class EventController {
     });
 
     res.status(200).send(result);
+  };
+
+   getAttendees = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { eventId } = req.params;
+      const attendees = await this.eventService.getAttendees(eventId);
+      res.status(200).json({
+        message: "Attendee list fetched successfully",
+        data: attendees,
+      });
+    } catch (error) {
+      next(error);
+    }
   };
 }
