@@ -8,50 +8,47 @@ import { FilterEventsDTO } from "./dto/filter-events.dto";
 import { GetEventsDTO } from "./dto/get-events.dto";
 
 export class EventService {
-  createEvent = async (body: CreateEventDTO, organizerId: string) => {
-    // 1. Cek apakah organizer verified
-    const organizer = await prisma.organizer.findFirst({
-      where: { id: organizerId },
-      select: { verified: true },
-    });
+ createEvent = async (body: CreateEventDTO, organizerId: string) => {
+  // 1. Cek apakah organizer verified
+  const organizer = await prisma.organizer.findFirst({
+    where: { id: organizerId },
+    select: { verified: true },
+  });
 
-    if (!organizer) {
-      throw new ApiError("Organizer not found", 404);
-    }
+  if (!organizer) {
+    throw new ApiError("Organizer not found", 404);
+  }
 
-    if (!organizer.verified) {
-      throw new ApiError(
-        "Your profile is not verified. Complete your profile first.",
-        403
-      );
-    }
+  if (!organizer.verified) {
+    throw new ApiError(
+      "Your profile is not verified. Complete your profile first.",
+      403
+    );
+  }
 
-    // 2. Ambil field dari body
-    const {
-      title,
-      startDay,
-      endDay,
-      startTime,
-      endTime,
-      category,
-      location,
-      description,
-      imageURL,
-      status,
-      maxCapacity,
-      ticketCategories,
-    } = body;
+  const {
+    title,
+    startDay,
+    endDay,
+    startTime,
+    endTime,
+    category,
+    location,
+    description,
+    imageURL,
+    status,
+    maxCapacity,
+    ticketCategories,
+  } = body;
 
-    // 3. Validasi tanggal
-    const startDate = new Date(startDay);
-    const endDate = new Date(endDay);
+  const startDate = new Date(startDay);
+  const endDate = new Date(endDay);
 
-    // 4. Generate unique slug
+  const slug = await generateUniqueSlug(title);
 
-    const slug = await generateUniqueSlug(title);
-
-    // 5. Buat event utama terlebih dahulu
-    const createdEvent = await prisma.event.create({
+  // 2. Transaction
+  const createdEvent = await prisma.$transaction(async (tx) => {
+    const createdEvent = await tx.event.create({
       data: {
         title,
         slug,
@@ -69,8 +66,7 @@ export class EventService {
       },
     });
 
-    // 6. Buat ticket categories (pakai createMany)
-    await prisma.ticketCategory.createMany({
+    await tx.ticketCategory.createMany({
       data: ticketCategories.map((tc) => ({
         name: tc.name,
         price: tc.price,
@@ -79,18 +75,21 @@ export class EventService {
       })),
     });
 
-    const completeEventInfo = await prisma.event.findUnique({
-      where: { id: createdEvent.id },
-      include: {
-        ticketCategories: true,
-        organizer: {
-          select: { orgName: true },
-        },
-      },
-    });
+    return createdEvent;
+  });
 
-    return completeEventInfo;
-  };
+  // 3. Ambil data lengkap setelah transaction sukses
+  const completeEventInfo = await prisma.event.findUnique({
+    where: { id: createdEvent.id },
+    include: {
+      ticketCategories: true,
+      organizer: { select: { orgName: true } },
+    },
+  });
+
+  return completeEventInfo;
+};
+
 
   // tampilan landing page untuk semua event tersedia
 
