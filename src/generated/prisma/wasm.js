@@ -133,7 +133,6 @@ exports.Prisma.UserScalarFieldEnum = {
   password: 'password',
   role: 'role',
   resetPasswordToken: 'resetPasswordToken',
-  resetPasswordExpiry: 'resetPasswordExpiry',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -152,7 +151,6 @@ exports.Prisma.OrganizerScalarFieldEnum = {
   verified: 'verified',
   role: 'role',
   resetPasswordToken: 'resetPasswordToken',
-  resetPasswordExpiry: 'resetPasswordExpiry',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'

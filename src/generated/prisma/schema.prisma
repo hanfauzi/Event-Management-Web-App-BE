@@ -22,14 +22,13 @@ model User {
   phoneNumber String? @map("phone_number")
   imageUrl    String? @map("image_url")
 
-  referralCode        String?   @map("referral_code")
-  referredById        String?   @map("referred_by_id")
-  username            String    @unique
-  email               String    @unique
-  password            String
-  role                Role      @default(USER)
-  resetPasswordToken  String?
-  resetPasswordExpiry DateTime?
+  referralCode       String? @map("referral_code")
+  referredById       String? @map("referred_by_id")
+  username           String  @unique
+  email              String  @unique
+  password           String
+  role               Role    @default(USER)
+  resetPasswordToken String?
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -48,19 +47,18 @@ enum Role {
 }
 
 model Organizer {
-  id                  String    @id @default(uuid())
-  orgName             String?
-  username            String    @unique
-  email               String    @unique
-  password            String
-  address             String?
-  phoneNumber         String?
-  logoUrl             String?
-  bio                 String?   @db.Text
-  verified            Boolean   @default(false)
-  role                Role      @default(ORGANIZER)
-  resetPasswordToken  String?
-  resetPasswordExpiry DateTime?
+  id                 String  @id @default(uuid())
+  orgName            String?
+  username           String  @unique
+  email              String  @unique
+  password           String
+  address            String?
+  phoneNumber        String?
+  logoUrl            String?
+  bio                String? @db.Text
+  verified           Boolean @default(false)
+  role               Role    @default(ORGANIZER)
+  resetPasswordToken String?
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")

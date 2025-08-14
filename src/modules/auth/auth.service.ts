@@ -243,13 +243,12 @@ export class AuthService {
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const expiry = dayjs().add(1, "hour").toDate();
+
 
     await prisma.user.update({
       where: { id: user.id },
       data: {
         resetPasswordToken: token,
-        resetPasswordExpiry: expiry,
       },
     });
 
@@ -277,7 +276,6 @@ export class AuthService {
         where: { id: user.id },
         data: {
           resetPasswordToken: null,
-          resetPasswordExpiry: null,
         },
       });
 
@@ -295,13 +293,12 @@ export class AuthService {
     }
 
     const token = crypto.randomBytes(32).toString("hex");
-    const expiry = dayjs().add(1, "hour").toDate();
+
 
     await prisma.organizer.update({
       where: { id: organizer.id },
       data: {
         resetPasswordToken: token,
-        resetPasswordExpiry: expiry,
       },
     });
 
@@ -328,8 +325,7 @@ export class AuthService {
       await prisma.organizer.update({
         where: { id: organizer.id },
         data: {
-          resetPasswordToken: null,
-          resetPasswordExpiry: null,
+          resetPasswordToken: null
         },
       });
 
@@ -344,9 +340,6 @@ export class AuthService {
     const user = await prisma.user.findFirst({
       where: {
         resetPasswordToken: token,
-        resetPasswordExpiry: {
-          gte: new Date(),
-        },
       },
     });
 
@@ -361,7 +354,6 @@ export class AuthService {
       data: {
         password: hashedPassword,
         resetPasswordToken: null,
-        resetPasswordExpiry: null,
       },
     });
 
@@ -375,9 +367,6 @@ export class AuthService {
     const organizer = await prisma.organizer.findFirst({
       where: {
         resetPasswordToken: token,
-        resetPasswordExpiry: {
-          gte: new Date(), // token belum expired
-        },
       },
     });
 
@@ -392,7 +381,6 @@ export class AuthService {
       data: {
         password: hashedPassword,
         resetPasswordToken: null,
-        resetPasswordExpiry: null,
       },
     });
 

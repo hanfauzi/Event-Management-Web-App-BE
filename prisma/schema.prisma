@@ -29,7 +29,6 @@ model User {
   password            String
   role                Role      @default(USER)
   resetPasswordToken  String?
-  resetPasswordExpiry DateTime?
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
@@ -60,7 +59,6 @@ model Organizer {
   verified            Boolean   @default(false)
   role                Role      @default(ORGANIZER)
   resetPasswordToken  String?
-  resetPasswordExpiry DateTime?
 
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @updatedAt @map("updated_at")
