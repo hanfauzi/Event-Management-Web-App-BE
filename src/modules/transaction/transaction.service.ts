@@ -53,20 +53,22 @@ export class TransactionService {
       const usedPoints = body.usedPoints ?? 0;
       const finalPrice = Math.max(totalPrice - discount - usedPoints, 0);
 
-      // 5. Pastikan tiket cukup
-      if (ticketCategory.quota < body.quantity) {
-        throw new ApiError("Not enough ticket quota", 400);
-      }
-
-      // 6. Kurangi kuota tiket
-      await tx.ticketCategory.update({
-        where: { id: body.ticketCategoryId },
+      // 5. Kurangi kuota tiket secara aman (atomic check)
+      const updatedTicket = await tx.ticketCategory.updateMany({
+        where: {
+          id: body.ticketCategoryId,
+          quota: { gte: body.quantity }, // hanya update kalau kuota cukup
+        },
         data: {
           quota: { decrement: body.quantity },
         },
       });
 
-      // 7. Validasi dan catat pemakaian poin (jika ada)
+      if (updatedTicket.count === 0) {
+        throw new ApiError("Not enough ticket quota", 400);
+      }
+
+      // 6. Validasi dan catat pemakaian poin (jika ada)
       if (usedPoints > 0) {
         const now = new Date();
         const pointLogs = await tx.userPointLog.findMany({
@@ -93,7 +95,7 @@ export class TransactionService {
         });
       }
 
-      // 8. Kurangi kuota voucher (jika digunakan)
+      // 7. Kurangi kuota voucher (jika digunakan)
       if (voucher) {
         await tx.voucher.update({
           where: { id: voucher.id },
@@ -103,7 +105,7 @@ export class TransactionService {
         });
       }
 
-      // 9. Buat transaksi
+      // 8. Buat transaksi
       const transaction = await tx.transaction.create({
         data: {
           userId: body.userId,
@@ -115,7 +117,7 @@ export class TransactionService {
           finalPrice: finalPrice,
           status: TransactionStatus.WAITING_PAYMENT,
           voucherId: voucher?.id,
-          expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 2), 
+          expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 2),
         },
         include: {
           event: {
@@ -215,7 +217,7 @@ export class TransactionService {
     return updated;
   };
 
-   getTransactionById = async (id: string) => {
+  getTransactionById = async (id: string) => {
     const transaction = await prisma.transaction.findUnique({
       where: { id },
       include: {
@@ -233,8 +235,8 @@ export class TransactionService {
 
     return transaction;
   };
-  
-  getTransactionsUserById = async ( userId: string) => {
+
+  getTransactionsUserById = async (userId: string) => {
     const transaction = await prisma.transaction.findMany({
       where: { userId },
       include: {
@@ -245,14 +247,14 @@ export class TransactionService {
         Ticket: true,
       },
     });
-    
+
     if (!transaction) {
       throw new ApiError("Transaction not found or not authorized", 404);
     }
-    
+
     return transaction;
   };
-  
+
   getPaymentProof = async (transactionId: string) => {
     const transaction = await prisma.transaction.findUnique({
       where: { id: transactionId },
@@ -260,119 +262,118 @@ export class TransactionService {
         paymentProofUrl: true,
       },
     });
-    
+
     if (!transaction) {
       throw new ApiError("Transaction not found", 404);
     }
-    
+
     return transaction.paymentProofUrl;
   };
-  
+
   acceptTransaction = async (transactionId: string) => {
     const transaction = await prisma.transaction.findUnique({
       where: { id: transactionId },
       include: { user: true, event: true, ticketCategory: true },
     });
-    
+
     if (!transaction) throw new ApiError("Transaction not found", 404);
     if (transaction.status !== "WAITING_CONFIRMATION")
       throw new ApiError(
-    "Transaction is not in 'WAITING_CONFIRMATION' state.",
-    400
-  );
-  
-  const updatedTransaction = await prisma.transaction.update({
-    where: { id: transactionId },
-    data: { status: TransactionStatus.DONE, updatedAt: new Date() },
-  });
-  
-  // Send email
-  await TransactionMailer.sendAcceptedMail({
-    to: transaction.user.email,
-    name: transaction.user.firstName || transaction.user.username,
-    transactionId: transaction.id,
-  });
-  
-  return updatedTransaction;
-};
+        "Transaction is not in 'WAITING_CONFIRMATION' state.",
+        400
+      );
 
-rejectTransaction = async (transactionId: string) => {
-  const transaction = await prisma.transaction.findUnique({
-    where: { id: transactionId },
-    include: {
-      user: true,
-      event: true,
-      ticketCategory: true,
-      voucher: true,
-    },
-  });
-  
-  if (!transaction) {
-    throw new ApiError("Transaction not found", 404);
-  }
-  
-  if (transaction.status !== "WAITING_CONFIRMATION") {
-    throw new ApiError(
-      "Transaction is not in 'WAITING_CONFIRMATION' state.",
-      400
-    );
-  }
-  
-  // Restore ticket quota
-  await prisma.ticketCategory.update({
-    where: { id: transaction.ticketCategoryId },
-    data: {
-      quota: { increment: transaction.quantity },
-    },
-  });
-  
-  // Restore voucher quota if used
-  if (transaction.voucherId) {
-    await prisma.voucher.update({
-      where: { id: transaction.voucherId },
-      data: {
-        quota: { increment: 1 },
+    const updatedTransaction = await prisma.transaction.update({
+      where: { id: transactionId },
+      data: { status: TransactionStatus.DONE, updatedAt: new Date() },
+    });
+
+    // Send email
+    await TransactionMailer.sendAcceptedMail({
+      to: transaction.user.email,
+      name: transaction.user.firstName || transaction.user.username,
+      transactionId: transaction.id,
+    });
+
+    return updatedTransaction;
+  };
+
+  rejectTransaction = async (transactionId: string) => {
+    const transaction = await prisma.transaction.findUnique({
+      where: { id: transactionId },
+      include: {
+        user: true,
+        event: true,
+        ticketCategory: true,
+        voucher: true,
       },
     });
-  }
-  
-  // Update status to REJECTED
-  const updatedTransaction = await prisma.transaction.update({
-    where: { id: transactionId },
-    data: {
-      status: TransactionStatus.REJECTED,
-      updatedAt: new Date(),
-    },
-  });
-  
-  await TransactionMailer.sendRejectedMail({
-    to: transaction.user.email,
-    name: transaction.user.firstName || transaction.user.username,
-    transactionId: transaction.id,
-  });
-  
-  return updatedTransaction;
-};
-getPendingTransactionsByOrganizer = async (organizerId: string) => {
-  const transactions = await prisma.transaction.findMany({
-    where: {
-      status: TransactionStatus.WAITING_CONFIRMATION,
-      event: {
-        organizerId: organizerId,
-      },
-    },
-    include: {
-      user: true,
-      event: true,
-      ticketCategory: true,
-      voucher: true,
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
-  
-  return transactions;
-};
-}
 
+    if (!transaction) {
+      throw new ApiError("Transaction not found", 404);
+    }
+
+    if (transaction.status !== "WAITING_CONFIRMATION") {
+      throw new ApiError(
+        "Transaction is not in 'WAITING_CONFIRMATION' state.",
+        400
+      );
+    }
+
+    // Restore ticket quota
+    await prisma.ticketCategory.update({
+      where: { id: transaction.ticketCategoryId },
+      data: {
+        quota: { increment: transaction.quantity },
+      },
+    });
+
+    // Restore voucher quota if used
+    if (transaction.voucherId) {
+      await prisma.voucher.update({
+        where: { id: transaction.voucherId },
+        data: {
+          quota: { increment: 1 },
+        },
+      });
+    }
+
+    // Update status to REJECTED
+    const updatedTransaction = await prisma.transaction.update({
+      where: { id: transactionId },
+      data: {
+        status: TransactionStatus.REJECTED,
+        updatedAt: new Date(),
+      },
+    });
+
+    await TransactionMailer.sendRejectedMail({
+      to: transaction.user.email,
+      name: transaction.user.firstName || transaction.user.username,
+      transactionId: transaction.id,
+    });
+
+    return updatedTransaction;
+  };
+  getPendingTransactionsByOrganizer = async (organizerId: string) => {
+    const transactions = await prisma.transaction.findMany({
+      where: {
+        status: TransactionStatus.WAITING_CONFIRMATION,
+        event: {
+          organizerId: organizerId,
+        },
+      },
+      include: {
+        user: true,
+        event: true,
+        ticketCategory: true,
+        voucher: true,
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+    });
+
+    return transactions;
+  };
+}
