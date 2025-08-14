@@ -53,7 +53,7 @@ export class TransactionService {
       const usedPoints = body.usedPoints ?? 0;
       const finalPrice = Math.max(totalPrice - discount - usedPoints, 0);
 
-      // 5. Kurangi kuota tiket secara aman (atomic check)
+      // 5. Kurangi kuota tiket secara aman 
       const updatedTicket = await tx.ticketCategory.updateMany({
         where: {
           id: body.ticketCategoryId,
