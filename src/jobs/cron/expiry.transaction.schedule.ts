@@ -88,7 +88,7 @@ const expirePendingTransactions = async () => {
 
 const startExpireTransactionJob = () => {
   console.log("[CRON] Job expirePendingTransactions dijadwalkan setiap 5 menit.");
-  cron.schedule("*/5 * * * *", expirePendingTransactions, {
+  cron.schedule("*/1 * * * *", expirePendingTransactions, {
     timezone: "Asia/Jakarta",
   });
 };
