@@ -175,4 +175,17 @@ export class TransactionController {
       next(error);
     }
   };
+
+  getCurrentPoints = async (req: Request, res: Response,  next: NextFunction) => {
+    try {
+      const userId = res.locals.payload.userId;
+      const points = await this.transactionService.getCurrentPoints(userId);
+      res.status(200).json({
+        message: "Current points fetched successfully",
+        data: points,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

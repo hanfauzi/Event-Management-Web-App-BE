@@ -376,4 +376,24 @@ export class TransactionService {
 
     return transactions;
   };
+
+  getCurrentPoints = async (userId: string) => {
+    const now = new Date();
+
+    const logs = await prisma.userPointLog.findMany({
+      where: {
+        userId,
+        OR: [
+          { type: "EARN", OR: [{ expiresAt: null }, { expiresAt: { gt: now } }]},
+          { type: "SPEND" }
+        ]
+      }
+    });
+
+    const currentPoints = logs.reduce((acc, log) => {
+      return log.type === "EARN" ? acc + log.amount : acc - log.amount;
+    }, 0);
+
+    return { currentPoints };
+  };
 }
