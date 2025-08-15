@@ -65,6 +65,12 @@ export class TransactionRouter {
       JwtVerify.verifyToken,
       this.transactionController.getPendingTransactionsByOrganizer
     );
+
+    this.router.get(
+      "/current-points",
+      JwtVerify.verifyToken,
+      this.transactionController.getCurrentPoints
+    );
   };
 
   getRouter = () => {
