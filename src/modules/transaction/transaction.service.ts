@@ -3,8 +3,16 @@ import { TransactionStatus } from "../../generated/prisma";
 import { CreateTransactionDTO } from "./dto/create.transaction.dto";
 import { ApiError } from "../../utils/api.error";
 import { TransactionMailer } from "../mailer/mailer.service";
+import { TicketService } from "../ticket/ticket.service";
 
 export class TransactionService {
+
+  private ticketService : TicketService;
+
+  constructor() {
+    this.ticketService = new TicketService();
+  }
+
   createTransaction = async (body: CreateTransactionDTO) => {
     return await prisma.$transaction(async (tx) => {
       // 1. Cek apakah event ada
@@ -287,6 +295,8 @@ export class TransactionService {
       where: { id: transactionId },
       data: { status: TransactionStatus.DONE, updatedAt: new Date() },
     });
+
+    await this.ticketService.createTicketsForTransaction(transaction.id);
 
     // Send email
     await TransactionMailer.sendAcceptedMail({
