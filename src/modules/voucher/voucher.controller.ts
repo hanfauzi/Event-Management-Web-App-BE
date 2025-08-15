@@ -39,29 +39,26 @@ export class VoucherController {
       throw new ApiError("Voucher not valid or expired", 400);
     }
 
-     
     res.status(200).json(voucher);
   };
 
-  getInfoVouchers = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const  organizerId  = res.locals.payload.userId;
+  getInfoVouchers = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const organizerId = res.locals.payload.userId;
 
-    console.log("Organizer ID:", organizerId);
+      console.log("Organizer ID:", organizerId);
 
-    if (!organizerId) {
-      throw new ApiError("Organizer ID is required", 400);
+      if (!organizerId) {
+        throw new ApiError("Organizer ID is required", 400);
+      }
+
+      const vouchers = await this.voucherService.getInfoVouchers(organizerId);
+
+      res.status(200).json({ vouchers });
+    } catch (error) {
+      next(error);
     }
+  };
 
-    const vouchers = await this.voucherService.getInfoVouchers(organizerId);
-
-    res.status(200).json({ vouchers });
-  } catch (error) {
-    next(error);
-  }
-};
+ 
 }

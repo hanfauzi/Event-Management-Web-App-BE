@@ -68,25 +68,26 @@ export class VoucherService {
   };
 
   getInfoVouchers = async (organizerId: string) => {
-  const vouchers = await prisma.voucher.findMany({
-    where: {
-      organizerId,
-    },
-    include: {
-      event: {
-        select: {
-          title: true,
-          location: true,
-          startDay: true,
+    const vouchers = await prisma.voucher.findMany({
+      where: {
+        organizerId,
+      },
+      include: {
+        event: {
+          select: {
+            title: true,
+            location: true,
+            startDay: true,
+          },
         },
       },
-    },
-    orderBy: {
-      startDate: "desc",
-    },
-  });
-  console.log("Ditemukan voucher:", vouchers);
+      orderBy: {
+        startDate: "desc",
+      },
+    });
 
-  return vouchers;
-};
+    return vouchers;
+  };
+
+  
 }
