@@ -125,7 +125,7 @@ export class TransactionService {
           finalPrice: finalPrice,
           status: TransactionStatus.WAITING_PAYMENT,
           voucherId: voucher?.id,
-          expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 2),
+          expiresAt: new Date(Date.now() + 1000 * 60 * 5),
         },
         include: {
           event: {
@@ -135,7 +135,6 @@ export class TransactionService {
           },
         },
       });
-      console.log("userId yang dikirim ke transaksi:", body.userId);
 
       return transaction;
     });
